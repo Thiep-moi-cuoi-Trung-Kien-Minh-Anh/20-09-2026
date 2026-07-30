@@ -5,6 +5,7 @@
  *  Cấu trúc file (mỗi module M1-M9 sẽ thêm 1 hàm init... mới và gọi nó trong
  *  initApp() ở cuối file, KHÔNG động vào các hàm global infra bên dưới):
  *    1. Đồng bộ nội dung từ config.js
+ *    1a. Dữ liệu có cấu trúc (JSON-LD) cho SEO (M10)
  *    1b. Welcome Screen (M1)
  *    1c. Parallax nhẹ cho ảnh nền Welcome Screen (M9)
  *    2. Loading Screen
@@ -45,15 +46,74 @@ function applyThemeColorsFromConfig() {
   root.style.setProperty("--color-text-light", colors.textLight);
 }
 
+function setMetaContent(selector, content) {
+  const el = document.querySelector(selector);
+  if (el && content) el.setAttribute("content", content);
+}
+
 function syncSiteMetaFromConfig() {
-  const { site } = WEDDING_CONFIG;
+  const { site, theme, couple } = WEDDING_CONFIG;
+  if (!site) return;
 
-  if (site?.title) document.title = site.title;
+  const fullTitle = site.title || (couple ? `${couple.groomFullName} & ${couple.brideFullName}` : document.title);
+  document.title = fullTitle;
 
-  const descriptionTag = document.querySelector('meta[name="description"]');
-  if (site?.description && descriptionTag) {
-    descriptionTag.setAttribute("content", site.description);
+  setMetaContent('meta[name="description"]', site.description);
+  setMetaContent('meta[property="og:title"]', fullTitle);
+  setMetaContent('meta[property="og:description"]', site.description);
+  setMetaContent('meta[name="theme-color"]', theme?.colors?.champagneGold);
+
+  // Chỉ chèn canonical/og:url/og:image khi đã có URL thật (điền ở
+  // config.site.url sau khi deploy) — tránh để lại thẻ trỏ tới URL rỗng.
+  if (site.url) {
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink) canonicalLink.setAttribute("href", site.url);
+    setMetaContent('meta[property="og:url"]', site.url);
+
+    if (site.ogImage) {
+      try {
+        setMetaContent('meta[property="og:image"]', new URL(site.ogImage, site.url).href);
+      } catch (error) {
+        // site.url không phải URL hợp lệ: bỏ qua og:image thay vì lỗi trang
+      }
+    }
   }
+}
+
+/* ----------------------------------------------------------------------------
+   1a. DỮ LIỆU CÓ CẤU TRÚC (JSON-LD) CHO SEO
+   Khai báo trang là một "Event" (đám cưới) để công cụ tìm kiếm hiểu đúng
+   ngữ cảnh trang. Dữ liệu lấy trực tiếp từ config.js nên luôn đồng bộ,
+   không cần khai báo trùng lặp ở đâu khác.
+---------------------------------------------------------------------------- */
+function initStructuredData() {
+  const { couple, wedding, events, site } = WEDDING_CONFIG;
+  if (!couple || !wedding?.dateISO) return;
+
+  const receptionEvent = events?.items?.[events.items.length - 1];
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: `Đám cưới ${couple.groomFullName} & ${couple.brideFullName}`,
+    startDate: wedding.dateISO,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    description: site?.description || "",
+  };
+
+  if (receptionEvent?.address) {
+    structuredData.location = {
+      "@type": "Place",
+      name: receptionEvent.venueName || receptionEvent.label || "",
+      address: receptionEvent.address,
+    };
+  }
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.textContent = JSON.stringify(structuredData);
+  document.head.appendChild(script);
 }
 
 /* ----------------------------------------------------------------------------
@@ -993,6 +1053,7 @@ function initFooter() {
 function initApp() {
   applyThemeColorsFromConfig();
   syncSiteMetaFromConfig();
+  initStructuredData();
   initLoadingScreen();
   initThemeToggle();
   initScrollProgressBar();

@@ -15,6 +15,13 @@ const WEDDING_CONFIG = {
   site: {
     title: "Kiên & Người Thương | Thiệp Cưới Online",
     description: "Trân trọng kính mời bạn đến chung vui trong ngày cưới của chúng tôi.",
+    // Điền vào SAU KHI deploy (vd. "https://ten-mien-cua-ban.com/") để có
+    // canonical URL + og:url chuẩn. Để trống "" nếu chưa deploy — các thẻ
+    // liên quan sẽ tự bị bỏ qua thay vì chèn URL rỗng/sai.
+    url: "",
+    // Ảnh hiển thị khi chia sẻ link lên Messenger/Zalo/Facebook... Mặc định
+    // dùng lại ảnh nền Welcome Screen, có thể đổi sang ảnh khác nếu muốn.
+    ogImage: "assets/images/welcome-bg.jpg",
   },
 
   // --- Tên cô dâu / chú rể ---
