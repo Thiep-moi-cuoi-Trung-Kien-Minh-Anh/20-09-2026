@@ -17,6 +17,7 @@
    14. Gallery / Masonry (M5)
    15. Lightbox (M5)
    16. RSVP Form (M6)
+   17. Wishes Wall (M8)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -1167,4 +1168,136 @@ body.lightbox-open {
 
 :root[data-theme="dark"] .rsvp-form__status--success {
   color: var(--color-sage-green);
+}
+
+/* ----------------------------------------------------------------------------
+   17. WISHES WALL (M8) — form gửi lời chúc + bức tường hiển thị
+---------------------------------------------------------------------------- */
+.wishes-section {
+  padding: var(--space-xl) 0;
+}
+
+.wishes-section__heading {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-lg);
+}
+
+.wishes-section__subtitle {
+  margin-top: var(--space-xs);
+  color: var(--text-muted);
+}
+
+.wish-form {
+  max-width: 640px;
+  margin: 0 auto var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.wish-form input,
+.wish-form textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.8em 1em;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), background-color var(--transition-smooth);
+}
+
+.wish-form input:focus,
+.wish-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+}
+
+.wish-form textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.wish-form__submit {
+  align-self: center;
+  padding: 0.8em 2.2em;
+  border-radius: 999px;
+  background-color: var(--accent-primary);
+  color: var(--color-text-dark);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.wish-form__submit:hover {
+  transform: translateY(-2px);
+}
+
+.wish-form__submit.is-loading,
+.wish-form__submit:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.wish-form__status {
+  text-align: center;
+  padding: 0.7em 1em;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+.wish-form__status--success {
+  background-color: rgba(156, 175, 136, 0.2);
+  color: #4f6b3d;
+}
+
+.wish-form__status--error {
+  background-color: rgba(183, 110, 121, 0.15);
+  color: var(--accent-secondary);
+}
+
+:root[data-theme="dark"] .wish-form__status--success {
+  color: var(--color-sage-green);
+}
+
+.wishes-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 700px) {
+  .wishes-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .wishes-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.wish-card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--transition-smooth);
+}
+
+.wish-card__name {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--accent-secondary);
+  margin-bottom: 0.3em;
+}
+
+.wish-card__message {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }

@@ -183,10 +183,36 @@ const WEDDING_CONFIG = {
     submitEndpoint: "",
   },
 
+  // --- Lời chúc (bức tường lời chúc từ khách mời) ---
+  wishes: {
+    title: "Lời chúc",
+    subtitle: "Những lời chúc phúc từ người thân, bạn bè dành cho chúng tôi",
+    submitLabel: "Gửi lời chúc",
+    successMessage: "Cảm ơn lời chúc của bạn!",
+    errorMessage: "Không gửi được lời chúc, vui lòng thử lại.",
+
+    // Lời chúc mẫu hiển thị sẵn — xoá hoặc thay bằng lời chúc thật tuỳ ý,
+    // luôn hiển thị bên dưới các lời chúc mới gửi.
+    seedWishes: [
+      { name: "Gia đình hai bên", message: "Chúc hai con trăm năm hạnh phúc, bách niên giai lão!" },
+      { name: "Bạn bè thân thiết", message: "Chúc mừng hạnh phúc! Chúc hai bạn luôn yêu thương nhau như ngày đầu." },
+    ],
+
+    // ĐỂ KẾT NỐI VỚI FIREBASE HOẶC GOOGLE SHEETS:
+    // - submitEndpoint: URL POST nhận JSON {name, message, submittedAt} để
+    //   lưu lời chúc mới (Firebase Realtime Database REST API, hoặc Google
+    //   Apps Script Web App — xem hướng dẫn RSVP ở trên, dùng chung cách làm).
+    // - fetchEndpoint: URL GET trả về mảng JSON [{name, message, submittedAt}, ...]
+    //   để hiển thị lời chúc từ MỌI khách mời (không chỉ trên máy hiện tại).
+    // Để trống "" nếu chưa cấu hình — trang sẽ lưu/đọc lời chúc mới từ
+    // localStorage của trình duyệt (chỉ hiển thị trên máy của người gửi).
+    submitEndpoint: "",
+    fetchEndpoint: "",
+  },
+
   // ------------------------------------------------------------------------
   // Các mục dưới đây sẽ được bổ sung ở những module tiếp theo, không xoá:
   // gift          -> M7 Mừng cưới
-  // wishes        -> M8 Lời chúc
   // music         -> M9 Nhạc nền
   // ------------------------------------------------------------------------
 };

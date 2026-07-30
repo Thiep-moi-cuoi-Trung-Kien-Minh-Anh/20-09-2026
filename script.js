@@ -17,6 +17,7 @@
  *    5f. Events / Wedding Info (M4)
  *    5g. Gallery + Lightbox (M5)
  *    5h. RSVP Form (M6)
+ *    5i. Wishes Wall (M8)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -702,6 +703,145 @@ function initRsvpForm() {
 }
 
 /* ----------------------------------------------------------------------------
+   5i. WISHES WALL (M8)
+   Bức tường lời chúc: seedWishes (config) luôn hiển thị, cộng thêm lời chúc
+   đã gửi trên máy này (localStorage) hoặc từ xa (wishes.fetchEndpoint nếu
+   đã cấu hình Firebase/Google Sheets). Gửi lời chúc mới dùng cùng kiểu
+   "submitEndpoint" như RSVP (POST JSON, mode "no-cors").
+---------------------------------------------------------------------------- */
+const WISHES_LOCAL_STORAGE_KEY = "wedding-wishes-local";
+
+function loadLocalWishes() {
+  try {
+    return JSON.parse(localStorage.getItem(WISHES_LOCAL_STORAGE_KEY) || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveLocalWishes(list) {
+  localStorage.setItem(WISHES_LOCAL_STORAGE_KEY, JSON.stringify(list));
+}
+
+function buildWishCard(wish, index) {
+  const card = document.createElement("article");
+  card.className = "wish-card reveal";
+  card.style.transitionDelay = `${Math.min(index % 6, 5) * 0.06}s`;
+
+  const nameEl = document.createElement("p");
+  nameEl.className = "wish-card__name";
+  nameEl.textContent = wish.name || "Ẩn danh";
+
+  const messageEl = document.createElement("p");
+  messageEl.className = "wish-card__message";
+  messageEl.textContent = wish.message || "";
+
+  card.append(nameEl, messageEl);
+  return card;
+}
+
+function renderWishes(listEl, wishes) {
+  listEl.innerHTML = "";
+  wishes.forEach((wish, index) => {
+    const card = buildWishCard(wish, index);
+    listEl.appendChild(card);
+    observeReveal(card);
+  });
+}
+
+async function fetchRemoteWishes(endpoint) {
+  const response = await fetch(endpoint);
+  if (!response.ok) throw new Error("Network response was not ok");
+  const data = await response.json();
+  return Array.isArray(data) ? data : [];
+}
+
+function showWishStatus(statusEl, message, type) {
+  statusEl.textContent = message;
+  statusEl.hidden = false;
+  statusEl.classList.remove("wish-form__status--success", "wish-form__status--error");
+  statusEl.classList.add(`wish-form__status--${type}`);
+}
+
+async function initWishesWall() {
+  const { wishes } = WEDDING_CONFIG;
+  const form = document.getElementById("wishForm");
+  const listEl = document.getElementById("wishesList");
+  if (!form || !listEl) return;
+
+  const titleEl = document.getElementById("wishesTitle");
+  const subtitleEl = document.getElementById("wishesSubtitle");
+  const submitLabelEl = document.getElementById("wishSubmitLabel");
+  const statusEl = document.getElementById("wishStatus");
+  const submitBtn = document.getElementById("wishSubmitBtn");
+
+  if (titleEl && wishes?.title) titleEl.textContent = wishes.title;
+  if (subtitleEl && wishes?.subtitle) subtitleEl.textContent = wishes.subtitle;
+  if (submitLabelEl && wishes?.submitLabel) submitLabelEl.textContent = wishes.submitLabel;
+
+  const seedWishes = Array.isArray(wishes?.seedWishes) ? wishes.seedWishes : [];
+  let allWishes = [...loadLocalWishes(), ...seedWishes];
+
+  if (wishes?.fetchEndpoint) {
+    try {
+      const remoteWishes = await fetchRemoteWishes(wishes.fetchEndpoint);
+      allWishes = [...remoteWishes, ...seedWishes];
+    } catch (error) {
+      // Không tải được lời chúc từ xa: vẫn hiển thị lời chúc mẫu + local
+    }
+  }
+
+  renderWishes(listEl, allWishes);
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    const newWish = {
+      name: (formData.get("name") || "").toString().trim(),
+      message: (formData.get("message") || "").toString().trim(),
+      submittedAt: new Date().toISOString(),
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add("is-loading");
+    statusEl.hidden = true;
+
+    try {
+      if (wishes?.submitEndpoint) {
+        await fetch(wishes.submitEndpoint, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newWish),
+        });
+      } else {
+        const localWishes = loadLocalWishes();
+        localWishes.unshift(newWish);
+        saveLocalWishes(localWishes);
+      }
+
+      const card = buildWishCard(newWish, 0);
+      listEl.prepend(card);
+      observeReveal(card);
+
+      form.reset();
+      showWishStatus(statusEl, wishes?.successMessage || "Cảm ơn lời chúc của bạn!", "success");
+    } catch (error) {
+      showWishStatus(statusEl, wishes?.errorMessage || "Không gửi được lời chúc, vui lòng thử lại.", "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("is-loading");
+    }
+  });
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -719,10 +859,10 @@ function initApp() {
   initEventsSection();
   initGallery();
   initRsvpForm();
+  initWishesWall();
   initScrollReveal();
 
   // TODO (M7): initGiftSection();
-  // TODO (M8): initWishesWall();
   // TODO (M9): initFooter(); initMusicPlayer(); initFallingFlowers();
 }
 

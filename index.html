@@ -251,7 +251,34 @@
     </section>
 
     <!-- TODO (M7): Mừng cưới -->
-    <!-- TODO (M8): Lời chúc -->
+
+    <!-- ==========================================================
+         M8 — LỜI CHÚC (form gửi + bức tường hiển thị, mới nhất lên đầu)
+         Xem config.wishes để cấu hình nội dung + endpoint kết nối
+         Firebase/Google Sheets. Nếu chưa cấu hình, script.js lưu/đọc
+         lời chúc từ localStorage của trình duyệt.
+    =========================================================== -->
+    <section id="wishes" class="wishes-section">
+      <div class="container">
+        <div class="wishes-section__heading reveal">
+          <span class="section-eyebrow">Lời chúc</span>
+          <h2 id="wishesTitle">Lời chúc</h2>
+          <p class="wishes-section__subtitle" id="wishesSubtitle"></p>
+        </div>
+
+        <form id="wishForm" class="wish-form reveal">
+          <input type="text" name="name" id="wishName" placeholder="Tên của bạn" maxlength="60" required />
+          <textarea name="message" id="wishMessage" rows="3" placeholder="Viết lời chúc..." maxlength="300" required></textarea>
+          <button type="submit" class="wish-form__submit" id="wishSubmitBtn">
+            <span id="wishSubmitLabel">Gửi lời chúc</span>
+          </button>
+          <p class="wish-form__status" id="wishStatus" role="status" aria-live="polite" hidden></p>
+        </form>
+
+        <div class="wishes-list" id="wishesList" aria-live="polite"></div>
+      </div>
+    </section>
+
     <!-- TODO (M9): Footer + Nhạc nền + Hoa rơi -->
   </main>
 
