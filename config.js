@@ -26,16 +26,16 @@ const WEDDING_CONFIG = {
   couple: {
     groomName: "Chú Rể",
     brideName: "Cô Dâu",
-    groomFullName: "Nguyễn Văn A",
-    brideFullName: "Trần Thị B",
+    groomFullName: "Lê Trung Kiên",
+    brideFullName: "Nguyễn Minh Anh",
   },
 
   // --- Ngày giờ cưới (dùng ISO 8601, có timezone +07:00 cho Việt Nam) ---
   wedding: {
     // Countdown (M2) sẽ đếm ngược tới thời điểm này
-    dateISO: "2026-12-12T10:00:00+07:00",
+    dateISO: "2026-09-20T10:00:00+07:00",
     // Chuỗi hiển thị thân thiện trên Welcome Screen
-    displayDate: "12 . 12 . 2026",
+    displayDate: "20 . 09 . 2026",
   },
 
   // --- Welcome Screen (bìa thiệp) ---
