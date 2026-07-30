@@ -17,6 +17,7 @@
    14. Gallery / Masonry (M5)
    15. Lightbox (M5)
    16. RSVP Form (M6)
+   16b. Gift / Mừng cưới (M7)
    17. Wishes Wall (M8)
    18. Falling Flowers (M9)
    19. Music Toggle (M9)
@@ -1173,6 +1174,148 @@ body.lightbox-open {
 
 :root[data-theme="dark"] .rsvp-form__status--success {
   color: var(--color-sage-green);
+}
+
+/* ----------------------------------------------------------------------------
+   16b. GIFT / MỪNG CƯỚI (M7) — QR ngân hàng + số tài khoản + nút sao chép
+---------------------------------------------------------------------------- */
+.gift-section {
+  padding: var(--space-xl) 0;
+}
+
+.gift-section__heading {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-lg);
+}
+
+.gift-section__subtitle {
+  margin-top: var(--space-xs);
+  color: var(--text-muted);
+}
+
+.gift-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .gift-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6em;
+  text-align: center;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--transition-smooth), transform var(--transition-fast);
+}
+
+.gift-card:hover {
+  transform: translateY(-4px);
+}
+
+.gift-card__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  background-color: rgba(183, 110, 121, 0.12);
+  padding: 0.35em 0.85em;
+  border-radius: 999px;
+}
+
+.gift-card__qr {
+  position: relative;
+  width: 168px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.gift-card__qr img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gift-card__qr-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  color: var(--accent-secondary);
+  background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
+}
+
+.gift-card__qr.is-fallback img {
+  display: none;
+}
+
+.gift-card__qr.is-fallback .gift-card__qr-fallback {
+  display: flex;
+}
+
+.gift-card__bank {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  margin-top: 0.2em;
+}
+
+.gift-card__holder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+}
+
+.gift-card__account-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.2em;
+  padding: 0.5em 0.9em;
+  border-radius: 999px;
+  background-color: var(--bg-primary);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+}
+
+.gift-card__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--accent-secondary);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.gift-card__copy-btn:hover {
+  background-color: rgba(183, 110, 121, 0.15);
+}
+
+.gift-card__copy-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.gift-card__copy-btn.is-copied {
+  color: var(--accent-tertiary);
 }
 
 /* ----------------------------------------------------------------------------

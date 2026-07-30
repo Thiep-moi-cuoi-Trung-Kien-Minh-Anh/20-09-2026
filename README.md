@@ -14,13 +14,13 @@ Dự án được xây dựng theo từng module (iterative). Đã hoàn thành:
 - **M4 — Thông tin lễ cưới**: Lễ nhà trai / Lễ nhà gái / Tiệc cưới, kèm bản đồ + chỉ đường.
 - **M5 — Album ảnh**: Masonry gallery + Lightbox.
 - **M6 — RSVP**: form xác nhận tham dự, sẵn sàng kết nối Google Sheets.
+- **M7 — Mừng cưới**: QR ngân hàng, số tài khoản, chủ tài khoản, nút sao chép.
 - **M8 — Lời chúc**: form gửi lời chúc + bức tường hiển thị, sẵn sàng kết nối Firebase/Google Sheets.
 - **M9 — Footer + Nhạc nền + Hoa rơi + Parallax nhẹ**: hoàn thiện các hiệu ứng toàn cục.
 - **M10 — SEO cơ bản + tài liệu hướng dẫn** (file này).
 
-Còn thiếu (tạm bỏ qua theo yêu cầu, xem mục "Cải tiến trong tương lai"):
-
-- **M7 — Mừng cưới**: QR ngân hàng, số tài khoản, chủ tài khoản, nút sao chép.
+Toàn bộ 10 module trong kế hoạch ban đầu đã hoàn thành. Xem mục "Đề xuất cải tiến
+trong tương lai" bên dưới cho các hướng phát triển tiếp theo.
 
 ## Cấu trúc thư mục
 
@@ -59,6 +59,7 @@ thay đổi nội dung thông thường.
 | `events`                | Danh sách địa điểm (Lễ nhà trai/gái, Tiệc cưới) — chỉ cần địa chỉ text thường |
 | `gallery`                | Danh sách ảnh trong Album                                                   |
 | `rsvp`                   | Nội dung form RSVP + endpoint kết nối Google Sheets (tuỳ chọn)               |
+| `gift`                   | Danh sách tài khoản ngân hàng (ảnh QR, số TK, chủ TK) cho mục Mừng cưới      |
 | `wishes`                 | Lời chúc mẫu + endpoint kết nối Firebase/Google Sheets (tuỳ chọn)            |
 | `music`                  | Đường dẫn nhạc nền, âm lượng, có tự phát khi mở thiệp hay không              |
 | `footer`                 | Câu cảm ơn ở footer (tên + năm tự lấy lại từ `couple`/`wedding`)             |
@@ -180,8 +181,6 @@ Xem tài liệu [Firebase REST API](https://firebase.google.com/docs/database/re
 
 ## Đề xuất cải tiến trong tương lai
 
-- **M7 — Mừng cưới**: hoàn thiện mục QR ngân hàng + số tài khoản + nút sao chép (đã có
-  pattern sẵn từ các module khác để triển khai nhanh).
 - **Tối ưu ảnh**: nén/convert ảnh thật sang WebP/AVIF trước khi thêm vào `assets/images/`
   để tải nhanh hơn nữa trên mạng di động.
 - **PWA**: thêm `manifest.json` + service worker để khách có thể "Thêm vào màn hình chính"

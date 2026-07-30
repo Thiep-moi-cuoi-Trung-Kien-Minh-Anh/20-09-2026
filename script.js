@@ -19,6 +19,7 @@
  *    5f. Events / Wedding Info (M4)
  *    5g. Gallery + Lightbox (M5)
  *    5h. RSVP Form (M6)
+ *    5h2. Gift / Mừng cưới (M7)
  *    5i. Wishes Wall (M8)
  *    5j. Falling Flowers (M9)
  *    5k. Music Toggle (M9)
@@ -798,6 +799,126 @@ function initRsvpForm() {
 }
 
 /* ----------------------------------------------------------------------------
+   5h2. GIFT / MỪNG CƯỚI (M7)
+   Sinh card QR + số tài khoản từ config.gift.accounts. Nút sao chép dùng
+   Clipboard API hiện đại, tự fallback sang document.execCommand("copy")
+   cho trình duyệt cũ hơn không hỗ trợ navigator.clipboard.
+---------------------------------------------------------------------------- */
+const GIFT_COPY_ICONS = {
+  copy:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" /></svg>',
+  check:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>',
+};
+
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  // Fallback cho trình duyệt cũ/không có Clipboard API (vd. Safari cũ, http
+  // không phải https): tạo 1 textarea ẩn, chọn nội dung rồi gọi lệnh copy.
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  const succeeded = document.execCommand("copy");
+  document.body.removeChild(textarea);
+  if (!succeeded) throw new Error("execCommand copy failed");
+}
+
+function buildGiftCard(account, gift, index) {
+  const card = document.createElement("article");
+  card.className = "gift-card reveal";
+  card.style.transitionDelay = `${Math.min(index, 4) * 0.12}s`;
+
+  const label = document.createElement("span");
+  label.className = "gift-card__label";
+  label.textContent = account.label || "";
+
+  const qrWrap = document.createElement("div");
+  qrWrap.className = "gift-card__qr";
+
+  const qrFallback = document.createElement("span");
+  qrFallback.className = "gift-card__qr-fallback";
+  qrFallback.setAttribute("aria-hidden", "true");
+  qrFallback.textContent = "▦";
+
+  if (account.qrImage) {
+    const qrImg = document.createElement("img");
+    qrImg.loading = "lazy";
+    qrImg.alt = `Mã QR chuyển khoản ${account.label || account.bankName || ""}`;
+    qrImg.addEventListener("error", () => qrWrap.classList.add("is-fallback"), { once: true });
+    qrImg.src = account.qrImage;
+    qrWrap.append(qrImg, qrFallback);
+  } else {
+    qrWrap.classList.add("is-fallback");
+    qrWrap.appendChild(qrFallback);
+  }
+
+  const bankName = document.createElement("p");
+  bankName.className = "gift-card__bank";
+  bankName.textContent = account.bankName || "";
+
+  const holder = document.createElement("p");
+  holder.className = "gift-card__holder";
+  holder.textContent = account.accountHolder || "";
+
+  const accountRow = document.createElement("div");
+  accountRow.className = "gift-card__account-row";
+
+  const accountNumberEl = document.createElement("span");
+  accountNumberEl.textContent = account.accountNumber || "";
+
+  const copyBtn = document.createElement("button");
+  copyBtn.type = "button";
+  copyBtn.className = "gift-card__copy-btn";
+  copyBtn.setAttribute("aria-label", gift?.copyButtonLabel || "Sao chép số tài khoản");
+  copyBtn.innerHTML = GIFT_COPY_ICONS.copy;
+
+  let copyResetTimer = null;
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await copyTextToClipboard(account.accountNumber || "");
+      copyBtn.innerHTML = GIFT_COPY_ICONS.check;
+      copyBtn.classList.add("is-copied");
+      copyBtn.setAttribute("aria-label", gift?.copiedLabel || "Đã sao chép!");
+    } catch (error) {
+      copyBtn.setAttribute("aria-label", gift?.copyErrorLabel || "Không sao chép được");
+    } finally {
+      clearTimeout(copyResetTimer);
+      copyResetTimer = setTimeout(() => {
+        copyBtn.innerHTML = GIFT_COPY_ICONS.copy;
+        copyBtn.classList.remove("is-copied");
+        copyBtn.setAttribute("aria-label", gift?.copyButtonLabel || "Sao chép số tài khoản");
+      }, 2000);
+    }
+  });
+
+  accountRow.append(accountNumberEl, copyBtn);
+  card.append(label, qrWrap, bankName, holder, accountRow);
+  return card;
+}
+
+function initGiftSection() {
+  const { gift } = WEDDING_CONFIG;
+  const gridEl = document.getElementById("giftGrid");
+  const titleEl = document.getElementById("giftTitle");
+  const subtitleEl = document.getElementById("giftSubtitle");
+
+  if (titleEl && gift?.title) titleEl.textContent = gift.title;
+  if (subtitleEl && gift?.subtitle) subtitleEl.textContent = gift.subtitle;
+  if (!gridEl || !Array.isArray(gift?.accounts) || !gift.accounts.length) return;
+
+  gridEl.innerHTML = "";
+  gift.accounts.forEach((account, index) => gridEl.appendChild(buildGiftCard(account, gift, index)));
+}
+
+/* ----------------------------------------------------------------------------
    5i. WISHES WALL (M8)
    Bức tường lời chúc: seedWishes (config) luôn hiển thị, cộng thêm lời chúc
    đã gửi trên máy này (localStorage) hoặc từ xa (wishes.fetchEndpoint nếu
@@ -1066,13 +1187,12 @@ function initApp() {
   initEventsSection();
   initGallery();
   initRsvpForm();
+  initGiftSection();
   initWishesWall();
   initFallingFlowers();
   initMusicPlayer();
   initFooter();
   initScrollReveal();
-
-  // TODO (M7): initGiftSection();
 }
 
 document.addEventListener("DOMContentLoaded", initApp);

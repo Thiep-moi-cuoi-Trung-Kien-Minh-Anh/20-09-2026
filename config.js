@@ -3,10 +3,8 @@
  *  CẤU HÌNH WEBSITE THIỆP CƯỚI — SỬA NỘI DUNG Ở ĐÂY, KHÔNG CẦN ĐỘNG VÀO CODE
  * ============================================================================
  *  File này là nguồn dữ liệu DUY NHẤT cho toàn bộ website: tên cô dâu chú rể,
- *  ngày cưới, màu sắc, ảnh, địa điểm, QR chuyển khoản...
- *  Các mục (giới thiệu, timeline, lễ cưới, album, RSVP, mừng cưới, lời chúc)
- *  sẽ được bổ sung dần vào object bên dưới khi từng module tương ứng
- *  được triển khai (M2 - M9). Ở bước hiện tại (M0) chỉ có các mục nền tảng.
+ *  ngày cưới, màu sắc, ảnh, địa điểm, QR chuyển khoản... Xem bảng tra cứu
+ *  đầy đủ từng mục trong README.md ("Cách chỉnh sửa nội dung").
  * ============================================================================
  */
 
@@ -190,6 +188,36 @@ const WEDDING_CONFIG = {
     submitEndpoint: "",
   },
 
+  // --- Mừng cưới (QR ngân hàng + số tài khoản + nút sao chép) ---
+  // Thêm/bớt tài khoản bằng cách chỉnh mảng "accounts" — thường là 1 tài
+  // khoản nhà trai + 1 tài khoản nhà gái, nhưng có thể để 1 hoặc nhiều hơn.
+  // Đặt ảnh QR vào assets/images/ rồi sửa đường dẫn; để trống "qrImage" hoặc
+  // nếu ảnh lỗi/chưa có, khung sẽ tự hiện placeholder thay vì vỡ layout.
+  gift: {
+    title: "Mừng cưới",
+    subtitle:
+      "Sự hiện diện của bạn là món quà quý giá nhất. Nếu muốn gửi chút tấm lòng mừng cưới, chúng tôi xin trân trọng đón nhận qua:",
+    copyButtonLabel: "Sao chép số tài khoản",
+    copiedLabel: "Đã sao chép số tài khoản!",
+    copyErrorLabel: "Không sao chép được, vui lòng sao chép thủ công.",
+    accounts: [
+      {
+        label: "Chú rể",
+        bankName: "Vietcombank",
+        accountNumber: "0123456789",
+        accountHolder: "NGUYEN VAN A",
+        qrImage: "assets/images/qr-groom.jpg",
+      },
+      {
+        label: "Cô dâu",
+        bankName: "Techcombank",
+        accountNumber: "9876543210",
+        accountHolder: "TRAN THI B",
+        qrImage: "assets/images/qr-bride.jpg",
+      },
+    ],
+  },
+
   // --- Lời chúc (bức tường lời chúc từ khách mời) ---
   wishes: {
     title: "Lời chúc",
@@ -235,9 +263,4 @@ const WEDDING_CONFIG = {
   footer: {
     thanksMessage: "Cảm ơn bạn đã dành thời gian đọc thiệp và đồng hành cùng chúng tôi trong ngày trọng đại này.",
   },
-
-  // ------------------------------------------------------------------------
-  // Các mục dưới đây sẽ được bổ sung ở những module tiếp theo, không xoá:
-  // gift          -> M7 Mừng cưới
-  // ------------------------------------------------------------------------
 };

@@ -289,7 +289,21 @@
       </div>
     </section>
 
-    <!-- TODO (M7): Mừng cưới -->
+    <!-- ==========================================================
+         M7 — MỪNG CƯỚI (QR ngân hàng + số tài khoản + nút sao chép)
+         Danh sách tài khoản sinh từ config.gift.accounts (script.js). Ảnh QR
+         chưa có/lỗi sẽ tự hiện khung placeholder thay vì vỡ layout.
+    =========================================================== -->
+    <section id="gift" class="gift-section">
+      <div class="container">
+        <div class="gift-section__heading reveal">
+          <span class="section-eyebrow">Mừng cưới</span>
+          <h2 id="giftTitle">Mừng cưới</h2>
+          <p class="gift-section__subtitle" id="giftSubtitle"></p>
+        </div>
+        <div class="gift-grid" id="giftGrid"></div>
+      </div>
+    </section>
 
     <!-- ==========================================================
          M8 — LỜI CHÚC (form gửi + bức tường hiển thị, mới nhất lên đầu)
