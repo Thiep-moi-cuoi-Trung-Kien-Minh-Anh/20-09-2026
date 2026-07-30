@@ -22,7 +22,16 @@
 
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="invitation-locked">
+  <!-- Nếu trình duyệt tắt JavaScript, mở khoá cuộn trang ngay lập tức
+       để người dùng vẫn xem được toàn bộ nội dung -->
+  <noscript>
+    <style>
+      body.invitation-locked { overflow: visible !important; height: auto !important; }
+      .welcome-screen { position: relative !important; }
+    </style>
+  </noscript>
+
   <!-- ==========================================================
        LOADING SCREEN — ẩn tự động khi trang tải xong (script.js)
   =========================================================== -->
@@ -57,18 +66,40 @@
        NỘI DUNG CHÍNH — các section sẽ được thêm dần ở M1-M9
   =========================================================== -->
   <main id="mainContent">
-    <!-- TODO (M1): Welcome Screen sẽ thay thế section placeholder dưới đây -->
-    <section class="placeholder-hero">
-      <span class="placeholder-hero__label">M0 · Scaffold đang hoạt động</span>
-      <h1 class="placeholder-hero__names" id="placeholderNames">Chú Rể &amp; Cô Dâu</h1>
-      <p class="placeholder-hero__date font-script" id="placeholderDate">12 . 12 . 2026</p>
-      <div class="placeholder-hero__swatches" aria-hidden="true">
-        <span class="placeholder-hero__swatch" style="background:var(--color-white); border:1px solid var(--border-subtle)"></span>
-        <span class="placeholder-hero__swatch" style="background:var(--color-ivory)"></span>
-        <span class="placeholder-hero__swatch" style="background:var(--color-champagne-gold)"></span>
-        <span class="placeholder-hero__swatch" style="background:var(--color-rose-gold)"></span>
-        <span class="placeholder-hero__swatch" style="background:var(--color-sage-green)"></span>
+    <!-- ==========================================================
+         M1 — WELCOME SCREEN (bìa thiệp)
+         Khoá cuộn trang (body.invitation-locked) cho tới khi bấm
+         "Mở Thiệp". Ảnh nền được cấu hình ở config.js (welcome.backgroundImage);
+         nếu chưa có ảnh, nền sẽ tự dùng gradient thay thế (xem script.js).
+    =========================================================== -->
+    <section id="welcome" class="welcome-screen" aria-label="Trang bìa thiệp cưới">
+      <div class="welcome-screen__bg" aria-hidden="true"></div>
+      <div class="welcome-screen__photo" aria-hidden="true"></div>
+      <div class="welcome-screen__overlay" aria-hidden="true"></div>
+
+      <div class="welcome-screen__content">
+        <p class="welcome-screen__eyebrow" id="welcomeEyebrow">Trân trọng kính mời</p>
+
+        <div class="welcome-screen__ornament" aria-hidden="true">❧</div>
+
+        <h1 class="welcome-screen__names">
+          <span id="welcomeGroomName">Chú Rể</span>
+          <span class="welcome-screen__amp font-script">&amp;</span>
+          <span id="welcomeBrideName">Cô Dâu</span>
+        </h1>
+
+        <p class="welcome-screen__date font-script" id="welcomeDate">12 . 12 . 2026</p>
+
+        <button id="openInvitationBtn" class="open-invitation-btn" type="button">
+          <svg class="open-invitation-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <rect x="2.5" y="5" width="19" height="14" rx="1.5" />
+            <path d="M3 6.5l9 6.5 9-6.5" />
+          </svg>
+          <span id="welcomeOpenLabel">Mở Thiệp</span>
+        </button>
       </div>
+
+      <div class="welcome-screen__scroll-hint" aria-hidden="true">&#8964;</div>
     </section>
 
     <!-- TODO (M2): Giới thiệu + Countdown -->

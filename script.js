@@ -33,7 +33,7 @@ function applyThemeColorsFromConfig() {
 }
 
 function syncSiteMetaFromConfig() {
-  const { site, couple, wedding } = WEDDING_CONFIG;
+  const { site } = WEDDING_CONFIG;
 
   if (site?.title) document.title = site.title;
 
@@ -41,16 +41,82 @@ function syncSiteMetaFromConfig() {
   if (site?.description && descriptionTag) {
     descriptionTag.setAttribute("content", site.description);
   }
+}
 
-  // Placeholder tạm thời của M0 — sẽ bị xoá khi Welcome Screen (M1) thay thế
-  const namesEl = document.getElementById("placeholderNames");
-  if (namesEl && couple) {
-    namesEl.textContent = `${couple.groomName} & ${couple.brideName}`;
+/* ----------------------------------------------------------------------------
+   1b. WELCOME SCREEN (M1)
+   - Điền tên/ngày cưới từ config.
+   - Kiểm tra ảnh nền (welcome.backgroundImage) tải được hay không trước khi
+     áp dụng, để tránh vỡ giao diện khi chưa có ảnh thật.
+   - Xử lý nút "Mở Thiệp": phát hiệu ứng mở, sau đó mở khoá cuộn trang.
+---------------------------------------------------------------------------- */
+function populateWelcomeScreen() {
+  const { couple, wedding, welcome } = WEDDING_CONFIG;
+
+  const groomEl = document.getElementById("welcomeGroomName");
+  const brideEl = document.getElementById("welcomeBrideName");
+  const dateEl = document.getElementById("welcomeDate");
+  const eyebrowEl = document.getElementById("welcomeEyebrow");
+  const openLabelEl = document.getElementById("welcomeOpenLabel");
+
+  if (groomEl && couple?.groomFullName) groomEl.textContent = couple.groomFullName;
+  if (brideEl && couple?.brideFullName) brideEl.textContent = couple.brideFullName;
+  if (dateEl && wedding?.displayDate) dateEl.textContent = wedding.displayDate;
+  if (eyebrowEl && welcome?.greetingLabel) eyebrowEl.textContent = welcome.greetingLabel;
+  if (openLabelEl && welcome?.openButtonLabel) openLabelEl.textContent = welcome.openButtonLabel;
+}
+
+function loadWelcomeBackground() {
+  const welcomeScreen = document.getElementById("welcome");
+  const bgUrl = WEDDING_CONFIG?.welcome?.backgroundImage;
+  if (!welcomeScreen) return;
+
+  if (!bgUrl) {
+    welcomeScreen.classList.add("no-photo");
+    return;
   }
-  const dateEl = document.getElementById("placeholderDate");
-  if (dateEl && wedding?.displayDate) {
-    dateEl.textContent = wedding.displayDate;
+
+  const testImage = new Image();
+  testImage.onload = () => {
+    document.documentElement.style.setProperty("--welcome-bg-image", `url("${bgUrl}")`);
+    welcomeScreen.classList.add("has-photo");
+  };
+  testImage.onerror = () => {
+    welcomeScreen.classList.add("no-photo");
+  };
+  testImage.src = bgUrl;
+}
+
+function openInvitation(welcomeScreen, openButton) {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.body.classList.add("invitation-opening");
+  welcomeScreen.classList.add("is-opening");
+  openButton.classList.add("is-clicked");
+
+  const unlock = () => {
+    document.body.classList.remove("invitation-locked", "invitation-opening");
+    document.body.classList.add("invitation-opened");
+    welcomeScreen.classList.remove("is-opening");
+    welcomeScreen.classList.add("is-open");
+  };
+
+  if (prefersReducedMotion) {
+    unlock();
+  } else {
+    setTimeout(unlock, 900);
   }
+}
+
+function initWelcomeScreen() {
+  const welcomeScreen = document.getElementById("welcome");
+  const openButton = document.getElementById("openInvitationBtn");
+  if (!welcomeScreen || !openButton) return;
+
+  populateWelcomeScreen();
+  loadWelcomeBackground();
+
+  openButton.addEventListener("click", () => openInvitation(welcomeScreen, openButton), { once: true });
 }
 
 /* ----------------------------------------------------------------------------
@@ -161,8 +227,8 @@ function initApp() {
   initThemeToggle();
   initScrollProgressBar();
   initBackToTop();
+  initWelcomeScreen();
 
-  // TODO (M1): initWelcomeScreen();
   // TODO (M2): initAboutSection(); initCountdown();
   // TODO (M3): initTimeline();
   // TODO (M4): initEventsSection();

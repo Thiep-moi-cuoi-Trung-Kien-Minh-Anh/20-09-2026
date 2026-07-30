@@ -33,6 +33,16 @@ const WEDDING_CONFIG = {
     displayDate: "12 . 12 . 2026",
   },
 
+  // --- Welcome Screen (bìa thiệp) ---
+  welcome: {
+    // Đường dẫn ảnh nền toàn màn hình. Đặt file ảnh vào assets/images/ rồi
+    // sửa đường dẫn dưới đây. Để trống "" nếu chưa có ảnh — trang sẽ tự
+    // dùng nền gradient thay thế, vẫn đẹp và không bị vỡ layout.
+    backgroundImage: "assets/images/welcome-bg.jpg",
+    greetingLabel: "Trân trọng kính mời",
+    openButtonLabel: "Mở Thiệp",
+  },
+
   // --- Giao diện: chế độ mặc định + bảng màu (Elegant Luxury Minimalist) ---
   theme: {
     // "light" hoặc "dark" — người dùng vẫn có thể tự đổi bằng nút toggle,

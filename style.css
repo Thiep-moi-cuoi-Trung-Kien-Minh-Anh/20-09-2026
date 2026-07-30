@@ -112,6 +112,12 @@ body {
   overflow-x: hidden;
 }
 
+/* Khoá cuộn trang khi bìa thiệp (Welcome Screen) chưa được mở, xem M1 */
+body.invitation-locked {
+  overflow: hidden;
+  height: 100vh;
+}
+
 img {
   max-width: 100%;
   display: block;
@@ -209,7 +215,16 @@ h1, h2, h3, h4 {
 /* ----------------------------------------------------------------------------
    6. SCROLL PROGRESS BAR
    Thanh mỏng cố định trên cùng, thể hiện % đã cuộn trang.
+   Ẩn khi thiệp còn đang khoá (chưa bấm "Mở Thiệp").
 ---------------------------------------------------------------------------- */
+body.invitation-locked .scroll-progress,
+body.invitation-locked .theme-toggle,
+body.invitation-locked .back-to-top {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -297,48 +312,204 @@ h1, h2, h3, h4 {
 }
 
 /* ----------------------------------------------------------------------------
-   9. TEMPORARY PLACEHOLDER HERO
-   Chỉ tồn tại tạm thời ở M0 để xác nhận font/màu/dark-light hoạt động đúng.
-   Sẽ được thay thế hoàn toàn bởi Welcome Screen thật ở module M1.
+   9. WELCOME SCREEN (M1) — bìa thiệp toàn màn hình + hiệu ứng mở thiệp
 ---------------------------------------------------------------------------- */
-.placeholder-hero {
-  min-height: 100vh;
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.9s var(--transition-smooth), opacity 0.9s var(--transition-smooth);
+}
+
+/* Sau khi mở, bìa thiệp trở thành section bình thường đầu trang (không còn
+   fixed) để người dùng có thể cuộn xuống các mục tiếp theo */
+.welcome-screen.is-open {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Lớp nền gradient mặc định — luôn hiển thị, đóng vai trò "phông" khi
+   chưa có ảnh cưới thật, hoặc lấp ló phía sau ảnh khi có ảnh */
+.welcome-screen__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--accent-tertiary) 0%, var(--bg-primary) 45%, var(--accent-secondary) 100%);
+}
+
+/* Lớp ảnh cưới thật, lấy từ config.welcome.backgroundImage qua CSS var
+   --welcome-bg-image (được set bằng script.js sau khi kiểm tra ảnh tải được).
+   Nếu chưa có ảnh, lớp này để trong suốt và chỉ còn thấy gradient phía sau. */
+.welcome-screen__photo {
+  position: absolute;
+  inset: 0;
+  background-image: var(--welcome-bg-image, none);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.08);
+  transition: opacity 1.2s var(--transition-smooth);
+  animation: welcome-photo-kenburns 22s ease-in-out infinite alternate;
+}
+
+.welcome-screen.has-photo .welcome-screen__photo {
+  opacity: 1;
+}
+
+@keyframes welcome-photo-kenburns {
+  from { transform: scale(1.08) translateY(0); }
+  to { transform: scale(1.16) translateY(-1.5%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-screen__photo {
+    animation: none;
+  }
+}
+
+/* Overlay để chữ luôn đọc được dù nền là ảnh hay gradient */
+.welcome-screen__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.25), rgba(20, 16, 12, 0.4) 65%, rgba(20, 16, 12, 0.55));
+}
+
+.welcome-screen.no-photo .welcome-screen__overlay {
+  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.12), rgba(20, 16, 12, 0.28));
+}
+
+.welcome-screen__content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-}
-
-.placeholder-hero__label {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.placeholder-hero__names {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-}
-
-.placeholder-hero__date {
-  font-family: var(--font-script);
-  font-size: 1.5rem;
-  color: var(--accent-secondary);
-}
-
-.placeholder-hero__swatches {
-  display: flex;
   gap: var(--space-xs);
-  margin-top: var(--space-sm);
+  padding: var(--space-md);
+  color: var(--color-text-light);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
 
-.placeholder-hero__swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  box-shadow: var(--shadow-soft);
+.welcome-screen__eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.welcome-screen__ornament {
+  font-size: 1.75rem;
+  color: var(--color-champagne-gold);
+  margin: var(--space-xs) 0;
+}
+
+.welcome-screen__names {
+  font-size: clamp(2.2rem, 7vw, 4rem);
+  color: var(--color-text-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.welcome-screen__amp {
+  font-size: 0.55em;
+  color: var(--color-champagne-gold);
+}
+
+.welcome-screen__date {
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+/* Nút "Mở Thiệp" */
+.open-invitation-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.9em 1.8em;
+  margin-top: var(--space-sm);
+  border: 1px solid rgba(250, 247, 242, 0.6);
+  border-radius: 999px;
+  background: rgba(250, 247, 242, 0.08);
+  backdrop-filter: blur(4px);
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform var(--transition-fast), background-color var(--transition-fast), opacity 0.5s ease;
+}
+
+.open-invitation-btn__icon {
+  width: 18px;
+  height: 18px;
+}
+
+.open-invitation-btn:hover {
+  background-color: rgba(250, 247, 242, 0.18);
+  transform: translateY(-2px);
+}
+
+.open-invitation-btn.is-clicked {
+  animation: open-btn-pulse 0.5s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes open-btn-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(0.96); opacity: 0; }
+}
+
+/* Gợi ý cuộn xuống — chỉ hiện sau khi đã mở thiệp */
+.welcome-screen__scroll-hint {
+  position: absolute;
+  bottom: var(--space-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  font-size: 1.5rem;
+  color: var(--color-text-light);
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+
+.welcome-screen.is-open .welcome-screen__scroll-hint {
+  opacity: 0.85;
+  animation: scroll-hint-bounce 2s ease-in-out infinite;
+}
+
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* Hiệu ứng "mở thiệp": nội dung loé sáng nhẹ rồi ổn định lại khi bấm nút */
+.welcome-screen.is-opening .welcome-screen__content {
+  animation: invitation-content-settle 0.9s var(--transition-smooth);
+}
+
+@keyframes invitation-content-settle {
+  0% { opacity: 1; transform: scale(1) translateY(0); }
+  45% { opacity: 0.35; transform: scale(1.06) translateY(-14px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-screen,
+  .welcome-screen.is-opening .welcome-screen__content,
+  .open-invitation-btn.is-clicked {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
 }
