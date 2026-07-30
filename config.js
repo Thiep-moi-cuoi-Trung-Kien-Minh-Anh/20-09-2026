@@ -33,7 +33,7 @@ const WEDDING_CONFIG = {
   // --- Ngày giờ cưới (dùng ISO 8601, có timezone +07:00 cho Việt Nam) ---
   wedding: {
     // Countdown (M2) sẽ đếm ngược tới thời điểm này
-    dateISO: "2026-09-20T10:00:00+07:00",
+    dateISO: "2026-09-20T16:00:00+07:00",
     // Chuỗi hiển thị thân thiện trên Welcome Screen
     displayDate: "20 . 09 . 2026",
   },
@@ -98,7 +98,7 @@ const WEDDING_CONFIG = {
         icon: "💍",
       },
       {
-        date: "12.12.2026",
+        date: "20.09.2026",
         title: "Ngày cưới",
         description: "Chúng tôi chính thức về chung một nhà, bắt đầu hành trình mới với thật nhiều yêu thương.",
         icon: "💒",
@@ -130,22 +130,22 @@ const WEDDING_CONFIG = {
     title: "Thông tin lễ cưới",
     items: [
       {
-        label: "Lễ nhà trai",
-        venueName: "Tư gia nhà trai",
-        time: "08:00, Thứ Bảy, 12.12.2026",
-        address: "123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
-      },
-      {
-        label: "Lễ nhà gái",
+        label: "Lễ ăn hỏi",
         venueName: "Tư gia nhà gái",
-        time: "09:30, Thứ Bảy, 12.12.2026",
+        time: "08:00, Thứ Bảy, 12.09.2026",
         address: "456 Đường Lê Lợi, Quận 3, TP. Hồ Chí Minh",
       },
       {
-        label: "Tiệc cưới",
-        venueName: "Trung tâm Tiệc cưới Diamond Place",
-        time: "18:00, Thứ Bảy, 12.12.2026",
+        label: "Lễ cưới nhà gái",
+        venueName: "Hội trường tiệc cưới",
+        time: "17:00, Thứ Sáu, 18.09.2026",
         address: "789 Đường Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh",
+      },
+      {
+        label: "Lễ cưới nhà trai",
+        venueName: "Tư gia nhà trai",
+        time: "16:00, Chủ Nhật, 20.09.2026",
+        address: "123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
       },
     ],
   },
@@ -169,7 +169,7 @@ const WEDDING_CONFIG = {
   // --- RSVP (form xác nhận tham dự) ---
   rsvp: {
     title: "Xác nhận tham dự",
-    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi. Vui lòng xác nhận trước ngày 01.12.2026.",
+    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi. Vui lòng xác nhận trước ngày 01.09.2026.",
     submitLabel: "Gửi xác nhận",
     attendingYesLabel: "Có, tôi sẽ tham dự",
     attendingNoLabel: "Rất tiếc, tôi không thể tham dự",
