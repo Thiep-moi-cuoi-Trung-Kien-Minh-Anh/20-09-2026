@@ -16,6 +16,7 @@
  *    5e. Timeline (M3)
  *    5f. Events / Wedding Info (M4)
  *    5g. Gallery + Lightbox (M5)
+ *    5h. RSVP Form (M6)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -590,6 +591,117 @@ function initGallery() {
 }
 
 /* ----------------------------------------------------------------------------
+   5h. RSVP FORM (M6)
+   Validate bằng constraint validation gốc của trình duyệt (required + report
+   Validity). Khi submit hợp lệ: nếu config.rsvp.submitEndpoint đã được cấu
+   hình (vd. Google Apps Script Web App gắn với Google Sheets), gửi JSON tới
+   đó; nếu chưa, lưu tạm vào localStorage để không mất dữ liệu trong lúc dev.
+---------------------------------------------------------------------------- */
+const RSVP_LOCAL_STORAGE_KEY = "wedding-rsvp-local";
+
+function showRsvpStatus(statusEl, message, type) {
+  statusEl.textContent = message;
+  statusEl.hidden = false;
+  statusEl.classList.remove("rsvp-form__status--success", "rsvp-form__status--error");
+  statusEl.classList.add(`rsvp-form__status--${type}`);
+}
+
+async function submitRsvp(payload, endpoint) {
+  if (endpoint) {
+    // Google Apps Script Web App không trả CORS header nên phải dùng
+    // mode "no-cors" — trình duyệt sẽ không đọc được nội dung response,
+    // ta chỉ có thể biết request đã gửi đi thành công (không bị lỗi mạng).
+    await fetch(endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    return;
+  }
+
+  // Chưa cấu hình rsvp.submitEndpoint: lưu tạm vào localStorage (chỉ để
+  // xem lại lúc phát triển/demo), xem hướng dẫn kết nối Google Sheets
+  // trong comment của config.rsvp.
+  const stored = JSON.parse(localStorage.getItem(RSVP_LOCAL_STORAGE_KEY) || "[]");
+  stored.push(payload);
+  localStorage.setItem(RSVP_LOCAL_STORAGE_KEY, JSON.stringify(stored));
+}
+
+function initRsvpForm() {
+  const { rsvp } = WEDDING_CONFIG;
+  const form = document.getElementById("rsvpForm");
+  if (!form) return;
+
+  const titleEl = document.getElementById("rsvpTitle");
+  const subtitleEl = document.getElementById("rsvpSubtitle");
+  const submitLabelEl = document.getElementById("rsvpSubmitLabel");
+  const attendingYesOption = document.getElementById("rsvpAttendingYesOption");
+  const attendingNoOption = document.getElementById("rsvpAttendingNoOption");
+  const attendingSelect = document.getElementById("rsvpAttending");
+  const guestsField = document.getElementById("rsvpGuests");
+  const guestsWrapper = document.getElementById("rsvpGuestsField");
+  const submitBtn = document.getElementById("rsvpSubmitBtn");
+  const statusEl = document.getElementById("rsvpStatus");
+
+  if (titleEl && rsvp?.title) titleEl.textContent = rsvp.title;
+  if (subtitleEl && rsvp?.subtitle) subtitleEl.textContent = rsvp.subtitle;
+  if (submitLabelEl && rsvp?.submitLabel) submitLabelEl.textContent = rsvp.submitLabel;
+  if (attendingYesOption && rsvp?.attendingYesLabel) attendingYesOption.textContent = rsvp.attendingYesLabel;
+  if (attendingNoOption && rsvp?.attendingNoLabel) attendingNoOption.textContent = rsvp.attendingNoLabel;
+
+  attendingSelect?.addEventListener("change", () => {
+    const notAttending = attendingSelect.value === "no";
+    if (guestsField) {
+      if (notAttending) {
+        guestsField.dataset.prevValue = guestsField.value || "1";
+        guestsField.value = "0";
+      } else {
+        guestsField.value = guestsField.dataset.prevValue || "1";
+      }
+      guestsField.disabled = notAttending;
+    }
+    guestsWrapper?.classList.toggle("is-disabled", notAttending);
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const formData = new FormData(form);
+    const payload = {
+      name: (formData.get("name") || "").toString().trim(),
+      phone: (formData.get("phone") || "").toString().trim(),
+      attending: formData.get("attending"),
+      guests: Number(formData.get("guests")) || 0,
+      message: (formData.get("message") || "").toString().trim(),
+      submittedAt: new Date().toISOString(),
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add("is-loading");
+    statusEl.hidden = true;
+
+    try {
+      await submitRsvp(payload, rsvp?.submitEndpoint);
+      form.reset();
+      if (guestsField) guestsField.value = "1";
+      guestsWrapper?.classList.remove("is-disabled");
+      showRsvpStatus(statusEl, rsvp?.successMessage || "Cảm ơn bạn đã xác nhận!", "success");
+    } catch (error) {
+      showRsvpStatus(statusEl, rsvp?.errorMessage || "Có lỗi xảy ra, vui lòng thử lại sau.", "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("is-loading");
+    }
+  });
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -606,9 +718,9 @@ function initApp() {
   initTimeline();
   initEventsSection();
   initGallery();
+  initRsvpForm();
   initScrollReveal();
 
-  // TODO (M6): initRsvpForm();
   // TODO (M7): initGiftSection();
   // TODO (M8): initWishesWall();
   // TODO (M9): initFooter(); initMusicPlayer(); initFallingFlowers();

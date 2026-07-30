@@ -195,7 +195,61 @@
       </div>
     </section>
 
-    <!-- TODO (M6): RSVP -->
+    <!-- ==========================================================
+         M6 — RSVP (form xác nhận tham dự)
+         Xem config.rsvp để cấu hình nội dung + endpoint kết nối Google
+         Sheets (qua Google Apps Script Web App). Nếu chưa cấu hình,
+         script.js sẽ lưu tạm phản hồi vào localStorage của trình duyệt.
+    =========================================================== -->
+    <section id="rsvp" class="rsvp-section">
+      <div class="container">
+        <div class="rsvp-section__heading reveal">
+          <span class="section-eyebrow">RSVP</span>
+          <h2 id="rsvpTitle">Xác nhận tham dự</h2>
+          <p class="rsvp-section__subtitle" id="rsvpSubtitle"></p>
+        </div>
+
+        <form id="rsvpForm" class="rsvp-form reveal">
+          <div class="rsvp-form__row">
+            <label class="rsvp-form__field">
+              <span>Họ và tên <em>*</em></span>
+              <input type="text" name="name" id="rsvpName" autocomplete="name" required />
+            </label>
+            <label class="rsvp-form__field">
+              <span>Số điện thoại <em>*</em></span>
+              <input type="tel" name="phone" id="rsvpPhone" autocomplete="tel" required />
+            </label>
+          </div>
+
+          <div class="rsvp-form__row">
+            <label class="rsvp-form__field">
+              <span>Bạn có tham dự không? <em>*</em></span>
+              <select name="attending" id="rsvpAttending" required>
+                <option value="" disabled selected>-- Chọn --</option>
+                <option value="yes" id="rsvpAttendingYesOption">Có, tôi sẽ tham dự</option>
+                <option value="no" id="rsvpAttendingNoOption">Rất tiếc, tôi không thể tham dự</option>
+              </select>
+            </label>
+            <label class="rsvp-form__field" id="rsvpGuestsField">
+              <span>Số lượng khách</span>
+              <input type="number" name="guests" id="rsvpGuests" min="1" max="10" value="1" />
+            </label>
+          </div>
+
+          <label class="rsvp-form__field">
+            <span>Lời chúc gửi đến cô dâu chú rể</span>
+            <textarea name="message" id="rsvpMessage" rows="4" maxlength="500"></textarea>
+          </label>
+
+          <button type="submit" class="rsvp-form__submit" id="rsvpSubmitBtn">
+            <span id="rsvpSubmitLabel">Gửi xác nhận</span>
+          </button>
+
+          <p class="rsvp-form__status" id="rsvpStatus" role="status" aria-live="polite" hidden></p>
+        </form>
+      </div>
+    </section>
+
     <!-- TODO (M7): Mừng cưới -->
     <!-- TODO (M8): Lời chúc -->
     <!-- TODO (M9): Footer + Nhạc nền + Hoa rơi -->

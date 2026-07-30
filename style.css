@@ -16,6 +16,7 @@
    13. Events / Wedding Info (M4)
    14. Gallery / Masonry (M5)
    15. Lightbox (M5)
+   16. RSVP Form (M6)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -1036,4 +1037,134 @@ body.lightbox-open {
   color: rgba(255, 255, 255, 0.85);
   font-size: 0.85rem;
   letter-spacing: 0.05em;
+}
+
+/* ----------------------------------------------------------------------------
+   16. RSVP FORM (M6)
+---------------------------------------------------------------------------- */
+.rsvp-section {
+  padding: var(--space-xl) 0;
+  background-color: var(--bg-surface);
+  transition: background-color var(--transition-smooth);
+}
+
+.rsvp-section__heading {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-lg);
+}
+
+.rsvp-section__subtitle {
+  margin-top: var(--space-xs);
+  color: var(--text-muted);
+}
+
+.rsvp-form {
+  max-width: 720px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.rsvp-form__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 600px) {
+  .rsvp-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.rsvp-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.rsvp-form__field span {
+  font-weight: 500;
+}
+
+.rsvp-form__field em {
+  color: var(--accent-secondary);
+  font-style: normal;
+}
+
+.rsvp-form__field input,
+.rsvp-form__field select,
+.rsvp-form__field textarea {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.8em 1em;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), background-color var(--transition-smooth);
+}
+
+.rsvp-form__field input:focus,
+.rsvp-form__field select:focus,
+.rsvp-form__field textarea:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+}
+
+.rsvp-form__field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.rsvp-form__field.is-disabled {
+  opacity: 0.5;
+}
+
+.rsvp-form__submit {
+  align-self: center;
+  padding: 0.9em 2.6em;
+  border-radius: 999px;
+  background-color: var(--accent-secondary);
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.rsvp-form__submit:hover {
+  transform: translateY(-2px);
+}
+
+.rsvp-form__submit.is-loading,
+.rsvp-form__submit:disabled {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.rsvp-form__status {
+  text-align: center;
+  padding: 0.85em 1em;
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+}
+
+.rsvp-form__status--success {
+  background-color: rgba(156, 175, 136, 0.2);
+  color: #4f6b3d;
+}
+
+.rsvp-form__status--error {
+  background-color: rgba(183, 110, 121, 0.15);
+  color: var(--accent-secondary);
+}
+
+:root[data-theme="dark"] .rsvp-form__status--success {
+  color: var(--color-sage-green);
 }

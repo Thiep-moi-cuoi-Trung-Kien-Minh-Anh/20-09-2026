@@ -161,9 +161,30 @@ const WEDDING_CONFIG = {
     ],
   },
 
+  // --- RSVP (form xác nhận tham dự) ---
+  rsvp: {
+    title: "Xác nhận tham dự",
+    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi. Vui lòng xác nhận trước ngày 01.12.2026.",
+    submitLabel: "Gửi xác nhận",
+    attendingYesLabel: "Có, tôi sẽ tham dự",
+    attendingNoLabel: "Rất tiếc, tôi không thể tham dự",
+    successMessage: "Cảm ơn bạn đã xác nhận! Hẹn gặp bạn trong ngày trọng đại của chúng tôi.",
+    errorMessage: "Rất tiếc, đã có lỗi xảy ra khi gửi. Vui lòng thử lại hoặc liên hệ trực tiếp với chúng tôi.",
+
+    // ĐỂ KẾT NỐI RSVP VỚI GOOGLE SHEETS (không cần server riêng):
+    // 1. Tạo 1 Google Sheet mới, vào menu Extensions > Apps Script.
+    // 2. Dán đoạn code mẫu (xem README.md) để nhận JSON và ghi thành 1
+    //    dòng mới vào Sheet.
+    // 3. Deploy > New deployment > chọn "Web app", Execute as: Me,
+    //    Who has access: Anyone, rồi bấm Deploy để lấy URL.
+    // 4. Dán URL đó vào "submitEndpoint" bên dưới.
+    // Để trống "" nếu chưa cấu hình — form vẫn hoạt động, chỉ lưu tạm
+    // dữ liệu vào localStorage của trình duyệt (xem hàm submitRsvp trong script.js).
+    submitEndpoint: "",
+  },
+
   // ------------------------------------------------------------------------
   // Các mục dưới đây sẽ được bổ sung ở những module tiếp theo, không xoá:
-  // rsvp          -> M6 RSVP
   // gift          -> M7 Mừng cưới
   // wishes        -> M8 Lời chúc
   // music         -> M9 Nhạc nền
