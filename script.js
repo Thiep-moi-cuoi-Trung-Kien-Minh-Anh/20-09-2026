@@ -6,6 +6,7 @@
  *  initApp() ở cuối file, KHÔNG động vào các hàm global infra bên dưới):
  *    1. Đồng bộ nội dung từ config.js
  *    1b. Welcome Screen (M1)
+ *    1c. Parallax nhẹ cho ảnh nền Welcome Screen (M9)
  *    2. Loading Screen
  *    3. Dark / Light Mode
  *    4. Scroll Progress Bar
@@ -18,6 +19,9 @@
  *    5g. Gallery + Lightbox (M5)
  *    5h. RSVP Form (M6)
  *    5i. Wishes Wall (M8)
+ *    5j. Falling Flowers (M9)
+ *    5k. Music Toggle (M9)
+ *    5l. Footer (M9)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -108,6 +112,9 @@ function openInvitation(welcomeScreen, openButton) {
     document.body.classList.add("invitation-opened");
     welcomeScreen.classList.remove("is-opening");
     welcomeScreen.classList.add("is-open");
+    // Cho các module khác (vd. M9 Nhạc nền) biết thiệp đã mở, để có thể
+    // thử tự phát nhạc ngay trong cùng cử chỉ click của người dùng.
+    document.dispatchEvent(new CustomEvent("invitation:opened"));
   };
 
   if (prefersReducedMotion) {
@@ -126,6 +133,34 @@ function initWelcomeScreen() {
   loadWelcomeBackground();
 
   openButton.addEventListener("click", () => openInvitation(welcomeScreen, openButton), { once: true });
+}
+
+/* ----------------------------------------------------------------------------
+   1c. PARALLAX NHẸ (M9)
+   Ảnh nền Welcome Screen dịch chuyển nhẹ theo scroll (chậm hơn nội dung),
+   dùng background-position-y (không đụng tới "transform" — thuộc tính đó
+   đã bị animation kenburns ở trên chiếm giữ, set qua đó sẽ vô tác dụng).
+   Bỏ qua hoàn toàn nếu prefers-reduced-motion.
+---------------------------------------------------------------------------- */
+function initParallax() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const welcomeScreen = document.getElementById("welcome");
+  const photoLayer = document.querySelector(".welcome-screen__photo");
+  if (!welcomeScreen || !photoLayer) return;
+
+  const MAX_OFFSET_PX = 40;
+  const SPEED = 0.15;
+
+  const applyParallax = () => {
+    const rect = welcomeScreen.getBoundingClientRect();
+    const offset = Math.max(-MAX_OFFSET_PX, Math.min(MAX_OFFSET_PX, rect.top * -SPEED));
+    photoLayer.style.backgroundPositionY = `calc(50% + ${offset}px)`;
+  };
+
+  window.addEventListener("scroll", applyParallax, { passive: true });
+  window.addEventListener("resize", applyParallax);
+  applyParallax();
 }
 
 /* ----------------------------------------------------------------------------
@@ -842,6 +877,116 @@ async function initWishesWall() {
 }
 
 /* ----------------------------------------------------------------------------
+   5j. FALLING FLOWERS (M9)
+   Hiệu ứng hoa rơi trang trí nhẹ: sinh vài phần tử span rơi từ trên xuống
+   bằng CSS animation (2 animation riêng cho rơi + đung đưa, không đụng
+   property nhau nên chạy song song không xung đột). Bỏ qua hoàn toàn nếu
+   prefers-reduced-motion, hoặc nếu effects.fallingFlowers.enabled === false.
+---------------------------------------------------------------------------- */
+const DEFAULT_FLOWER_GLYPHS = ["❀", "✿", "🌸"];
+
+function initFallingFlowers() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const container = document.getElementById("fallingFlowers");
+  if (!container) return;
+
+  const effectConfig = WEDDING_CONFIG?.effects?.fallingFlowers;
+  if (effectConfig?.enabled === false) return;
+
+  const count = effectConfig?.count ?? 14;
+  const glyphs = Array.isArray(effectConfig?.glyphs) && effectConfig.glyphs.length
+    ? effectConfig.glyphs
+    : DEFAULT_FLOWER_GLYPHS;
+
+  for (let i = 0; i < count; i += 1) {
+    const petal = document.createElement("span");
+    petal.className = "falling-flowers__petal";
+    petal.setAttribute("aria-hidden", "true");
+    petal.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+
+    const leftPercent = Math.random() * 100;
+    const fallDuration = 10 + Math.random() * 10;
+    const swayDuration = fallDuration * 0.6;
+    const delay = Math.random() * -20;
+    const size = 12 + Math.random() * 10;
+    const drift = Math.round(Math.random() * 60 - 30);
+
+    petal.style.left = `${leftPercent}%`;
+    petal.style.fontSize = `${size}px`;
+    petal.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+    petal.style.animationDelay = `${delay}s, ${delay}s`;
+    petal.style.setProperty("--drift", `${drift}px`);
+
+    container.appendChild(petal);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   5k. MUSIC TOGGLE (M9)
+   Nút bật/tắt nhạc nền. Thử tự phát ngay khi nhận sự kiện "invitation:opened"
+   (bắn ra từ openInvitation() ở mục 1b) — vì đó vẫn nằm trong cùng một cử
+   chỉ click của người dùng nên trình duyệt thường cho phép phát có âm
+   thanh; nếu bị chặn, khách vẫn có thể tự bấm nút để bật thủ công.
+---------------------------------------------------------------------------- */
+function initMusicPlayer() {
+  const { music } = WEDDING_CONFIG;
+  const audio = document.getElementById("bgMusic");
+  const button = document.getElementById("musicToggle");
+  if (!audio || !button) return;
+
+  if (!music?.src) {
+    button.hidden = true;
+    return;
+  }
+
+  audio.src = music.src;
+  audio.volume = typeof music.volume === "number" ? music.volume : 0.5;
+
+  const setPlayingState = (isPlaying) => {
+    button.classList.toggle("is-playing", isPlaying);
+    button.setAttribute("aria-pressed", String(isPlaying));
+    button.setAttribute("aria-label", isPlaying ? "Tắt nhạc nền" : "Bật nhạc nền");
+  };
+
+  const tryPlay = () => audio.play().then(() => setPlayingState(true)).catch(() => setPlayingState(false));
+
+  button.addEventListener("click", () => {
+    if (audio.paused) {
+      tryPlay();
+    } else {
+      audio.pause();
+      setPlayingState(false);
+    }
+  });
+
+  if (music.autoplayOnOpen !== false) {
+    document.addEventListener("invitation:opened", tryPlay, { once: true });
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   5l. FOOTER (M9)
+   Tên CD-CR và năm tổ chức lấy lại từ config.couple / config.wedding.dateISO
+   (không khai báo trùng dữ liệu ở config.footer).
+---------------------------------------------------------------------------- */
+function initFooter() {
+  const { footer, couple, wedding } = WEDDING_CONFIG;
+
+  const thanksEl = document.getElementById("footerThanks");
+  const namesEl = document.getElementById("footerNames");
+  const yearEl = document.getElementById("footerYear");
+
+  if (thanksEl && footer?.thanksMessage) thanksEl.textContent = footer.thanksMessage;
+  if (namesEl && couple) namesEl.textContent = `${couple.groomName} & ${couple.brideName}`;
+
+  if (yearEl && wedding?.dateISO) {
+    const year = new Date(wedding.dateISO).getFullYear();
+    if (!Number.isNaN(year)) yearEl.textContent = `© ${year}`;
+  }
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -853,6 +998,7 @@ function initApp() {
   initScrollProgressBar();
   initBackToTop();
   initWelcomeScreen();
+  initParallax();
   initAboutSection();
   initCountdown();
   initTimeline();
@@ -860,10 +1006,12 @@ function initApp() {
   initGallery();
   initRsvpForm();
   initWishesWall();
+  initFallingFlowers();
+  initMusicPlayer();
+  initFooter();
   initScrollReveal();
 
   // TODO (M7): initGiftSection();
-  // TODO (M9): initFooter(); initMusicPlayer(); initFallingFlowers();
 }
 
 document.addEventListener("DOMContentLoaded", initApp);

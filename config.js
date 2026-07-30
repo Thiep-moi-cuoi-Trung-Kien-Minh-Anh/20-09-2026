@@ -210,9 +210,27 @@ const WEDDING_CONFIG = {
     fetchEndpoint: "",
   },
 
+  // --- Nhạc nền (nút bật/tắt, tự thử phát ngay sau khi bấm "Mở Thiệp") ---
+  // Đặt file mp3 vào assets/music/ rồi sửa đường dẫn. Để trống "" nếu chưa
+  // có nhạc — nút nhạc sẽ tự ẩn thay vì hiển thị vô nghĩa.
+  music: {
+    src: "assets/music/background.mp3",
+    volume: 0.5,
+    // Tự thử phát nhạc ngay sau khi khách bấm "Mở Thiệp" (một cử chỉ click
+    // thật, thường được trình duyệt cho phép phát âm thanh ngay sau đó).
+    // Đặt false nếu chỉ muốn phát khi khách tự bấm nút nhạc.
+    autoplayOnOpen: true,
+  },
+
+  // --- Footer ---
+  // Tên cô dâu chú rể và năm tổ chức được lấy lại từ "couple" và
+  // "wedding.dateISO" ở trên (không cần khai báo lại, tránh trùng dữ liệu).
+  footer: {
+    thanksMessage: "Cảm ơn bạn đã dành thời gian đọc thiệp và đồng hành cùng chúng tôi trong ngày trọng đại này.",
+  },
+
   // ------------------------------------------------------------------------
   // Các mục dưới đây sẽ được bổ sung ở những module tiếp theo, không xoá:
   // gift          -> M7 Mừng cưới
-  // music         -> M9 Nhạc nền
   // ------------------------------------------------------------------------
 };

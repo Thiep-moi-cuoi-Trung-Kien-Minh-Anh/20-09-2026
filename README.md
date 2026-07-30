@@ -13,8 +13,10 @@ Dự án đang được xây dựng theo từng module (xem WBS trong lịch s�
 - **M4 — Thông tin lễ cưới**: Lễ nhà trai / Lễ nhà gái / Tiệc cưới, kèm bản đồ + chỉ đường.
 - **M5 — Album ảnh**: Masonry gallery + Lightbox.
 - **M6 — RSVP**: form xác nhận tham dự, sẵn sàng kết nối Google Sheets.
+- **M8 — Lời chúc**: form gửi lời chúc + bức tường hiển thị, sẵn sàng kết nối Firebase/Google Sheets.
+- **M9 — Footer + Nhạc nền + Hoa rơi + Parallax nhẹ**: hoàn thiện các hiệu ứng toàn cục còn lại.
 
-Các module tiếp theo (Mừng cưới, Lời chúc, Footer...) sẽ được bổ sung dần.
+Còn thiếu: **M7 — Mừng cưới** (QR ngân hàng, số tài khoản, nút sao chép) — đã tạm bỏ qua theo yêu cầu, có thể bổ sung sau.
 
 ## Cấu trúc thư mục
 

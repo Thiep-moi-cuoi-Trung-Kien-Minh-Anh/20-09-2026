@@ -18,6 +18,9 @@
    15. Lightbox (M5)
    16. RSVP Form (M6)
    17. Wishes Wall (M8)
+   18. Falling Flowers (M9)
+   19. Music Toggle (M9)
+   20. Footer (M9)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -70,6 +73,7 @@
   --z-lightbox: 110;
   --z-progress: 90;
   --z-fixed-ui: 80;
+  --z-decor: 75;
 }
 
 /* Dark mode: kích hoạt bằng thuộc tính data-theme="dark" trên <html>,
@@ -250,6 +254,7 @@ h1, h2, h3, h4 {
 ---------------------------------------------------------------------------- */
 body.invitation-locked .scroll-progress,
 body.invitation-locked .theme-toggle,
+body.invitation-locked .music-toggle,
 body.invitation-locked .back-to-top {
   opacity: 0;
   visibility: hidden;
@@ -1300,4 +1305,129 @@ body.lightbox-open {
   font-size: 0.95rem;
   line-height: 1.7;
   white-space: pre-wrap;
+}
+
+/* ----------------------------------------------------------------------------
+   18. FALLING FLOWERS (M9) — hiệu ứng hoa rơi nhẹ, trang trí, không chặn thao tác
+---------------------------------------------------------------------------- */
+.falling-flowers {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-decor);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.falling-flowers__petal {
+  position: absolute;
+  top: -10%;
+  color: var(--accent-secondary);
+  opacity: 0.55;
+  will-change: transform;
+  animation-name: petal-fall, petal-sway;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}
+
+@keyframes petal-fall {
+  from {
+    transform: translateY(-10vh) rotate(0deg);
+  }
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+@keyframes petal-sway {
+  0%,
+  100% {
+    margin-left: 0;
+  }
+  50% {
+    margin-left: var(--drift, 20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .falling-flowers {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   19. MUSIC TOGGLE (M9)
+---------------------------------------------------------------------------- */
+.music-toggle {
+  position: fixed;
+  top: calc(var(--space-sm) + 52px);
+  right: var(--space-sm);
+  z-index: var(--z-fixed-ui);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-soft);
+  color: var(--accent-secondary);
+  transition: transform var(--transition-fast), background-color var(--transition-smooth),
+    opacity var(--transition-fast), visibility var(--transition-fast);
+}
+
+.music-toggle:hover {
+  transform: scale(1.08);
+}
+
+.music-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+.music-toggle .icon-music-on {
+  display: none;
+}
+
+.music-toggle.is-playing .icon-music-off {
+  display: none;
+}
+
+.music-toggle.is-playing .icon-music-on {
+  display: block;
+}
+
+/* ----------------------------------------------------------------------------
+   20. FOOTER (M9)
+---------------------------------------------------------------------------- */
+.site-footer {
+  padding: var(--space-xl) 0 var(--space-lg);
+  text-align: center;
+  background-color: var(--bg-surface);
+  transition: background-color var(--transition-smooth);
+}
+
+.site-footer__ornament {
+  font-size: 1.5rem;
+  color: var(--color-champagne-gold);
+  margin-bottom: var(--space-xs);
+}
+
+.site-footer__thanks {
+  max-width: 480px;
+  margin: 0 auto var(--space-xs);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.site-footer__names {
+  font-size: 1.6rem;
+  color: var(--accent-secondary);
+}
+
+.site-footer__year {
+  margin-top: var(--space-xs);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
 }

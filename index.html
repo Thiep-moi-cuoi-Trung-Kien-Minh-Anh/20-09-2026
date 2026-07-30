@@ -33,6 +33,12 @@
   </noscript>
 
   <!-- ==========================================================
+       HOA RƠI (M9) — hiệu ứng trang trí nhẹ, không chặn thao tác
+       (pointer-events: none). Bỏ qua nếu prefers-reduced-motion.
+  =========================================================== -->
+  <div id="fallingFlowers" class="falling-flowers" aria-hidden="true"></div>
+
+  <!-- ==========================================================
        LOADING SCREEN — ẩn tự động khi trang tải xong (script.js)
   =========================================================== -->
   <div id="loadingScreen" class="loading-screen" aria-hidden="true">
@@ -59,6 +65,27 @@
     </svg>
     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+
+  <!-- ==========================================================
+       NHẠC NỀN (M9) — nút bật/tắt. Nguồn nhạc cấu hình ở config.music.src;
+       nếu để trống, nút tự ẩn (script.js). Sẽ thử tự phát ngay sau khi
+       khách bấm "Mở Thiệp" (một cử chỉ click hợp lệ để trình duyệt cho
+       phép phát có âm thanh); nếu bị chặn, khách có thể bấm nút để bật.
+  =========================================================== -->
+  <audio id="bgMusic" loop preload="none"></audio>
+  <button id="musicToggle" class="music-toggle" type="button" aria-label="Bật nhạc nền" aria-pressed="false">
+    <svg class="icon-music-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M9 18V6l10-2v12" />
+      <circle cx="6.5" cy="18" r="2.5" />
+      <circle cx="16.5" cy="16" r="2.5" />
+      <line x1="3" y1="3" x2="21" y2="21" />
+    </svg>
+    <svg class="icon-music-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M9 18V6l10-2v12" />
+      <circle cx="6.5" cy="18" r="2.5" />
+      <circle cx="16.5" cy="16" r="2.5" />
     </svg>
   </button>
 
@@ -279,8 +306,21 @@
       </div>
     </section>
 
-    <!-- TODO (M9): Footer + Nhạc nền + Hoa rơi -->
   </main>
+
+  <!-- ==========================================================
+       M9 — FOOTER
+       Tên CD-CR lấy lại từ config.couple, năm lấy từ config.wedding.dateISO
+       (không lặp dữ liệu — chỉ cấu hình 1 nơi duy nhất).
+  =========================================================== -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__ornament" aria-hidden="true">❧</p>
+      <p class="site-footer__thanks" id="footerThanks"></p>
+      <p class="site-footer__names font-script" id="footerNames"></p>
+      <p class="site-footer__year" id="footerYear"></p>
+    </div>
+  </footer>
 
   <!-- ==========================================================
        BACK TO TOP
