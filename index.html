@@ -180,7 +180,21 @@
       </div>
     </section>
 
-    <!-- TODO (M5): Album ảnh -->
+    <!-- ==========================================================
+         M5 — ALBUM ẢNH (Masonry + Lightbox)
+         Danh sách ảnh sinh từ config.gallery.images (script.js). Ảnh dùng
+         loading="lazy"; ảnh lỗi/chưa có sẽ tự hiện khung placeholder.
+    =========================================================== -->
+    <section id="gallery" class="gallery-section">
+      <div class="container">
+        <div class="gallery-section__heading reveal">
+          <span class="section-eyebrow">Album</span>
+          <h2 id="galleryTitle">Album ảnh</h2>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+    </section>
+
     <!-- TODO (M6): RSVP -->
     <!-- TODO (M7): Mừng cưới -->
     <!-- TODO (M8): Lời chúc -->
@@ -191,6 +205,17 @@
        BACK TO TOP
   =========================================================== -->
   <button id="backToTop" class="back-to-top" type="button" aria-label="Lên đầu trang">&uarr;</button>
+
+  <!-- ==========================================================
+       LIGHTBOX (M5) — overlay dùng chung cho Album ảnh
+  =========================================================== -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh phóng to" hidden>
+    <button id="lightboxClose" class="lightbox__close" type="button" aria-label="Đóng">&times;</button>
+    <button id="lightboxPrev" class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Ảnh trước">&#8249;</button>
+    <img id="lightboxImage" class="lightbox__image" alt="" />
+    <button id="lightboxNext" class="lightbox__nav lightbox__nav--next" type="button" aria-label="Ảnh sau">&#8250;</button>
+    <p class="lightbox__counter" id="lightboxCounter"></p>
+  </div>
 
   <!-- config.js phải load TRƯỚC script.js vì script.js đọc WEDDING_CONFIG -->
   <script src="config.js"></script>

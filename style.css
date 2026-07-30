@@ -14,6 +14,8 @@
    11. Countdown (M2)
    12. Timeline (M3)
    13. Events / Wedding Info (M4)
+   14. Gallery / Masonry (M5)
+   15. Lightbox (M5)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -63,6 +65,7 @@
   --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   --z-loading: 100;
+  --z-lightbox: 110;
   --z-progress: 90;
   --z-fixed-ui: 80;
 }
@@ -873,4 +876,164 @@ body.invitation-locked .back-to-top {
 .event-card__direction-btn:hover {
   background-color: var(--accent-secondary);
   color: var(--color-text-light);
+}
+
+/* ----------------------------------------------------------------------------
+   14. GALLERY / MASONRY (M5) — CSS columns (không cần thư viện JS masonry)
+---------------------------------------------------------------------------- */
+.gallery-section {
+  padding: var(--space-xl) 0;
+}
+
+.gallery-section__heading {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.gallery-grid {
+  column-count: 1;
+  column-gap: var(--space-sm);
+}
+
+@media (min-width: 600px) {
+  .gallery-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 900px) {
+  .gallery-grid {
+    column-count: 3;
+  }
+}
+
+.gallery-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: var(--space-sm);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.gallery-item img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  /* "auto <ratio>" giữ chỗ 3:4 trước khi ảnh tải xong (tránh cột masonry
+     co về 0 chiều cao vì loading="lazy"), rồi tự chuyển sang tỉ lệ thật
+     của ảnh ngay khi ảnh đã tải — mỗi ảnh vẫn có tỉ lệ khác nhau như masonry */
+  aspect-ratio: auto 3 / 4;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-item__fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
+  color: var(--accent-secondary);
+  font-size: 2rem;
+}
+
+.gallery-item.is-fallback img {
+  display: none;
+}
+
+.gallery-item.is-fallback .gallery-item__fallback {
+  display: flex;
+}
+
+/* ----------------------------------------------------------------------------
+   15. LIGHTBOX (M5) — overlay xem ảnh phóng to, điều hướng trước/sau
+---------------------------------------------------------------------------- */
+body.lightbox-open {
+  overflow: hidden;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-lightbox);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(10, 8, 6, 0.92);
+  padding: var(--space-md);
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox__image {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox__close,
+.lightbox__nav {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: var(--color-text-light);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.lightbox__close:hover,
+.lightbox__nav:hover {
+  background-color: rgba(255, 255, 255, 0.24);
+  transform: scale(1.05);
+}
+
+.lightbox__close {
+  top: var(--space-sm);
+  right: var(--space-sm);
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.lightbox__nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  font-size: 1.9rem;
+  line-height: 1;
+}
+
+.lightbox__nav:hover {
+  transform: translateY(-50%) scale(1.05);
+}
+
+.lightbox__nav--prev {
+  left: var(--space-sm);
+}
+
+.lightbox__nav--next {
+  right: var(--space-sm);
+}
+
+.lightbox__counter {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
 }

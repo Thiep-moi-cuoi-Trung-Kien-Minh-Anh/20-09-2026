@@ -145,9 +145,24 @@ const WEDDING_CONFIG = {
     ],
   },
 
+  // --- Album ảnh (Gallery dạng Masonry + Lightbox) ---
+  // Thêm/bớt ảnh bằng cách chỉnh mảng "images". Đặt file ảnh vào
+  // assets/images/ rồi sửa đường dẫn — ảnh nào chưa có/lỗi sẽ tự hiện
+  // khung placeholder thay vì vỡ layout.
+  gallery: {
+    title: "Album ảnh",
+    images: [
+      { src: "assets/images/gallery-01.jpg", alt: "Khoảnh khắc 1" },
+      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc 2" },
+      { src: "assets/images/gallery-03.jpg", alt: "Khoảnh khắc 3" },
+      { src: "assets/images/gallery-04.jpg", alt: "Khoảnh khắc 4" },
+      { src: "assets/images/gallery-05.jpg", alt: "Khoảnh khắc 5" },
+      { src: "assets/images/gallery-06.jpg", alt: "Khoảnh khắc 6" },
+    ],
+  },
+
   // ------------------------------------------------------------------------
   // Các mục dưới đây sẽ được bổ sung ở những module tiếp theo, không xoá:
-  // gallery       -> M5 Album ảnh
   // rsvp          -> M6 RSVP
   // gift          -> M7 Mừng cưới
   // wishes        -> M8 Lời chúc

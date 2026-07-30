@@ -15,6 +15,7 @@
  *    5d. Countdown (M2)
  *    5e. Timeline (M3)
  *    5f. Events / Wedding Info (M4)
+ *    5g. Gallery + Lightbox (M5)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -486,6 +487,109 @@ function initEventsSection() {
 }
 
 /* ----------------------------------------------------------------------------
+   5g. GALLERY + LIGHTBOX (M5)
+   Sinh lưới ảnh masonry (CSS columns, xem style.css) từ config.gallery.images,
+   lazy-load + fallback khi ảnh lỗi/chưa có, và một lightbox dùng chung để
+   xem phóng to + điều hướng ảnh trước/sau (click, phím mũi tên, Esc).
+---------------------------------------------------------------------------- */
+let galleryPhotos = [];
+let currentLightboxIndex = 0;
+
+function buildGalleryItem(photo, index) {
+  const item = document.createElement("button");
+  item.type = "button";
+  item.className = "gallery-item reveal";
+  item.style.transitionDelay = `${Math.min(index % 6, 5) * 0.08}s`;
+  item.setAttribute("aria-label", `Xem ảnh ${index + 1}`);
+
+  const img = document.createElement("img");
+  img.loading = "lazy";
+  img.alt = photo.alt || `Ảnh cưới ${index + 1}`;
+  img.addEventListener("error", () => item.classList.add("is-fallback"), { once: true });
+  img.src = photo.src;
+
+  const fallback = document.createElement("span");
+  fallback.className = "gallery-item__fallback";
+  fallback.setAttribute("aria-hidden", "true");
+  fallback.textContent = "❀";
+
+  item.append(img, fallback);
+  item.addEventListener("click", () => openLightbox(index));
+  return item;
+}
+
+function renderLightboxImage() {
+  const photo = galleryPhotos[currentLightboxIndex];
+  if (!photo) return;
+  const imgEl = document.getElementById("lightboxImage");
+  const counterEl = document.getElementById("lightboxCounter");
+  imgEl.src = photo.src;
+  imgEl.alt = photo.alt || `Ảnh cưới ${currentLightboxIndex + 1}`;
+  counterEl.textContent = `${currentLightboxIndex + 1} / ${galleryPhotos.length}`;
+}
+
+function openLightbox(index) {
+  currentLightboxIndex = index;
+  renderLightboxImage();
+  const lightbox = document.getElementById("lightbox");
+  lightbox.hidden = false;
+  document.body.classList.add("lightbox-open");
+  document.getElementById("lightboxClose")?.focus();
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  if (!lightbox) return;
+  lightbox.hidden = true;
+  document.body.classList.remove("lightbox-open");
+}
+
+function showPrevPhoto() {
+  currentLightboxIndex = (currentLightboxIndex - 1 + galleryPhotos.length) % galleryPhotos.length;
+  renderLightboxImage();
+}
+
+function showNextPhoto() {
+  currentLightboxIndex = (currentLightboxIndex + 1) % galleryPhotos.length;
+  renderLightboxImage();
+}
+
+function initLightboxControls() {
+  const lightbox = document.getElementById("lightbox");
+  if (!lightbox) return;
+
+  document.getElementById("lightboxClose")?.addEventListener("click", closeLightbox);
+  document.getElementById("lightboxPrev")?.addEventListener("click", showPrevPhoto);
+  document.getElementById("lightboxNext")?.addEventListener("click", showNextPhoto);
+
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (lightbox.hidden) return;
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowLeft") showPrevPhoto();
+    if (event.key === "ArrowRight") showNextPhoto();
+  });
+}
+
+function initGallery() {
+  const { gallery } = WEDDING_CONFIG;
+  const gridEl = document.getElementById("galleryGrid");
+  const titleEl = document.getElementById("galleryTitle");
+
+  if (titleEl && gallery?.title) titleEl.textContent = gallery.title;
+  if (!gridEl || !Array.isArray(gallery?.images) || !gallery.images.length) return;
+
+  galleryPhotos = gallery.images;
+  gridEl.innerHTML = "";
+  galleryPhotos.forEach((photo, index) => gridEl.appendChild(buildGalleryItem(photo, index)));
+
+  initLightboxControls();
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -501,9 +605,9 @@ function initApp() {
   initCountdown();
   initTimeline();
   initEventsSection();
+  initGallery();
   initScrollReveal();
 
-  // TODO (M5): initGallery();
   // TODO (M6): initRsvpForm();
   // TODO (M7): initGiftSection();
   // TODO (M8): initWishesWall();
