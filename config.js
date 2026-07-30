@@ -43,6 +43,31 @@ const WEDDING_CONFIG = {
     openButtonLabel: "Mở Thiệp",
   },
 
+  // --- Giới thiệu (ảnh cưới + lời chào + câu chuyện đôi lứa) ---
+  about: {
+    // Đặt ảnh vào assets/images/ rồi sửa đường dẫn. Để trống "" nếu chưa có
+    // ảnh — mục này sẽ tự hiện khung placeholder thay vì bị vỡ layout.
+    photo: "assets/images/about.jpg",
+    greeting: "Yêu thương gửi đến những người bạn quý mến,",
+    // Mỗi phần tử trong mảng là một đoạn văn (paragraph) riêng biệt
+    story: [
+      "Chúng tôi gặp nhau trong một ngày rất bình thường, nhưng đó lại là khởi đầu của một hành trình đặc biệt.",
+      "Sau tất cả những tháng ngày cùng nhau cười, cùng nhau trưởng thành, chúng tôi quyết định nắm tay nhau đi hết quãng đường còn lại.",
+    ],
+  },
+
+  // --- Đếm ngược ngày cưới (thời gian thực) ---
+  countdown: {
+    title: "Ngày trọng đại sẽ đến trong",
+    labels: {
+      days: "Ngày",
+      hours: "Giờ",
+      minutes: "Phút",
+      seconds: "Giây",
+    },
+    completedText: "Chúng tôi đã chính thức nên duyên vợ chồng! Cảm ơn vì đã luôn đồng hành cùng chúng tôi.",
+  },
+
   // --- Giao diện: chế độ mặc định + bảng màu (Elegant Luxury Minimalist) ---
   theme: {
     // "light" hoặc "dark" — người dùng vẫn có thể tự đổi bằng nút toggle,

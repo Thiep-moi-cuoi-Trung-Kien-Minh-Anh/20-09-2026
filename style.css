@@ -9,7 +9,9 @@
    6. Scroll Progress Bar
    7. Theme Toggle Button
    8. Back To Top Button
-   9. Temporary Placeholder Hero (sẽ được thay bằng Welcome Screen ở M1)
+   9. Welcome Screen (M1)
+   10. About Section (M2)
+   11. Countdown (M2)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -167,6 +169,28 @@ h1, h2, h3, h4 {
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+/* Scroll Reveal — phần tử có class .reveal sẽ fade-in + trượt lên khi
+   cuộn vào khung nhìn (được quan sát bởi initScrollReveal() trong script.js) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
 }
 
 /* ----------------------------------------------------------------------------
@@ -512,4 +536,141 @@ body.invitation-locked .back-to-top {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ----------------------------------------------------------------------------
+   10. ABOUT SECTION (M2) — ảnh cưới + lời chào + câu chuyện đôi lứa
+---------------------------------------------------------------------------- */
+.about-section {
+  padding: var(--space-xl) 0;
+}
+
+.about-section__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .about-section__inner {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.about-section__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
+}
+
+.about-section__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-section__photo-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: var(--accent-secondary);
+}
+
+/* Khi ảnh chưa được thêm (hoặc load lỗi), script.js gắn class is-fallback
+   để hiện khung placeholder thay vì để ảnh vỡ */
+.about-section__media.is-fallback .about-section__photo {
+  display: none;
+}
+
+.about-section__media.is-fallback .about-section__photo-fallback {
+  display: flex;
+}
+
+.about-section__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.about-section__greeting {
+  font-size: 1.4rem;
+  color: var(--accent-secondary);
+}
+
+.about-section__story p {
+  color: var(--text-muted);
+  line-height: 1.9;
+  margin-bottom: var(--space-sm);
+}
+
+.about-section__story p:last-child {
+  margin-bottom: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   11. COUNTDOWN (M2) — đếm ngược thời gian thực tới ngày cưới
+---------------------------------------------------------------------------- */
+.countdown-section {
+  padding: var(--space-xl) 0;
+  text-align: center;
+  background-color: var(--bg-surface);
+  transition: background-color var(--transition-smooth);
+}
+
+.countdown-section__title {
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+}
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.countdown__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: var(--space-sm) var(--space-xs);
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--transition-smooth);
+}
+
+.countdown__value {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  line-height: 1;
+  color: var(--accent-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown__label {
+  margin-top: var(--space-xs);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.countdown__completed {
+  font-family: var(--font-script);
+  font-size: 1.4rem;
+  color: var(--accent-secondary);
+  max-width: 560px;
+  margin-inline: auto;
 }

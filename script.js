@@ -4,11 +4,15 @@
  * ============================================================================
  *  Cấu trúc file (mỗi module M1-M9 sẽ thêm 1 hàm init... mới và gọi nó trong
  *  initApp() ở cuối file, KHÔNG động vào các hàm global infra bên dưới):
- *    1. Đồng bộ nội dung từ config.js (title, placeholder demo)
+ *    1. Đồng bộ nội dung từ config.js
+ *    1b. Welcome Screen (M1)
  *    2. Loading Screen
  *    3. Dark / Light Mode
  *    4. Scroll Progress Bar
  *    5. Back To Top
+ *    5b. Scroll Reveal (dùng chung cho mọi module từ M2 trở đi)
+ *    5c. About Section (M2)
+ *    5d. Countdown (M2)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -217,6 +221,141 @@ function initBackToTop() {
 }
 
 /* ----------------------------------------------------------------------------
+   5b. SCROLL REVEAL
+   Cơ chế fade-in dùng chung cho mọi section: phần tử có class "reveal" sẽ
+   được quan sát bằng IntersectionObserver, thêm class "is-visible" khi cuộn
+   vào khung nhìn. Các module sau (M3+) chỉ cần thêm class "reveal" vào HTML;
+   nếu nội dung được chèn động bằng JS (vd. Gallery, Lời chúc) thì gọi thêm
+   observeReveal(el) cho phần tử mới.
+---------------------------------------------------------------------------- */
+let scrollRevealObserver;
+
+function observeReveal(element) {
+  if (scrollRevealObserver && element) scrollRevealObserver.observe(element);
+}
+
+function initScrollReveal() {
+  const revealEls = document.querySelectorAll(".reveal");
+  if (!revealEls.length) return;
+
+  if (!("IntersectionObserver" in window)) {
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+
+  scrollRevealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          scrollRevealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+  );
+
+  revealEls.forEach((el) => scrollRevealObserver.observe(el));
+}
+
+/* ----------------------------------------------------------------------------
+   5c. ABOUT SECTION (M2)
+   Điền ảnh cưới, lời chào và câu chuyện đôi lứa từ config.about.
+   Nếu ảnh chưa được cấu hình hoặc load lỗi, hiện khung placeholder thay vì
+   để ảnh vỡ (giữ layout luôn đẹp kể cả khi người dùng chưa thêm ảnh thật).
+---------------------------------------------------------------------------- */
+function initAboutSection() {
+  const { about, couple } = WEDDING_CONFIG;
+  const mediaEl = document.querySelector(".about-section__media");
+  const photoEl = document.getElementById("aboutPhoto");
+  const greetingEl = document.getElementById("aboutGreeting");
+  const storyEl = document.getElementById("aboutStory");
+  if (!about) return;
+
+  if (greetingEl && about.greeting) greetingEl.textContent = about.greeting;
+
+  if (storyEl && Array.isArray(about.story)) {
+    storyEl.innerHTML = "";
+    about.story.forEach((paragraph) => {
+      const p = document.createElement("p");
+      p.textContent = paragraph;
+      storyEl.appendChild(p);
+    });
+  }
+
+  if (photoEl && about.photo) {
+    photoEl.alt = `Ảnh cưới của ${couple?.groomFullName ?? ""} & ${couple?.brideFullName ?? ""}`;
+    photoEl.addEventListener("error", () => mediaEl?.classList.add("is-fallback"), { once: true });
+    photoEl.src = about.photo;
+  } else {
+    mediaEl?.classList.add("is-fallback");
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   5d. COUNTDOWN (M2)
+   Đếm ngược thời gian thực tới WEDDING_CONFIG.wedding.dateISO, cập nhật mỗi
+   giây. Khi đã tới/qua ngày cưới, ẩn các ô số và hiện thông điệp hoàn tất.
+---------------------------------------------------------------------------- */
+function updateCountdownDisplay(targetDate, els, completedText) {
+  const diffMs = targetDate.getTime() - Date.now();
+
+  if (diffMs <= 0) {
+    if (els.intervalId) clearInterval(els.intervalId);
+    els.grid.hidden = true;
+    els.completed.hidden = false;
+    els.completed.textContent = completedText;
+    return;
+  }
+
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  els.days.textContent = String(days).padStart(2, "0");
+  els.hours.textContent = String(hours).padStart(2, "0");
+  els.minutes.textContent = String(minutes).padStart(2, "0");
+  els.seconds.textContent = String(seconds).padStart(2, "0");
+}
+
+function initCountdown() {
+  const { wedding, countdown } = WEDDING_CONFIG;
+  const grid = document.getElementById("countdown");
+  const completedEl = document.getElementById("countdownCompleted");
+  const titleEl = document.getElementById("countdownTitle");
+  if (!wedding?.dateISO || !grid || !completedEl) return;
+
+  const targetDate = new Date(wedding.dateISO);
+  if (Number.isNaN(targetDate.getTime())) return;
+
+  if (titleEl && countdown?.title) titleEl.textContent = countdown.title;
+
+  if (countdown?.labels) {
+    document.querySelectorAll("#countdown .countdown__label").forEach((labelEl) => {
+      const unit = labelEl.dataset.unit;
+      if (countdown.labels[unit]) labelEl.textContent = countdown.labels[unit];
+    });
+  }
+
+  const els = {
+    grid,
+    completed: completedEl,
+    days: document.getElementById("cdDays"),
+    hours: document.getElementById("cdHours"),
+    minutes: document.getElementById("cdMinutes"),
+    seconds: document.getElementById("cdSeconds"),
+    intervalId: null,
+  };
+
+  const completedText = countdown?.completedText || "Đã đến ngày cưới!";
+
+  updateCountdownDisplay(targetDate, els, completedText);
+  els.intervalId = setInterval(() => updateCountdownDisplay(targetDate, els, completedText), 1000);
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -228,8 +367,10 @@ function initApp() {
   initScrollProgressBar();
   initBackToTop();
   initWelcomeScreen();
+  initAboutSection();
+  initCountdown();
+  initScrollReveal();
 
-  // TODO (M2): initAboutSection(); initCountdown();
   // TODO (M3): initTimeline();
   // TODO (M4): initEventsSection();
   // TODO (M5): initGallery();

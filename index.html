@@ -102,7 +102,54 @@
       <div class="welcome-screen__scroll-hint" aria-hidden="true">&#8964;</div>
     </section>
 
-    <!-- TODO (M2): Giới thiệu + Countdown -->
+    <!-- ==========================================================
+         M2 — GIỚI THIỆU (ảnh cưới + lời chào + câu chuyện)
+    =========================================================== -->
+    <section id="about" class="about-section">
+      <div class="container about-section__inner">
+        <div class="about-section__media reveal">
+          <img id="aboutPhoto" class="about-section__photo" alt="Ảnh cưới" loading="lazy" />
+          <div class="about-section__photo-fallback" aria-hidden="true">&#10084;</div>
+        </div>
+        <div class="about-section__text reveal">
+          <span class="section-eyebrow">Giới thiệu</span>
+          <p class="about-section__greeting font-script" id="aboutGreeting"></p>
+          <div class="about-section__story" id="aboutStory"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         M2 — COUNTDOWN (đếm ngược thời gian thực đến ngày cưới)
+    =========================================================== -->
+    <section id="countdown-section" class="countdown-section">
+      <div class="container countdown-section__inner reveal">
+        <span class="section-eyebrow">Đếm ngược</span>
+        <h2 class="countdown-section__title" id="countdownTitle">Ngày trọng đại sẽ đến trong</h2>
+
+        <div class="countdown" id="countdown" role="timer" aria-live="polite">
+          <div class="countdown__unit">
+            <span class="countdown__value" id="cdDays">00</span>
+            <span class="countdown__label" data-unit="days">Ngày</span>
+          </div>
+          <div class="countdown__unit">
+            <span class="countdown__value" id="cdHours">00</span>
+            <span class="countdown__label" data-unit="hours">Giờ</span>
+          </div>
+          <div class="countdown__unit">
+            <span class="countdown__value" id="cdMinutes">00</span>
+            <span class="countdown__label" data-unit="minutes">Phút</span>
+          </div>
+          <div class="countdown__unit">
+            <span class="countdown__value" id="cdSeconds">00</span>
+            <span class="countdown__label" data-unit="seconds">Giây</span>
+          </div>
+        </div>
+
+        <p class="countdown__completed" id="countdownCompleted" hidden></p>
+      </div>
+    </section>
+
     <!-- TODO (M3): Timeline -->
     <!-- TODO (M4): Thông tin lễ cưới -->
     <!-- TODO (M5): Album ảnh -->
