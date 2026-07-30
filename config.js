@@ -68,6 +68,39 @@ const WEDDING_CONFIG = {
     completedText: "Chúng tôi đã chính thức nên duyên vợ chồng! Cảm ơn vì đã luôn đồng hành cùng chúng tôi.",
   },
 
+  // --- Timeline (các mốc trong hành trình tình yêu) ---
+  // Thêm/bớt/sửa thứ tự mốc bằng cách chỉnh mảng milestones bên dưới,
+  // "icon" là 1 emoji hiển thị trong vòng tròn đánh dấu, có thể để trống.
+  timeline: {
+    title: "Chuyện tình của chúng tôi",
+    milestones: [
+      {
+        date: "Mùa thu, 2019",
+        title: "Gặp nhau",
+        description: "Một buổi chiều tình cờ, chúng tôi gặp nhau lần đầu và có những ấn tượng khó quên.",
+        icon: "✨",
+      },
+      {
+        date: "Mùa xuân, 2021",
+        title: "Yêu nhau",
+        description: "Sau thời gian tìm hiểu, chúng tôi chính thức trở thành một đôi và cùng nhau viết tiếp câu chuyện.",
+        icon: "💕",
+      },
+      {
+        date: "Mùa hè, 2025",
+        title: "Đính hôn",
+        description: "Lời hứa gắn bó trăm năm được trao nhau trong sự chúc phúc của gia đình hai bên.",
+        icon: "💍",
+      },
+      {
+        date: "12.12.2026",
+        title: "Ngày cưới",
+        description: "Chúng tôi chính thức về chung một nhà, bắt đầu hành trình mới với thật nhiều yêu thương.",
+        icon: "💒",
+      },
+    ],
+  },
+
   // --- Giao diện: chế độ mặc định + bảng màu (Elegant Luxury Minimalist) ---
   theme: {
     // "light" hoặc "dark" — người dùng vẫn có thể tự đổi bằng nút toggle,

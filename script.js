@@ -13,6 +13,7 @@
  *    5b. Scroll Reveal (dùng chung cho mọi module từ M2 trở đi)
  *    5c. About Section (M2)
  *    5d. Countdown (M2)
+ *    5e. Timeline (M3)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -356,6 +357,55 @@ function initCountdown() {
 }
 
 /* ----------------------------------------------------------------------------
+   5e. TIMELINE (M3)
+   Sinh danh sách mốc thời gian từ config.timeline.milestones. Được gọi
+   TRƯỚC initScrollReveal() để các item mới tạo cũng được quan sát reveal.
+---------------------------------------------------------------------------- */
+function buildTimelineItem(milestone, index) {
+  const li = document.createElement("li");
+  li.className = "timeline__item reveal";
+  li.style.transitionDelay = `${Math.min(index, 4) * 0.12}s`;
+
+  const marker = document.createElement("span");
+  marker.className = "timeline__marker";
+  marker.setAttribute("aria-hidden", "true");
+  marker.textContent = milestone.icon || "♥";
+
+  const card = document.createElement("div");
+  card.className = "timeline__card";
+
+  const dateEl = document.createElement("p");
+  dateEl.className = "timeline__date font-script";
+  dateEl.textContent = milestone.date || "";
+
+  const titleEl = document.createElement("h3");
+  titleEl.className = "timeline__title";
+  titleEl.textContent = milestone.title || "";
+
+  const descEl = document.createElement("p");
+  descEl.className = "timeline__desc";
+  descEl.textContent = milestone.description || "";
+
+  card.append(dateEl, titleEl, descEl);
+  li.append(marker, card);
+  return li;
+}
+
+function initTimeline() {
+  const { timeline } = WEDDING_CONFIG;
+  const listEl = document.getElementById("timelineList");
+  const titleEl = document.getElementById("timelineTitle");
+
+  if (titleEl && timeline?.title) titleEl.textContent = timeline.title;
+  if (!listEl || !Array.isArray(timeline?.milestones) || !timeline.milestones.length) return;
+
+  listEl.innerHTML = "";
+  timeline.milestones.forEach((milestone, index) => {
+    listEl.appendChild(buildTimelineItem(milestone, index));
+  });
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -369,9 +419,9 @@ function initApp() {
   initWelcomeScreen();
   initAboutSection();
   initCountdown();
+  initTimeline();
   initScrollReveal();
 
-  // TODO (M3): initTimeline();
   // TODO (M4): initEventsSection();
   // TODO (M5): initGallery();
   // TODO (M6): initRsvpForm();

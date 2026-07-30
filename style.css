@@ -12,6 +12,7 @@
    9. Welcome Screen (M1)
    10. About Section (M2)
    11. Countdown (M2)
+   12. Timeline (M3)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -673,4 +674,88 @@ body.invitation-locked .back-to-top {
   color: var(--accent-secondary);
   max-width: 560px;
   margin-inline: auto;
+}
+
+/* ----------------------------------------------------------------------------
+   12. TIMELINE (M3) — dòng thời gian dọc: Gặp nhau, Yêu nhau, Đính hôn, Cưới
+---------------------------------------------------------------------------- */
+.timeline-section {
+  padding: var(--space-xl) 0;
+}
+
+.timeline-section__heading {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.timeline {
+  position: relative;
+  max-width: 640px;
+  margin-inline: auto;
+  padding-left: 44px;
+  list-style: none;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 15px;
+  width: 2px;
+  background: linear-gradient(var(--accent-primary), var(--accent-secondary));
+  opacity: 0.5;
+}
+
+.timeline__item {
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+
+.timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline__marker {
+  position: absolute;
+  left: -44px;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--accent-secondary);
+  box-shadow: var(--shadow-soft);
+}
+
+.timeline__card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--transition-smooth), transform var(--transition-fast);
+}
+
+.timeline__card:hover {
+  transform: translateY(-2px);
+}
+
+.timeline__date {
+  font-size: 1.05rem;
+  color: var(--accent-secondary);
+}
+
+.timeline__title {
+  margin: 0.2em 0 0.4em;
+  font-size: 1.25rem;
+}
+
+.timeline__desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
 }
