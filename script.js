@@ -14,6 +14,7 @@
  *    5c. About Section (M2)
  *    5d. Countdown (M2)
  *    5e. Timeline (M3)
+ *    5f. Events / Wedding Info (M4)
  *    6. Khởi chạy ứng dụng
  * ============================================================================
  */
@@ -406,6 +407,85 @@ function initTimeline() {
 }
 
 /* ----------------------------------------------------------------------------
+   5f. EVENTS / WEDDING INFO (M4)
+   Sinh 3 card Lễ nhà trai / Lễ nhà gái / Tiệc cưới từ config.events.items.
+   Bản đồ nhúng và nút "Chỉ đường" được tạo tự động từ trường "address"
+   (dùng Google Maps dạng "output=embed" / "maps/dir", không cần API key).
+---------------------------------------------------------------------------- */
+const EVENT_CARD_ICONS = {
+  clock:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  pin:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg>',
+  compass:
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6 6-2z"/></svg>',
+};
+
+function buildEventMetaRow(iconKey, text) {
+  const row = document.createElement("p");
+  row.className = "event-card__meta";
+  row.insertAdjacentHTML("beforeend", EVENT_CARD_ICONS[iconKey]);
+  const span = document.createElement("span");
+  span.textContent = text || "";
+  row.appendChild(span);
+  return row;
+}
+
+function buildEventCard(event, index) {
+  const article = document.createElement("article");
+  article.className = "event-card reveal";
+  article.style.transitionDelay = `${Math.min(index, 4) * 0.12}s`;
+
+  const label = document.createElement("span");
+  label.className = "event-card__label";
+  label.textContent = event.label || "";
+
+  const venue = document.createElement("h3");
+  venue.className = "event-card__venue";
+  venue.textContent = event.venueName || "";
+
+  article.append(label, venue, buildEventMetaRow("clock", event.time), buildEventMetaRow("pin", event.address));
+
+  if (event.address) {
+    const mapWrap = document.createElement("div");
+    mapWrap.className = "event-card__map";
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.google.com/maps?q=${encodeURIComponent(event.address)}&output=embed`;
+    iframe.loading = "lazy";
+    iframe.referrerPolicy = "no-referrer-when-downgrade";
+    iframe.title = `Bản đồ ${event.venueName || event.label || ""}`;
+    iframe.setAttribute("allowfullscreen", "");
+    mapWrap.appendChild(iframe);
+    article.appendChild(mapWrap);
+
+    const directionBtn = document.createElement("a");
+    directionBtn.className = "event-card__direction-btn";
+    directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.address)}`;
+    directionBtn.target = "_blank";
+    directionBtn.rel = "noopener noreferrer";
+    directionBtn.insertAdjacentHTML("afterbegin", EVENT_CARD_ICONS.compass);
+    const directionLabel = document.createElement("span");
+    directionLabel.textContent = "Chỉ đường";
+    directionBtn.appendChild(directionLabel);
+    article.appendChild(directionBtn);
+  }
+
+  return article;
+}
+
+function initEventsSection() {
+  const { events } = WEDDING_CONFIG;
+  const gridEl = document.getElementById("eventsGrid");
+  const titleEl = document.getElementById("eventsTitle");
+
+  if (titleEl && events?.title) titleEl.textContent = events.title;
+  if (!gridEl || !Array.isArray(events?.items) || !events.items.length) return;
+
+  gridEl.innerHTML = "";
+  events.items.forEach((event, index) => gridEl.appendChild(buildEventCard(event, index)));
+}
+
+/* ----------------------------------------------------------------------------
    6. KHỞI CHẠY ỨNG DỤNG
    Các module tiếp theo (M1-M9) sẽ thêm lời gọi init tương ứng vào đây.
 ---------------------------------------------------------------------------- */
@@ -420,9 +500,9 @@ function initApp() {
   initAboutSection();
   initCountdown();
   initTimeline();
+  initEventsSection();
   initScrollReveal();
 
-  // TODO (M4): initEventsSection();
   // TODO (M5): initGallery();
   // TODO (M6): initRsvpForm();
   // TODO (M7): initGiftSection();

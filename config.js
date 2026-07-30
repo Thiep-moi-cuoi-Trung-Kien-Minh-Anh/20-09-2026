@@ -117,11 +117,36 @@ const WEDDING_CONFIG = {
     },
   },
 
+  // --- Thông tin lễ cưới (Lễ nhà trai / Lễ nhà gái / Tiệc cưới) ---
+  // Chỉ cần điền "address" đầy đủ, chính xác — bản đồ nhúng và nút "Chỉ
+  // đường" sẽ tự động tạo ra từ địa chỉ này (không cần lấy mã nhúng
+  // Google Maps thủ công, cũng không cần API key).
+  events: {
+    title: "Thông tin lễ cưới",
+    items: [
+      {
+        label: "Lễ nhà trai",
+        venueName: "Tư gia nhà trai",
+        time: "08:00, Thứ Bảy, 12.12.2026",
+        address: "123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
+      },
+      {
+        label: "Lễ nhà gái",
+        venueName: "Tư gia nhà gái",
+        time: "09:30, Thứ Bảy, 12.12.2026",
+        address: "456 Đường Lê Lợi, Quận 3, TP. Hồ Chí Minh",
+      },
+      {
+        label: "Tiệc cưới",
+        venueName: "Trung tâm Tiệc cưới Diamond Place",
+        time: "18:00, Thứ Bảy, 12.12.2026",
+        address: "789 Đường Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh",
+      },
+    ],
+  },
+
   // ------------------------------------------------------------------------
   // Các mục dưới đây sẽ được bổ sung ở những module tiếp theo, không xoá:
-  // story        -> M2 Giới thiệu
-  // timeline      -> M3 Timeline
-  // events        -> M4 Thông tin lễ cưới
   // gallery       -> M5 Album ảnh
   // rsvp          -> M6 RSVP
   // gift          -> M7 Mừng cưới

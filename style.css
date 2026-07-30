@@ -13,6 +13,7 @@
    10. About Section (M2)
    11. Countdown (M2)
    12. Timeline (M3)
+   13. Events / Wedding Info (M4)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -758,4 +759,118 @@ body.invitation-locked .back-to-top {
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.75;
+}
+
+/* ----------------------------------------------------------------------------
+   13. EVENTS / WEDDING INFO (M4) — Lễ nhà trai, Lễ nhà gái, Tiệc cưới
+---------------------------------------------------------------------------- */
+.events-section {
+  padding: var(--space-xl) 0;
+}
+
+.events-section__heading {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 900px) {
+  .events-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--transition-smooth), transform var(--transition-fast);
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+}
+
+.event-card__label {
+  align-self: flex-start;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  background-color: rgba(183, 110, 121, 0.12);
+  padding: 0.35em 0.85em;
+  border-radius: 999px;
+}
+
+.event-card__venue {
+  font-size: 1.3rem;
+  margin: 0.1em 0 0;
+}
+
+.event-card__meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55em;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.event-card__meta svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 0.15em;
+  color: var(--accent-primary);
+}
+
+.event-card__map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: 0.3em;
+  background-color: var(--bg-primary);
+}
+
+.event-card__map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.event-card__direction-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  margin-top: 0.4em;
+  padding: 0.7em 1.2em;
+  border-radius: 999px;
+  border: 1px solid var(--accent-secondary);
+  color: var(--accent-secondary);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.event-card__direction-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.event-card__direction-btn:hover {
+  background-color: var(--accent-secondary);
+  color: var(--color-text-light);
 }
