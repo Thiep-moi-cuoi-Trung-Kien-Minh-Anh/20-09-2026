@@ -203,16 +203,16 @@ const WEDDING_CONFIG = {
     accounts: [
       {
         label: "Chú rể",
-        bankName: "Vietcombank",
-        accountNumber: "0123456789",
-        accountHolder: "NGUYEN VAN A",
+        bankName: "BIDV",
+        accountNumber: "8800220398",
+        accountHolder: "Lê Trung Kiên",
         qrImage: "assets/images/qr-groom.jpg",
       },
       {
         label: "Cô dâu",
         bankName: "Techcombank",
         accountNumber: "9876543210",
-        accountHolder: "TRAN THI B",
+        accountHolder: "Nguyễn Minh Anh",
         qrImage: "assets/images/qr-bride.jpg",
       },
     ],
