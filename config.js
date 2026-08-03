@@ -133,7 +133,7 @@ const WEDDING_CONFIG = {
         label: "Lễ nhà trai",
         venueName: "Tư gia nhà trai",
         time: "08:00, Thứ Bảy, 12.12.2026",
-        address: "123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
+        address: "Số 407 Phố Thái Long, Thị trấn Đình Cả, Võ Nhai, Thái Nguyên",
       },
       {
         label: "Lễ nhà gái",
