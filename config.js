@@ -172,14 +172,10 @@ const WEDDING_CONFIG = {
   gallery: {
     title: "Album ảnh",
     images: [
-      { src: "assets/images/gallery-01.jpg", alt: "Áo dài truyền thống tại Văn Miếu" },
-      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc ngọt ngào" },
-      { src: "assets/images/gallery-03.jpg", alt: "Cô dâu chú rể" },
-      { src: "assets/images/gallery-04.jpg", alt: "Kỷ niệm đáng nhớ" },
-      { src: "assets/images/gallery-05.jpg", alt: "Cô dâu chú rể dưới vòm cây xanh" },
-      { src: "assets/images/gallery-06.jpg", alt: "Khoảnh khắc trao thư tay" },
-      { src: "assets/images/gallery-07.jpg", alt: "Ôm nhau dưới tán cây đèn dây" },
-      { src: "assets/images/gallery-08.jpg", alt: "Khoảnh khắc ngọt ngào bên nhau" },
+      { src: "assets/images/gallery-01.jpg", alt: "Cô dâu chú rể dưới vòm cây xanh" },
+      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc trao thư tay" },
+      { src: "assets/images/gallery-03.jpg", alt: "Ôm nhau dưới tán cây đèn dây" },
+      { src: "assets/images/gallery-04.jpg", alt: "Khoảnh khắc ngọt ngào bên nhau" },
     ],
   },
 
