@@ -11,7 +11,7 @@
 const WEDDING_CONFIG = {
   // --- Thông tin chung cho thẻ <title>, mô tả SEO, chia sẻ mạng xã hội ---
   site: {
-    title: "Kiên & Người Thương | Thiệp Cưới Online",
+    title: "Trung Kiên & Minh Anh | Thiệp cưới",
     description: "Trân trọng kính mời bạn đến chung vui trong ngày cưới của chúng tôi.",
     // Điền vào SAU KHI deploy (vd. "https://ten-mien-cua-ban.com/") để có
     // canonical URL + og:url chuẩn. Để trống "" nếu chưa deploy — các thẻ
@@ -24,16 +24,19 @@ const WEDDING_CONFIG = {
 
   // --- Tên cô dâu / chú rể ---
   couple: {
-    groomName: "Chú Rể",
-    brideName: "Cô Dâu",
+    groomName: "Trung Kiên",
+    brideName: "Minh Anh",
     groomFullName: "Lê Trung Kiên",
     brideFullName: "Nguyễn Minh Anh",
   },
 
   // --- Ngày giờ cưới (dùng ISO 8601, có timezone +07:00 cho Việt Nam) ---
+  // Mốc chính dùng cho bìa thiệp + đếm ngược: Lễ thành hôn (14h30, CN 20.09.2026,
+  // tư gia nhà trai). Toàn bộ mốc lễ khác (ăn hỏi, tiệc nhà gái, Vu Quy, tiệc nhà
+  // trai) được liệt kê đầy đủ ở mục "events" bên dưới.
   wedding: {
     // Countdown (M2) sẽ đếm ngược tới thời điểm này
-    dateISO: "2026-09-20T10:00:00+07:00",
+    dateISO: "2026-09-20T14:30:00+07:00",
     // Chuỗi hiển thị thân thiện trên Welcome Screen
     displayDate: "20 . 09 . 2026",
   },
@@ -130,22 +133,34 @@ const WEDDING_CONFIG = {
     title: "Thông tin lễ cưới",
     items: [
       {
-        label: "Lễ nhà trai",
-        venueName: "Tư gia nhà trai",
-        time: "08:00, Thứ Bảy, 12.12.2026",
-        address: "123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
-      },
-      {
-        label: "Lễ nhà gái",
+        label: "Lễ ăn hỏi",
         venueName: "Tư gia nhà gái",
-        time: "09:30, Thứ Bảy, 12.12.2026",
-        address: "456 Đường Lê Lợi, Quận 3, TP. Hồ Chí Minh",
+        time: "09:30, Thứ Bảy, 12.09.2026",
+        address: "Số 90 đường Võ Chí Công, Tây Hồ, Hà Nội",
       },
       {
-        label: "Tiệc cưới",
-        venueName: "Trung tâm Tiệc cưới Diamond Place",
-        time: "18:00, Thứ Bảy, 12.12.2026",
-        address: "789 Đường Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh",
+        label: "Tiệc cưới (nhà gái)",
+        venueName: "Hội trường tầng 2 - Trung tâm tiệc cưới Promes Center",
+        time: "17:30, Thứ Sáu, 18.09.2026",
+        address: "122-124 Xuân Thủy, Cầu Giấy, Hà Nội",
+      },
+      {
+        label: "Lễ Vu Quy",
+        venueName: "Tư gia nhà gái",
+        time: "07:00, Chủ Nhật, 20.09.2026",
+        address: "Số 90 đường Võ Chí Công, Tây Hồ, Hà Nội",
+      },
+      {
+        label: "Lễ thành hôn",
+        venueName: "Tư gia nhà trai",
+        time: "14:30, Chủ Nhật, 20.09.2026",
+        address: "Số 407 Hưng Long, Võ Nhai, Thái Nguyên",
+      },
+      {
+        label: "Tiệc cưới (nhà trai)",
+        venueName: "Hội trường xóm Hưng Long",
+        time: "16:00, Chủ Nhật, 20.09.2026",
+        address: "Xóm Hưng Long, Võ Nhai, Thái Nguyên",
       },
     ],
   },
@@ -167,7 +182,7 @@ const WEDDING_CONFIG = {
   // --- RSVP (form xác nhận tham dự) ---
   rsvp: {
     title: "Xác nhận tham dự",
-    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi. Vui lòng xác nhận trước ngày 01.12.2026.",
+    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi. Vui lòng xác nhận trước ngày 01.09.2026.",
     submitLabel: "Gửi xác nhận",
     attendingYesLabel: "Có, tôi sẽ tham dự",
     attendingNoLabel: "Rất tiếc, tôi không thể tham dự",
