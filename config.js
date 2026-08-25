@@ -11,7 +11,7 @@
 const WEDDING_CONFIG = {
   // --- Thông tin chung cho thẻ <title>, mô tả SEO, chia sẻ mạng xã hội ---
   site: {
-    title: "Kiên & Người Thương | Thiệp Cưới Online",
+    title: "Trung Kiên & Minh Anh | Thiệp cưới",
     description: "Trân trọng kính mời bạn đến chung vui trong ngày cưới của chúng tôi.",
     // Điền vào SAU KHI deploy (vd. "https://ten-mien-cua-ban.com/") để có
     // canonical URL + og:url chuẩn. Để trống "" nếu chưa deploy — các thẻ
@@ -24,8 +24,8 @@ const WEDDING_CONFIG = {
 
   // --- Tên cô dâu / chú rể ---
   couple: {
-    groomName: "Chú Rể",
-    brideName: "Cô Dâu",
+    groomName: "Trung Kiên",
+    brideName: "Minh Anh",
     groomFullName: "Lê Trung Kiên",
     brideFullName: "Nguyễn Minh Anh",
   },
@@ -33,7 +33,7 @@ const WEDDING_CONFIG = {
   // --- Ngày giờ cưới (dùng ISO 8601, có timezone +07:00 cho Việt Nam) ---
   wedding: {
     // Countdown (M2) sẽ đếm ngược tới thời điểm này
-    dateISO: "2026-09-20T16:00:00+07:00",
+    dateISO: "2026-09-20T14:30:00+07:00",
     // Chuỗi hiển thị thân thiện trên Welcome Screen
     displayDate: "20 . 09 . 2026",
   },
@@ -132,20 +132,32 @@ const WEDDING_CONFIG = {
       {
         label: "Lễ ăn hỏi",
         venueName: "Tư gia nhà gái",
-        time: "09:00, Thứ Bảy, 12.09.2026",
-        address: "90 Đường Võ Chí Công, Tây Hồ, TP. Hà Nội",
+        time: "09:30, Thứ Bảy, 12.09.2026",
+        address: "Số 90 đường Võ Chí Công, Tây Hồ, Hà Nội",
       },
       {
-        label: "Lễ cưới nhà gái",
-        venueName: "Hội trường tiệc cưới Promes Center",
-        time: "17:00, Thứ Sáu, 18.09.2026",
-        address: "122-124 Đường Xuân Thủy, Cầu Giấy, TP. Hà Nội",
+        label: "Tiệc cưới (nhà gái)",
+        venueName: "Hội trường tầng 2 - Trung tâm tiệc cưới Promes Center",
+        time: "17:30, Thứ Sáu, 18.09.2026",
+        address: "122-124 Xuân Thủy, Cầu Giấy, Hà Nội",
       },
       {
-        label: "Lễ cưới nhà trai",
+        label: "Lễ Vu Quy",
+        venueName: "Tư gia nhà gái",
+        time: "07:00, Chủ Nhật, 20.09.2026",
+        address: "Số 90 đường Võ Chí Công, Tây Hồ, Hà Nội",
+      },
+      {
+        label: "Lễ thành hôn",
         venueName: "Tư gia nhà trai",
+        time: "14:30, Chủ Nhật, 20.09.2026",
+        address: "Số 407 Hưng Long, Võ Nhai, Thái Nguyên",
+      },
+      {
+        label: "Tiệc cưới (nhà trai)",
+        venueName: "Hội trường xóm Hưng Long",
         time: "16:00, Chủ Nhật, 20.09.2026",
-        address: "407 Phố Thái Long, Đình Cả, Võ Nhai, Thái Nguyên",
+        address: "Xóm Hưng Long, Võ Nhai, Thái Nguyên",
       },
     ],
   },
@@ -157,10 +169,11 @@ const WEDDING_CONFIG = {
   gallery: {
     title: "Album ảnh",
     images: [
-      { src: "assets/images/gallery-01.jpg", alt: "Áo dài truyền thống tại Văn Miếu" },
-      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc ngọt ngào" },
-      { src: "assets/images/gallery-03.jpg", alt: "Cô dâu chú rể" },
-      { src: "assets/images/gallery-04.jpg", alt: "Kỷ niệm đáng nhớ" },
+      { src: "assets/images/gallery-01.jpg", alt: "Cô dâu chú rể dưới vòm cây xanh" },
+      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc trao thư tay" },
+      { src: "assets/images/gallery-03.jpg", alt: "Ôm nhau dưới tán cây đèn dây" },
+      { src: "assets/images/gallery-04.jpg", alt: "Khoảnh khắc ngọt ngào bên nhau" },
+      { src: "assets/images/gallery-05.jpg", alt: "Chân dung cô dâu" },
     ],
   },
 
