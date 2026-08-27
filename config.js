@@ -133,34 +133,10 @@ const WEDDING_CONFIG = {
     title: "Thông tin lễ cưới",
     items: [
       {
-        label: "Lễ ăn hỏi",
-        venueName: "Tư gia nhà gái",
-        time: "09:30, Thứ Bảy, 12.09.2026",
-        address: "Số 90 đường Võ Chí Công, Tây Hồ, Hà Nội",
-      },
-      {
-        label: "Tiệc cưới (nhà gái)",
-        venueName: "Hội trường tầng 2 - Trung tâm tiệc cưới Promes Center",
-        time: "17:30, Thứ Sáu, 18.09.2026",
-        address: "122-124 Xuân Thủy, Cầu Giấy, Hà Nội",
-      },
-      {
-        label: "Lễ Vu Quy",
-        venueName: "Tư gia nhà gái",
-        time: "07:00, Chủ Nhật, 20.09.2026",
-        address: "Số 90 đường Võ Chí Công, Tây Hồ, Hà Nội",
-      },
-      {
         label: "Lễ thành hôn",
         venueName: "Tư gia nhà trai",
         time: "14:30, Chủ Nhật, 20.09.2026",
         address: "Số 407 Hưng Long, Võ Nhai, Thái Nguyên",
-      },
-      {
-        label: "Tiệc cưới (nhà trai)",
-        venueName: "Hội trường xóm Hưng Long",
-        time: "16:00, Chủ Nhật, 20.09.2026",
-        address: "Xóm Hưng Long, Võ Nhai, Thái Nguyên",
       },
     ],
   },
