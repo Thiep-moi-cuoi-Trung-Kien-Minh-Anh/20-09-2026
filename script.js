@@ -775,7 +775,6 @@ function initRsvpForm() {
       phone: (formData.get("phone") || "").toString().trim(),
       attending: formData.get("attending"),
       guests: Number(formData.get("guests")) || 0,
-      message: (formData.get("message") || "").toString().trim(),
       submittedAt: new Date().toISOString(),
     };
 
