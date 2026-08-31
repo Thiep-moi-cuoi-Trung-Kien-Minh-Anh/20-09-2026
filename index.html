@@ -220,7 +220,7 @@
     </section>
 
     <!-- ==========================================================
-         M5 — ALBUM ẢNH (Masonry + Lightbox)
+         M5 — ALBUM ẢNH (Album cuộn: slideshow + thumbnail điều hướng)
          Danh sách ảnh sinh từ config.gallery.images (script.js). Ảnh dùng
          loading="lazy"; ảnh lỗi/chưa có sẽ tự hiện khung placeholder.
     =========================================================== -->
@@ -230,7 +230,22 @@
           <span class="section-eyebrow">Album</span>
           <h2 id="galleryTitle">Album ảnh</h2>
         </div>
-        <div class="gallery-grid" id="galleryGrid"></div>
+
+        <div class="gallery-carousel reveal" id="galleryCarousel">
+          <div class="gallery-carousel__main">
+            <button class="gallery-carousel__arrow gallery-carousel__arrow--prev" type="button" aria-label="Ảnh trước">&#8249;</button>
+            <div class="gallery-carousel__stage" id="galleryStage">
+              <span class="gallery-carousel__stage-fallback" aria-hidden="true">&#10084;</span>
+            </div>
+            <button class="gallery-carousel__arrow gallery-carousel__arrow--next" type="button" aria-label="Ảnh sau">&#8250;</button>
+          </div>
+
+          <div class="gallery-carousel__thumbs">
+            <button class="gallery-carousel__thumb-nav gallery-carousel__thumb-nav--up" type="button" aria-label="Cuộn lên">&#9650;</button>
+            <div class="gallery-carousel__thumb-track" id="galleryThumbTrack"></div>
+            <button class="gallery-carousel__thumb-nav gallery-carousel__thumb-nav--down" type="button" aria-label="Cuộn xuống">&#9660;</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -347,17 +362,6 @@
        BACK TO TOP
   =========================================================== -->
   <button id="backToTop" class="back-to-top" type="button" aria-label="Lên đầu trang">&uarr;</button>
-
-  <!-- ==========================================================
-       LIGHTBOX (M5) — overlay dùng chung cho Album ảnh
-  =========================================================== -->
-  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh phóng to" hidden>
-    <button id="lightboxClose" class="lightbox__close" type="button" aria-label="Đóng">&times;</button>
-    <button id="lightboxPrev" class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Ảnh trước">&#8249;</button>
-    <img id="lightboxImage" class="lightbox__image" alt="" />
-    <button id="lightboxNext" class="lightbox__nav lightbox__nav--next" type="button" aria-label="Ảnh sau">&#8250;</button>
-    <p class="lightbox__counter" id="lightboxCounter"></p>
-  </div>
 
   <!-- config.js phải load TRƯỚC script.js vì script.js đọc WEDDING_CONFIG -->
   <script src="config.js"></script>

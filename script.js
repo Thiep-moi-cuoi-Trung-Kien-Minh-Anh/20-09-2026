@@ -17,7 +17,7 @@
  *    5d. Countdown (M2)
  *    5e. Timeline (M3)
  *    5f. Events / Wedding Info (M4)
- *    5g. Gallery + Lightbox (M5)
+ *    5g. Gallery — Album cuộn (M5)
  *    5h. RSVP Form (M6)
  *    5h2. Gift / Mừng cưới (M7)
  *    5i. Wishes Wall (M8)
@@ -589,106 +589,164 @@ function initEventsSection() {
 }
 
 /* ----------------------------------------------------------------------------
-   5g. GALLERY + LIGHTBOX (M5)
-   Sinh lưới ảnh masonry (CSS columns, xem style.css) từ config.gallery.images,
-   lazy-load + fallback khi ảnh lỗi/chưa có, và một lightbox dùng chung để
-   xem phóng to + điều hướng ảnh trước/sau (click, phím mũi tên, Esc).
+   5g. GALLERY — ALBUM CUỘN (M5)
+   Sinh ảnh chính (slideshow, crossfade) + dải thumbnail từ config.gallery.images.
+   Ảnh chính tự động chuyển sau mỗi GALLERY_AUTOPLAY_MS (lặp vòng), tạm dừng khi
+   hover/vừa thao tác tay rồi tự chạy lại sau GALLERY_RESUME_AFTER_MS. Dải
+   thumbnail luôn tự cuộn theo ảnh đang active; hỗ trợ click thumbnail, mũi tên
+   ‹›, mũi tên cuộn ▲▼, phím mũi tên trái/phải, và vuốt trái/phải trên di động.
+   Ảnh lỗi/chưa có sẽ tự hiện khung placeholder (giống hành vi Gallery cũ).
 ---------------------------------------------------------------------------- */
-let galleryPhotos = [];
-let currentLightboxIndex = 0;
+const GALLERY_VISIBLE_THUMBS = 7;
+const GALLERY_AUTOPLAY_MS = 4500;
+const GALLERY_RESUME_AFTER_MS = 6000;
+const GALLERY_SWIPE_THRESHOLD = 40;
 
-function buildGalleryItem(photo, index) {
-  const item = document.createElement("button");
-  item.type = "button";
-  item.className = "gallery-item reveal";
-  item.style.transitionDelay = `${Math.min(index % 6, 5) * 0.08}s`;
-  item.setAttribute("aria-label", `Xem ảnh ${index + 1}`);
+let galleryPhotos = [];
+let galleryIndex = 0;
+let galleryImageEls = [];
+let galleryThumbEls = [];
+let galleryAutoplayTimer = null;
+let galleryResumeTimer = null;
+
+function buildGalleryImage(photo, index) {
+  const img = document.createElement("img");
+  img.className = "gallery-carousel__image";
+  img.alt = photo.alt || `Ảnh cưới ${index + 1}`;
+  img.loading = index === 0 ? "eager" : "lazy";
+  img.addEventListener("error", () => img.classList.add("is-broken"), { once: true });
+  img.src = photo.src;
+  return img;
+}
+
+function buildGalleryThumb(photo, index) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "gallery-carousel__thumb";
+  btn.setAttribute("aria-label", `Xem ảnh ${index + 1}`);
 
   const img = document.createElement("img");
-  img.loading = "lazy";
   img.alt = photo.alt || `Ảnh cưới ${index + 1}`;
-  img.addEventListener("error", () => item.classList.add("is-fallback"), { once: true });
+  img.loading = "lazy";
+  img.addEventListener("error", () => btn.classList.add("is-fallback"), { once: true });
   img.src = photo.src;
 
   const fallback = document.createElement("span");
-  fallback.className = "gallery-item__fallback";
+  fallback.className = "gallery-carousel__thumb-fallback";
   fallback.setAttribute("aria-hidden", "true");
   fallback.textContent = "❀";
 
-  item.append(img, fallback);
-  item.addEventListener("click", () => openLightbox(index));
-  return item;
-}
-
-function renderLightboxImage() {
-  const photo = galleryPhotos[currentLightboxIndex];
-  if (!photo) return;
-  const imgEl = document.getElementById("lightboxImage");
-  const counterEl = document.getElementById("lightboxCounter");
-  imgEl.src = photo.src;
-  imgEl.alt = photo.alt || `Ảnh cưới ${currentLightboxIndex + 1}`;
-  counterEl.textContent = `${currentLightboxIndex + 1} / ${galleryPhotos.length}`;
-}
-
-function openLightbox(index) {
-  currentLightboxIndex = index;
-  renderLightboxImage();
-  const lightbox = document.getElementById("lightbox");
-  lightbox.hidden = false;
-  document.body.classList.add("lightbox-open");
-  document.getElementById("lightboxClose")?.focus();
-}
-
-function closeLightbox() {
-  const lightbox = document.getElementById("lightbox");
-  if (!lightbox) return;
-  lightbox.hidden = true;
-  document.body.classList.remove("lightbox-open");
-}
-
-function showPrevPhoto() {
-  currentLightboxIndex = (currentLightboxIndex - 1 + galleryPhotos.length) % galleryPhotos.length;
-  renderLightboxImage();
-}
-
-function showNextPhoto() {
-  currentLightboxIndex = (currentLightboxIndex + 1) % galleryPhotos.length;
-  renderLightboxImage();
-}
-
-function initLightboxControls() {
-  const lightbox = document.getElementById("lightbox");
-  if (!lightbox) return;
-
-  document.getElementById("lightboxClose")?.addEventListener("click", closeLightbox);
-  document.getElementById("lightboxPrev")?.addEventListener("click", showPrevPhoto);
-  document.getElementById("lightboxNext")?.addEventListener("click", showNextPhoto);
-
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) closeLightbox();
+  btn.append(img, fallback);
+  btn.addEventListener("click", () => {
+    goToGalleryPhoto(index);
+    pauseThenResumeGalleryAutoplay();
   });
+  return btn;
+}
+
+function goToGalleryPhoto(index) {
+  if (!galleryPhotos.length) return;
+  galleryIndex = (index + galleryPhotos.length) % galleryPhotos.length;
+  galleryImageEls.forEach((el, i) => el.classList.toggle("is-active", i === galleryIndex));
+  galleryThumbEls.forEach((el, i) => el.classList.toggle("is-active", i === galleryIndex));
+  galleryThumbEls[galleryIndex]?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+}
+
+function nextGalleryPhoto() {
+  goToGalleryPhoto(galleryIndex + 1);
+}
+
+function prevGalleryPhoto() {
+  goToGalleryPhoto(galleryIndex - 1);
+}
+
+function startGalleryAutoplay() {
+  clearInterval(galleryAutoplayTimer);
+  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReducedMotion || galleryPhotos.length < 2) return;
+  galleryAutoplayTimer = setInterval(nextGalleryPhoto, GALLERY_AUTOPLAY_MS);
+}
+
+function pauseThenResumeGalleryAutoplay() {
+  clearInterval(galleryAutoplayTimer);
+  clearTimeout(galleryResumeTimer);
+  galleryResumeTimer = setTimeout(startGalleryAutoplay, GALLERY_RESUME_AFTER_MS);
+}
+
+function initGalleryControls(root, trackEl) {
+  const btnPrev = root.querySelector(".gallery-carousel__arrow--prev");
+  const btnNext = root.querySelector(".gallery-carousel__arrow--next");
+  const btnUp = root.querySelector(".gallery-carousel__thumb-nav--up");
+  const btnDown = root.querySelector(".gallery-carousel__thumb-nav--down");
+  const stageWrap = root.querySelector(".gallery-carousel__main");
+  const cellStep = 68 * 2;
+
+  btnPrev?.addEventListener("click", () => {
+    prevGalleryPhoto();
+    pauseThenResumeGalleryAutoplay();
+  });
+  btnNext?.addEventListener("click", () => {
+    nextGalleryPhoto();
+    pauseThenResumeGalleryAutoplay();
+  });
+
+  btnUp?.addEventListener("click", () => trackEl.scrollBy({ top: -cellStep, left: -cellStep, behavior: "smooth" }));
+  btnDown?.addEventListener("click", () => trackEl.scrollBy({ top: cellStep, left: cellStep, behavior: "smooth" }));
+
+  root.addEventListener("mouseenter", () => clearInterval(galleryAutoplayTimer));
+  root.addEventListener("mouseleave", startGalleryAutoplay);
 
   document.addEventListener("keydown", (event) => {
-    if (lightbox.hidden) return;
-    if (event.key === "Escape") closeLightbox();
-    if (event.key === "ArrowLeft") showPrevPhoto();
-    if (event.key === "ArrowRight") showNextPhoto();
+    if (galleryPhotos.length < 2) return;
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    const rect = root.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (!inView) return;
+    event.key === "ArrowLeft" ? prevGalleryPhoto() : nextGalleryPhoto();
+    pauseThenResumeGalleryAutoplay();
   });
+
+  let touchStartX = null;
+  stageWrap?.addEventListener("touchstart", (event) => { touchStartX = event.touches[0].clientX; }, { passive: true });
+  stageWrap?.addEventListener(
+    "touchend",
+    (event) => {
+      if (touchStartX === null) return;
+      const deltaX = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(deltaX) > GALLERY_SWIPE_THRESHOLD) {
+        deltaX > 0 ? prevGalleryPhoto() : nextGalleryPhoto();
+        pauseThenResumeGalleryAutoplay();
+      }
+      touchStartX = null;
+    },
+    { passive: true }
+  );
 }
 
 function initGallery() {
   const { gallery } = WEDDING_CONFIG;
-  const gridEl = document.getElementById("galleryGrid");
+  const root = document.getElementById("galleryCarousel");
+  const stageEl = document.getElementById("galleryStage");
+  const trackEl = document.getElementById("galleryThumbTrack");
   const titleEl = document.getElementById("galleryTitle");
 
   if (titleEl && gallery?.title) titleEl.textContent = gallery.title;
-  if (!gridEl || !Array.isArray(gallery?.images) || !gallery.images.length) return;
+  if (!root || !stageEl || !trackEl || !Array.isArray(gallery?.images) || !gallery.images.length) return;
 
   galleryPhotos = gallery.images;
-  gridEl.innerHTML = "";
-  galleryPhotos.forEach((photo, index) => gridEl.appendChild(buildGalleryItem(photo, index)));
 
-  initLightboxControls();
+  galleryImageEls = galleryPhotos.map((photo, index) => buildGalleryImage(photo, index));
+  galleryImageEls.forEach((img) => stageEl.appendChild(img));
+
+  galleryThumbEls = galleryPhotos.map((photo, index) => buildGalleryThumb(photo, index));
+  galleryThumbEls.forEach((thumb) => trackEl.appendChild(thumb));
+
+  const cellSize = 68, gapPx = 8;
+  trackEl.style.maxHeight = `${GALLERY_VISIBLE_THUMBS * cellSize + (GALLERY_VISIBLE_THUMBS - 1) * gapPx}px`;
+
+  goToGalleryPhoto(0);
+  initGalleryControls(root, trackEl);
+  startGalleryAutoplay();
 }
 
 /* ----------------------------------------------------------------------------

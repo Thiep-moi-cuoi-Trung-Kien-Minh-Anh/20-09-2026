@@ -147,7 +147,7 @@ const WEDDING_CONFIG = {
     ],
   },
 
-  // --- Album ảnh (Gallery dạng Masonry + Lightbox) ---
+  // --- Album ảnh (Gallery dạng album cuộn: slideshow + thumbnail) ---
   // Thêm/bớt ảnh bằng cách chỉnh mảng "images". Đặt file ảnh vào
   // assets/images/ rồi sửa đường dẫn — ảnh nào chưa có/lỗi sẽ tự hiện
   // khung placeholder thay vì vỡ layout.

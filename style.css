@@ -14,14 +14,13 @@
    11. Countdown (M2)
    12. Timeline (M3)
    13. Events / Wedding Info (M4)
-   14. Gallery / Masonry (M5)
-   15. Lightbox (M5)
-   16. RSVP Form (M6)
-   16b. Gift / Mừng cưới (M7)
-   17. Wishes Wall (M8)
-   18. Falling Flowers (M9)
-   19. Music Toggle (M9)
-   20. Footer (M9)
+   14. Gallery — Album cuộn (M5)
+   15. RSVP Form (M6)
+   15b. Gift / Mừng cưới (M7)
+   16. Wishes Wall (M8)
+   17. Falling Flowers (M9)
+   18. Music Toggle (M9)
+   19. Footer (M9)
    ============================================================================ */
 
 /* ----------------------------------------------------------------------------
@@ -71,7 +70,6 @@
   --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   --z-loading: 100;
-  --z-lightbox: 110;
   --z-progress: 90;
   --z-fixed-ui: 80;
   --z-decor: 75;
@@ -893,7 +891,10 @@ body.invitation-locked .back-to-top {
 }
 
 /* ----------------------------------------------------------------------------
-   14. GALLERY / MASONRY (M5) — CSS columns (không cần thư viện JS masonry)
+   14. GALLERY — ALBUM CUỘN (M5)
+   Slideshow ảnh lớn (autoplay, loop) + dải thumbnail điều hướng đồng bộ theo
+   ảnh đang active. Desktop: 2 cột (ảnh chính trái, thumbnail dọc phải).
+   Mobile (< 640px): thumbnail chuyển xuống hàng ngang, cuộn bằng tay.
 ---------------------------------------------------------------------------- */
 .gallery-section {
   padding: var(--space-xl) 0;
@@ -904,156 +905,224 @@ body.invitation-locked .back-to-top {
   margin-bottom: var(--space-lg);
 }
 
-.gallery-grid {
-  column-count: 1;
-  column-gap: var(--space-sm);
+.gallery-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  max-width: 480px;
+  margin: 0 auto;
 }
 
-@media (min-width: 600px) {
-  .gallery-grid {
-    column-count: 2;
-  }
-}
-
-@media (min-width: 900px) {
-  .gallery-grid {
-    column-count: 3;
-  }
-}
-
-.gallery-item {
+.gallery-carousel__main {
   position: relative;
-  display: block;
+}
+
+.gallery-carousel__stage {
+  position: relative;
   width: 100%;
-  break-inside: avoid;
-  margin-bottom: var(--space-sm);
-  border-radius: var(--radius-md);
+  aspect-ratio: 3 / 4;
   overflow: hidden;
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
   box-shadow: var(--shadow-soft);
 }
 
-.gallery-item img {
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  /* "auto <ratio>" giữ chỗ 3:4 trước khi ảnh tải xong (tránh cột masonry
-     co về 0 chiều cao vì loading="lazy"), rồi tự chuyển sang tỉ lệ thật
-     của ảnh ngay khi ảnh đã tải — mỗi ảnh vẫn có tỉ lệ khác nhau như masonry */
-  aspect-ratio: auto 3 / 4;
-  transition: transform 0.5s ease;
-}
-
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
-
-.gallery-item__fallback {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 3 / 4;
-  background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
-  color: var(--accent-secondary);
-  font-size: 2rem;
-}
-
-.gallery-item.is-fallback img {
-  display: none;
-}
-
-.gallery-item.is-fallback .gallery-item__fallback {
-  display: flex;
-}
-
-/* ----------------------------------------------------------------------------
-   15. LIGHTBOX (M5) — overlay xem ảnh phóng to, điều hướng trước/sau
----------------------------------------------------------------------------- */
-body.lightbox-open {
-  overflow: hidden;
-}
-
-.lightbox {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-lightbox);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(10, 8, 6, 0.92);
-  padding: var(--space-md);
-}
-
-.lightbox[hidden] {
-  display: none;
-}
-
-.lightbox__image {
-  max-width: 90vw;
-  max-height: 80vh;
-  border-radius: var(--radius-md);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-.lightbox__close,
-.lightbox__nav {
+.gallery-carousel__stage-fallback {
   position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2.4rem;
+  color: var(--accent-secondary);
+}
+
+.gallery-carousel__image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.gallery-carousel__image.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gallery-carousel__image.is-broken {
+  display: none;
+}
+
+.gallery-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: none;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(58, 54, 48, 0.35);
   color: var(--color-text-light);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
   transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.lightbox__close:hover,
-.lightbox__nav:hover {
-  background-color: rgba(255, 255, 255, 0.24);
-  transform: scale(1.05);
-}
-
-.lightbox__close {
-  top: var(--space-sm);
-  right: var(--space-sm);
-  width: 44px;
-  height: 44px;
-  font-size: 1.6rem;
-  line-height: 1;
-}
-
-.lightbox__nav {
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  font-size: 1.9rem;
-  line-height: 1;
-}
-
-.lightbox__nav:hover {
+.gallery-carousel__arrow:hover {
+  background-color: rgba(58, 54, 48, 0.55);
   transform: translateY(-50%) scale(1.05);
 }
 
-.lightbox__nav--prev {
-  left: var(--space-sm);
+.gallery-carousel__arrow--prev {
+  left: var(--space-xs);
 }
 
-.lightbox__nav--next {
-  right: var(--space-sm);
+.gallery-carousel__arrow--next {
+  right: var(--space-xs);
 }
 
-.lightbox__counter {
+.gallery-carousel__thumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.gallery-carousel__thumb-nav {
+  display: none;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: var(--accent-secondary);
+  font-size: 0.75rem;
+  padding: 4px 0;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.gallery-carousel__thumb-nav[disabled] {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.gallery-carousel__thumb-track {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-xs);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.gallery-carousel__thumb-track::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-carousel__thumb {
+  position: relative;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
+  opacity: 0.6;
+  transition: border-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.gallery-carousel__thumb:hover {
+  opacity: 0.9;
+}
+
+.gallery-carousel__thumb.is-active {
+  border-color: var(--accent-secondary);
+  opacity: 1;
+}
+
+.gallery-carousel__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-carousel__thumb-fallback {
+  display: none;
   position: absolute;
-  bottom: var(--space-sm);
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--accent-secondary);
+}
+
+.gallery-carousel__thumb.is-fallback img {
+  display: none;
+}
+
+.gallery-carousel__thumb.is-fallback .gallery-carousel__thumb-fallback {
+  display: flex;
+}
+
+@media (min-width: 640px) {
+  .gallery-carousel {
+    flex-direction: row;
+    max-width: 560px;
+  }
+
+  .gallery-carousel__main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .gallery-carousel__thumbs {
+    flex: 0 0 76px;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .gallery-carousel__thumb-nav {
+    display: flex;
+  }
+
+  .gallery-carousel__thumb-track {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .gallery-carousel__thumb {
+    flex-basis: 68px;
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-carousel__image {
+    transition: none;
+  }
 }
 
 /* ----------------------------------------------------------------------------
-   16. RSVP FORM (M6)
+   15. RSVP FORM (M6)
 ---------------------------------------------------------------------------- */
 .rsvp-section {
   padding: var(--space-xl) 0;
@@ -1183,7 +1252,7 @@ body.lightbox-open {
 }
 
 /* ----------------------------------------------------------------------------
-   16b. GIFT / MỪNG CƯỚI (M7) — QR ngân hàng + số tài khoản + nút sao chép
+   15b. GIFT / MỪNG CƯỚI (M7) — QR ngân hàng + số tài khoản + nút sao chép
 ---------------------------------------------------------------------------- */
 .gift-section {
   padding: var(--space-xl) 0;
@@ -1325,7 +1394,7 @@ body.lightbox-open {
 }
 
 /* ----------------------------------------------------------------------------
-   17. WISHES WALL (M8) — form gửi lời chúc + bức tường hiển thị
+   16. WISHES WALL (M8) — form gửi lời chúc + bức tường hiển thị
 ---------------------------------------------------------------------------- */
 .wishes-section {
   padding: var(--space-xl) 0;
@@ -1457,7 +1526,7 @@ body.lightbox-open {
 }
 
 /* ----------------------------------------------------------------------------
-   18. FALLING FLOWERS (M9) — hiệu ứng hoa rơi nhẹ, trang trí, không chặn thao tác
+   17. FALLING FLOWERS (M9) — hiệu ứng hoa rơi nhẹ, trang trí, không chặn thao tác
 ---------------------------------------------------------------------------- */
 .falling-flowers {
   position: fixed;
@@ -1504,7 +1573,7 @@ body.lightbox-open {
 }
 
 /* ----------------------------------------------------------------------------
-   19. MUSIC TOGGLE (M9)
+   18. MUSIC TOGGLE (M9)
 ---------------------------------------------------------------------------- */
 .music-toggle {
   position: fixed;
@@ -1546,7 +1615,7 @@ body.lightbox-open {
 }
 
 /* ----------------------------------------------------------------------------
-   20. FOOTER (M9)
+   19. FOOTER (M9)
 ---------------------------------------------------------------------------- */
 .site-footer {
   padding: var(--space-xl) 0 var(--space-lg);
