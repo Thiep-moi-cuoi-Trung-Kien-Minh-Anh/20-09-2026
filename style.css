@@ -1024,6 +1024,7 @@ body.invitation-locked .back-to-top {
   gap: var(--space-xs);
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior: contain;
   scroll-behavior: smooth;
   scrollbar-width: none;
 }

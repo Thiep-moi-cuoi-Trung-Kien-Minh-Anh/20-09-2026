@@ -169,6 +169,13 @@ function openInvitation(welcomeScreen, openButton) {
   openButton.classList.add("is-clicked");
 
   const unlock = () => {
+    // welcomeScreen chuyển từ position:fixed sang relative ngay dưới đây,
+    // đẩy layout của cả trang xuống ~100vh. Nếu nút "Mở Thiệp" vẫn đang
+    // giữ focus lúc này, trình duyệt sẽ tự cuộn trang để "giữ" phần tử đang
+    // focus trong khung nhìn — gây cảm giác trang bị giật/tự cuộn bất chợt
+    // sau đó (kể cả khi người dùng đang thao tác ở phần khác, vd. Album ảnh).
+    // Bỏ focus khỏi nút trước khi đổi layout để tránh hành vi này.
+    openButton.blur();
     document.body.classList.remove("invitation-locked", "invitation-opening");
     document.body.classList.add("invitation-opened");
     welcomeScreen.classList.remove("is-opening");
@@ -606,8 +613,48 @@ let galleryPhotos = [];
 let galleryIndex = 0;
 let galleryImageEls = [];
 let galleryThumbEls = [];
+let galleryTrackEl = null;
 let galleryAutoplayTimer = null;
 let galleryResumeTimer = null;
+
+// Cuộn thumbnail đang active vào giữa dải, chỉ tác động lên chính dải
+// thumbnail (không dùng scrollIntoView vì nó sẽ cuộn luôn cả trang). Chỉ gọi
+// scrollTo khi dải thực sự còn chỗ để cuộn và luôn giới hạn giá trị đích
+// trong khoảng cuộn hợp lệ — gọi scrollTo với giá trị âm/vượt quá phạm vi
+// trên một phần tử không có gì để cuộn (vd. album có ít ảnh, vừa đủ hiển thị
+// hết trong khung) khiến trình duyệt "tràn" thao tác cuộn đó ra cuộn luôn cả
+// trang, gây giật/nhảy trang mỗi khi bấm đổi ảnh.
+function centerGalleryThumb(trackEl, thumbEl) {
+  if (!trackEl || !thumbEl) return;
+  const isColumn = getComputedStyle(trackEl).flexDirection === "column";
+  const maxScroll = isColumn
+    ? trackEl.scrollHeight - trackEl.clientHeight
+    : trackEl.scrollWidth - trackEl.clientWidth;
+  if (maxScroll <= 0) return;
+
+  const trackRect = trackEl.getBoundingClientRect();
+  const thumbRect = thumbEl.getBoundingClientRect();
+
+  if (isColumn) {
+    const delta = (thumbRect.top + thumbRect.height / 2) - (trackRect.top + trackRect.height / 2);
+    const target = Math.max(0, Math.min(maxScroll, trackEl.scrollTop + delta));
+    trackEl.scrollTo({ top: target, behavior: "smooth" });
+  } else {
+    const delta = (thumbRect.left + thumbRect.width / 2) - (trackRect.left + trackRect.width / 2);
+    const target = Math.max(0, Math.min(maxScroll, trackEl.scrollLeft + delta));
+    trackEl.scrollTo({ left: target, behavior: "smooth" });
+  }
+}
+
+// Bấm nút điều hướng gallery (thumbnail, mũi tên...) không nên làm nút đó
+// nhận focus, vì trình duyệt sẽ tự cuộn cả trang để đưa phần tử vừa focus
+// vào khung nhìn — đây chính là nguyên nhân gây giật/cuộn trang khi bấm ảnh.
+// Chặn hành vi focus mặc định trên mousedown/touch để click vẫn hoạt động
+// bình thường nhưng không kéo theo việc cuộn trang; điều hướng bàn phím
+// (Tab) vẫn focus được các nút này bình thường.
+function suppressFocusScroll(el) {
+  el?.addEventListener("mousedown", (event) => event.preventDefault());
+}
 
 function buildGalleryImage(photo, index) {
   const img = document.createElement("img");
@@ -637,6 +684,7 @@ function buildGalleryThumb(photo, index) {
   fallback.textContent = "❀";
 
   btn.append(img, fallback);
+  suppressFocusScroll(btn);
   btn.addEventListener("click", () => {
     goToGalleryPhoto(index);
     pauseThenResumeGalleryAutoplay();
@@ -649,7 +697,7 @@ function goToGalleryPhoto(index) {
   galleryIndex = (index + galleryPhotos.length) % galleryPhotos.length;
   galleryImageEls.forEach((el, i) => el.classList.toggle("is-active", i === galleryIndex));
   galleryThumbEls.forEach((el, i) => el.classList.toggle("is-active", i === galleryIndex));
-  galleryThumbEls[galleryIndex]?.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+  centerGalleryThumb(galleryTrackEl, galleryThumbEls[galleryIndex]);
 }
 
 function nextGalleryPhoto() {
@@ -680,6 +728,8 @@ function initGalleryControls(root, trackEl) {
   const btnDown = root.querySelector(".gallery-carousel__thumb-nav--down");
   const stageWrap = root.querySelector(".gallery-carousel__main");
   const cellStep = 68 * 2;
+
+  [btnPrev, btnNext, btnUp, btnDown].forEach(suppressFocusScroll);
 
   btnPrev?.addEventListener("click", () => {
     prevGalleryPhoto();
@@ -740,6 +790,7 @@ function initGallery() {
 
   galleryThumbEls = galleryPhotos.map((photo, index) => buildGalleryThumb(photo, index));
   galleryThumbEls.forEach((thumb) => trackEl.appendChild(thumb));
+  galleryTrackEl = trackEl;
 
   const cellSize = 68, gapPx = 8;
   trackEl.style.maxHeight = `${GALLERY_VISIBLE_THUMBS * cellSize + (GALLERY_VISIBLE_THUMBS - 1) * gapPx}px`;
