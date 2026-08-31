@@ -12,7 +12,7 @@ Dự án được xây dựng theo từng module (iterative). Đã hoàn thành:
 - **M2 — Giới thiệu + Countdown**: ảnh cưới, lời chào, câu chuyện, đếm ngược thời gian thực.
 - **M3 — Timeline**: các mốc Gặp nhau / Yêu nhau / Đính hôn / Ngày cưới.
 - **M4 — Thông tin lễ cưới**: Lễ nhà trai / Lễ nhà gái / Tiệc cưới, kèm bản đồ + chỉ đường.
-- **M5 — Album ảnh**: Masonry gallery + Lightbox.
+- **M5 — Album ảnh**: album cuộn dạng slideshow ảnh lớn + dải thumbnail điều hướng.
 - **M6 — RSVP**: form xác nhận tham dự, sẵn sàng kết nối Google Sheets.
 - **M7 — Mừng cưới**: QR ngân hàng, số tài khoản, chủ tài khoản, nút sao chép.
 - **M8 — Lời chúc**: form gửi lời chúc + bức tường hiển thị, sẵn sàng kết nối Firebase/Google Sheets.
@@ -190,7 +190,7 @@ Xem tài liệu [Firebase REST API](https://firebase.google.com/docs/database/re
 - **Trang quản trị Lời chúc/RSVP**: một trang riêng (hoặc Google Sheet có sẵn) để xem/duyệt
   phản hồi mà không cần mở trực tiếp Google Sheets.
 - **Phân tích truy cập**: gắn Google Analytics/Plausible để biết bao nhiêu khách đã xem thiệp.
-- **Kiểm thử tự động**: thêm vài Playwright test cơ bản (mở thiệp, submit RSVP, mở lightbox)
-  để tránh hồi quy khi chỉnh sửa thêm.
+- **Kiểm thử tự động**: thêm vài Playwright test cơ bản (mở thiệp, submit RSVP, chuyển ảnh
+  trong album) để tránh hồi quy khi chỉnh sửa thêm.
 - **Rà soát khả năng tiếp cận (a11y)**: kiểm tra bằng trình đọc màn hình thật, bổ sung
-  `aria-live`/focus-trap cho lightbox và các overlay nếu cần.
+  `aria-live`/focus-trap cho các overlay (nếu có) nếu cần.
