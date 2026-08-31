@@ -792,7 +792,8 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 900px) {
   .events-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+    justify-content: center;
   }
 }
 
