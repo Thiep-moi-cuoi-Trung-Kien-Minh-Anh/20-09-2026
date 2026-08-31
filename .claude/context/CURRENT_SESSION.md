@@ -1,43 +1,48 @@
-# Tóm tắt session: Điền nội dung thật vào thiệp cưới online + album ảnh + preview link
-Thời gian: 2026-08-24 18:48
+# Tóm tắt tiến độ dự án: Thiệp Cưới Online (Trung Kiên & Minh Anh)
+Cập nhật lần cuối: 2026-08-31 (rà soát lại toàn bộ tiến độ, không chỉnh code)
 
-## Mục tiêu / bối cảnh ban đầu
-- Dự án Thiệp Cưới Online (site tĩnh HTML/CSS/JS) đã hoàn thành 10/10 module (M0–M10) từ trước, nhưng `config.js` còn nhiều nội dung placeholder (tên, ngày cưới, địa điểm, album ảnh...).
-- Session này: điền nội dung thật cho cặp đôi Trung Kiên & Minh Anh.
+## Bối cảnh
+- Site tĩnh HTML/CSS/JS, 10/10 module (M0–M10) đã hoàn thành từ trước.
+- File `CURRENT_SESSION.md` trước đó (24/08) đã cũ — nhiều việc "dang dở" ghi trong đó
+  thực ra đã được xử lý xong qua các PR sau này. File này thay thế bản cũ bằng tiến độ
+  thực tế tính đến ngày cập nhật.
 
-## Quyết định quan trọng đã chốt
-- Tên hiển thị: "Trung Kiên & Minh Anh | Thiệp cưới"; tên đầy đủ: Lê Trung Kiên & Nguyễn Minh Anh.
-- Có 5 mốc lễ khác nhau (ăn hỏi 12/09, tiệc nhà gái 18/09, Vu Quy/thành hôn/tiệc nhà trai đều 20/09/2026) — người dùng chọn **Lễ thành hôn (14:30, Chủ Nhật 20/09/2026, tư gia nhà trai)** làm mốc chính cho bìa thiệp + đếm ngược.
-- Ẩn (không xóa code, dùng thuộc tính `hidden` trên `<section>`) 3 mục: "Giới thiệu/câu chuyện tình yêu" (`#about`), "Timeline" (`#timeline`), "Mừng cưới" (`#gift`) — theo yêu cầu người dùng, chờ bổ sung nội dung sau.
-- Lời chúc mẫu (`wishes.seedWishes`): giữ nguyên, không đổi.
-- Album ảnh: **chỉ giữ 5 ảnh cưới thật** người dùng gửi trực tiếp qua chat (không giữ 4 ảnh áo dài Văn Miếu cũ).
+## Trạng thái hiện tại trên `main`
+- Nhánh làm việc hiện tại: `claude/project-progress-status-ksfrvy` (tạo từ `main`,
+  chưa có thay đổi code — chỉ dùng để đọc/báo cáo tiến độ).
+- Các PR đã merge vào `main` kể từ lần tổng kết trước: #1, #3, #4, #5, #6.
 
-## Thay đổi đã thực hiện
-- File: `config.js`
-  - `site.title` → "Trung Kiên & Minh Anh | Thiệp cưới"
-  - `couple` → groomName "Trung Kiên", brideName "Minh Anh", họ tên đầy đủ
-  - `wedding.dateISO` → `2026-09-20T14:30:00+07:00` (Lễ thành hôn), `displayDate` "20 . 09 . 2026"
-  - `events.items` → 5 mốc lễ thật (Ăn hỏi, Tiệc nhà gái, Vu Quy, Lễ thành hôn, Tiệc nhà trai) kèm địa chỉ đầy đủ (Hà Nội + Thái Nguyên)
-  - `rsvp.subtitle` → hạn xác nhận đổi thành trước 01.09.2026 (khớp mốc ăn hỏi sớm nhất)
-  - `gallery.images` → 5 ảnh thật (`gallery-01.jpg`..`gallery-05.jpg`), alt text tạm do Claude đặt, user sẽ tự sửa lại sau
-- File: `index.html` — thêm `hidden` vào 3 thẻ `<section id="about">`, `<section id="timeline">`, `<section id="gift">`
-- File: `assets/images/gallery-01.jpg`..`gallery-05.jpg` — thay bằng 5 ảnh cưới thật user gửi qua chat (ảnh được trích xuất từ transcript session, base64-decode); xoá 4 ảnh áo dài Văn Miếu placeholder cũ khỏi album (file cũ bị ghi đè/xóa qua git)
-- Lệnh đã chạy: `git commit` + `git push -u origin claude/determined-ritchie-in3vqo` — 4 commit liên tiếp, tất cả đã push thành công lên remote, working tree sạch (kiểm tra lại bằng `git status`)
-- Đã đóng gói toàn bộ site (inline CSS/JS/config + ảnh base64 data URI) thành 1 file HTML độc lập, publish qua Artifact tool để tạo link xem trước: `https://claude.ai/code/artifact/6e6552dd-dd80-4432-85ba-2e3450e38956` (private, chỉ user xem được trừ khi share)
+### Nội dung thật đã điền (`config.js`)
+- `couple`: Lê Trung Kiên & Nguyễn Minh Anh (hiển thị ngắn: Trung Kiên & Minh Anh).
+- `wedding`: mốc chính Lễ thành hôn — 14:30, Chủ Nhật 20/09/2026.
+- `events.items`: **đã rút gọn chỉ còn 2 mốc** (khác với bản ghi cũ là 5 mốc):
+  1. Tiệc cưới (nhà gái) — 17:30, Thứ Sáu 18.09.2026, Promes Center, Cầu Giấy, Hà Nội.
+  2. Tiệc cưới (nhà trai) — 16:00, Chủ Nhật 20.09.2026, xóm Hưng Long, Võ Nhai, Thái Nguyên.
+- `gallery.images`: 5 ảnh cưới thật (`gallery-01..05.jpg`), alt text vẫn là bản Claude đặt tạm,
+  **chưa thấy user sửa lại**.
+- Welcome screen: lời chào đã được cập nhật lại (PR #4).
+- RSVP: đã bỏ trường "lời nhắn" bị trùng với mục Lời chúc (PR #5).
+- Nhạc nền: **đã có file thật** `assets/music/background.mp3` (~6.5MB, "Married Life piano cover"),
+  `autoplayOnOpen: true` — mục này trước đây ghi "chưa có" nay đã xong.
 
-## Việc còn dang dở / bước tiếp theo
-- [ ] **Tạo Pull Request** để merge nhánh `claude/determined-ritchie-in3vqo` vào `main` — user đã yêu cầu ngay trước khi tổng kết, nhưng GitHub MCP tools bị mất kết nối tạm thời trong session, chưa tạo được. Link tạo PR thủ công (đã có sẵn từ output `git push`): https://github.com/letrungkien223-design/Thiep-moi-online/pull/new/claude/determined-ritchie-in3vqo — cần thử lại việc tạo PR qua tool ở session tiếp theo, hoặc user tự bấm link.
-- [ ] Chú thích ảnh album (`gallery.images[].alt`) đang là placeholder tạm do Claude đặt, user sẽ tự sửa lại.
-- [ ] `site.url` còn để trống — cần điền sau khi deploy thật.
-- [ ] `rsvp.submitEndpoint` và `wishes.submitEndpoint`/`fetchEndpoint` chưa cấu hình — RSVP/Lời chúc mới chỉ lưu localStorage, chưa thu thập được phản hồi thật.
-- [ ] `assets/music/` chưa có file nhạc nền nào (chỉ có `.gitkeep`).
-- [ ] Nội dung 3 mục đang ẩn (Giới thiệu/câu chuyện tình yêu, Timeline, Mừng cưới) cần được bổ sung rồi bỏ `hidden` khi user sẵn sàng.
-- [ ] Chưa deploy thật lên GitHub Pages/Netlify/Vercel — link Artifact hiện tại chỉ là bản xem trước tạm, không phải link chính thức gửi khách mời.
+### Vẫn còn thiếu / chưa xử lý
+- [ ] 3 section vẫn đang **ẩn** (`hidden` trong `index.html`), chưa có nội dung thật:
+      `#about` (Giới thiệu/câu chuyện tình yêu), `#timeline` (Timeline), `#gift` (Mừng cưới).
+- [ ] `config.js -> site.url` vẫn để trống — chưa deploy nên chưa có URL thật.
+- [ ] `rsvp.submitEndpoint`, `wishes.submitEndpoint`/`fetchEndpoint` vẫn để trống —
+      RSVP và Lời chúc mới lưu tạm vào `localStorage`, chưa thu thập được phản hồi thật
+      từ khách mời.
+- [ ] Chưa deploy chính thức lên GitHub Pages/Netlify/Vercel.
+- [ ] Alt text ảnh Album vẫn là bản Claude đặt tạm, user chưa xác nhận/sửa lại.
+- [ ] **Phát hiện khi rà soát lần này**: `rsvp.subtitle` vẫn ghi "xác nhận trước ngày
+      01.09.2026" (mốc ăn hỏi cũ) — nhưng mốc ăn hỏi 12/09 đã bị xoá khỏi `events.items`
+      từ PR #4. Hạn RSVP này có thể không còn hợp lý so với 2 mốc tiệc cưới hiện tại
+      (18/09 và 20/09) — **cần user xác nhận lại hạn RSVP phù hợp**.
 
-## Vấn đề / lỗi đã gặp và cách xử lý
-- User gửi ảnh qua chat nhưng ảnh không được lưu thành file trên đĩa trong môi trường remote session này → Claude tìm thấy dữ liệu ảnh (base64) trực tiếp trong file transcript JSONL của session (`~/.claude/projects/.../*.jsonl`) và giải mã để lưu thành file `.jpg` — cách này hoạt động nhưng là giải pháp đặc thù cho môi trường remote, cần lưu ý nếu lặp lại.
-- Lần đầu chỉ trích xuất được 4/5 ảnh do 1 ảnh bị rơi khi gửi — user gửi lại ảnh còn thiếu ở tin nhắn sau, Claude trích xuất bổ sung thành công.
-- Cuối session: GitHub MCP server bị ngắt kết nối/đang kết nối lại nhiều lần liên tục khi cố tạo Pull Request — thử `ToolSearch` nhiều lần với các từ khóa khác nhau đều không tìm thấy `mcp__github__create_pull_request`. Chưa giải quyết được trong session này.
-
-## Prompt mở đầu cho session mới
-> Tiếp tục dự án Thiệp Cưới Online (repo `letrungkien223-design/thiep-moi-online`, nhánh `claude/determined-ritchie-in3vqo`, đã push đầy đủ, working tree sạch). Việc cần làm ngay: tạo Pull Request từ nhánh `claude/determined-ritchie-in3vqo` vào `main` (link thủ công nếu cần: https://github.com/letrungkien223-design/Thiep-moi-online/pull/new/claude/determined-ritchie-in3vqo). Sau đó xem file `.claude/context/CURRENT_SESSION.md` để biết các việc dang dở khác (endpoint RSVP/Lời chúc, nội dung 3 mục đang ẩn, deploy thật, v.v.).
+## Prompt mở đầu cho session tiếp theo
+> Tiếp tục dự án Thiệp Cưới Online (repo `letrungkien223-design/thiep-moi-online`, code mới nhất
+> đã có trên `main`). Việc còn dang dở: (1) xác nhận lại hạn RSVP trong `config.js` cho khớp
+> 2 mốc tiệc cưới hiện tại (18/09 và 20/09/2026); (2) bổ sung nội dung rồi bỏ `hidden` cho 3
+> mục Giới thiệu/Timeline/Mừng cưới nếu user sẵn sàng; (3) cấu hình `submitEndpoint`/`fetchEndpoint`
+> cho RSVP và Lời chúc; (4) deploy thật rồi điền `site.url`. Xem file
+> `.claude/context/CURRENT_SESSION.md` để biết chi tiết đầy đủ.
