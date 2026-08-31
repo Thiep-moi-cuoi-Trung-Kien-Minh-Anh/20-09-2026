@@ -13,6 +13,7 @@
    10. About Section (M2)
    11. Countdown (M2)
    12. Timeline (M3)
+   12b. Hai Gia Đình (M3b)
    13. Events / Wedding Info (M4)
    14. Gallery — Album cuộn (M5)
    15. RSVP Form (M6)
@@ -771,6 +772,69 @@ body.invitation-locked .back-to-top {
 }
 
 /* ----------------------------------------------------------------------------
+   12b. HAI GIA ĐÌNH (M3b) — phụ huynh hai bên (Nhà Gái trái, Nhà Trai phải)
+   + lời mời trân trọng
+---------------------------------------------------------------------------- */
+.families-section {
+  padding: var(--space-xl) 0;
+}
+
+.families-section__heading {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.families-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .families-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+}
+
+.families-grid__col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.families-grid__heading {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  margin-bottom: 0.15em;
+}
+
+.families-grid__name {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.families-grid__address {
+  margin-top: 0.5em;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.families-section__invitation {
+  margin: var(--space-lg) auto 0;
+  max-width: 640px;
+  text-align: center;
+  font-size: 1.35rem;
+  line-height: 1.6;
+  color: var(--accent-secondary);
+}
+
+/* ----------------------------------------------------------------------------
    13. EVENTS / WEDDING INFO (M4) — Lễ nhà trai, Lễ nhà gái, Tiệc cưới
 ---------------------------------------------------------------------------- */
 .events-section {
@@ -848,36 +912,24 @@ body.invitation-locked .back-to-top {
   color: var(--accent-primary);
 }
 
-.event-card__map {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-top: 0.3em;
-  background-color: var(--bg-primary);
-}
-
-.event-card__map iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
 .event-card__direction-btn {
   display: inline-flex;
+  align-self: center;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
   margin-top: 0.4em;
-  padding: 0.7em 1.2em;
+  padding: 0.85em 1.7em;
   border-radius: 999px;
-  border: 1px solid var(--accent-secondary);
-  color: var(--accent-secondary);
+  border: none;
+  background-color: var(--color-text-dark);
+  color: var(--color-text-light);
+  font-weight: 600;
   font-size: 0.82rem;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: background-color var(--transition-fast), color var(--transition-fast);
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .event-card__direction-btn svg {
@@ -887,7 +939,7 @@ body.invitation-locked .back-to-top {
 
 .event-card__direction-btn:hover {
   background-color: var(--accent-secondary);
-  color: var(--color-text-light);
+  transform: translateY(-2px);
 }
 
 /* ----------------------------------------------------------------------------

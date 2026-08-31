@@ -16,6 +16,7 @@
  *    5c. About Section (M2)
  *    5d. Countdown (M2)
  *    5e. Timeline (M3)
+ *    5eb. Hai gia đình (M3b)
  *    5f. Events / Wedding Info (M4)
  *    5g. Gallery — Album cuộn (M5)
  *    5h. RSVP Form (M6)
@@ -513,6 +514,49 @@ function initTimeline() {
 }
 
 /* ----------------------------------------------------------------------------
+   5eb. HAI GIA ĐÌNH (M3b)
+   Sinh 2 cột phụ huynh (Nhà Gái trái, Nhà Trai phải) từ config.families,
+   cộng dòng lời mời trân trọng ở dưới.
+---------------------------------------------------------------------------- */
+function buildFamilyColumn(family) {
+  const col = document.createElement("div");
+  col.className = "families-grid__col";
+
+  const heading = document.createElement("p");
+  heading.className = "families-grid__heading";
+  heading.textContent = `${family.label}:`;
+
+  const father = document.createElement("p");
+  father.className = "families-grid__name";
+  father.textContent = family.father || "";
+
+  const mother = document.createElement("p");
+  mother.className = "families-grid__name";
+  mother.textContent = family.mother || "";
+
+  const address = document.createElement("p");
+  address.className = "families-grid__address";
+  address.textContent = family.address || "";
+
+  col.append(heading, father, mother, address);
+  return col;
+}
+
+function initFamilies() {
+  const { families } = WEDDING_CONFIG;
+  const titleEl = document.getElementById("familiesTitle");
+  const gridEl = document.getElementById("familiesGrid");
+  const invitationEl = document.getElementById("familiesInvitation");
+
+  if (titleEl && families?.title) titleEl.textContent = families.title;
+  if (invitationEl && families?.invitation) invitationEl.textContent = families.invitation;
+  if (!gridEl || !families?.bride || !families?.groom) return;
+
+  gridEl.innerHTML = "";
+  gridEl.append(buildFamilyColumn(families.groom), buildFamilyColumn(families.bride));
+}
+
+/* ----------------------------------------------------------------------------
    5f. EVENTS / WEDDING INFO (M4)
    Sinh 3 card Lễ nhà trai / Lễ nhà gái / Tiệc cưới từ config.events.items.
    Bản đồ nhúng và nút "Chỉ đường" được tạo tự động từ trường "address"
@@ -557,17 +601,6 @@ function buildEventCard(event, index) {
   article.append(label, venue, buildEventMetaRow("clock", event.time), buildEventMetaRow("pin", event.address));
 
   if (event.address) {
-    const mapWrap = document.createElement("div");
-    mapWrap.className = "event-card__map";
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.google.com/maps?q=${encodeURIComponent(event.address)}&output=embed`;
-    iframe.loading = "lazy";
-    iframe.referrerPolicy = "no-referrer-when-downgrade";
-    iframe.title = `Bản đồ ${event.venueName || event.label || ""}`;
-    iframe.setAttribute("allowfullscreen", "");
-    mapWrap.appendChild(iframe);
-    article.appendChild(mapWrap);
-
     const directionBtn = document.createElement("a");
     directionBtn.className = "event-card__direction-btn";
     directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.address)}`;
@@ -575,7 +608,7 @@ function buildEventCard(event, index) {
     directionBtn.rel = "noopener noreferrer";
     directionBtn.insertAdjacentHTML("afterbegin", EVENT_CARD_ICONS.compass);
     const directionLabel = document.createElement("span");
-    directionLabel.textContent = "Chỉ đường";
+    directionLabel.textContent = "Xem chỉ đường";
     directionBtn.appendChild(directionLabel);
     article.appendChild(directionBtn);
   }
@@ -1296,6 +1329,7 @@ function initApp() {
   initAboutSection();
   initCountdown();
   initTimeline();
+  initFamilies();
   initEventsSection();
   initGallery();
   initRsvpForm();

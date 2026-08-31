@@ -11,7 +11,8 @@ Dự án được xây dựng theo từng module (iterative). Đã hoàn thành:
 - **M1 — Welcome Screen**: bìa thiệp toàn màn hình + hiệu ứng mở thiệp.
 - **M2 — Giới thiệu + Countdown**: ảnh cưới, lời chào, câu chuyện, đếm ngược thời gian thực.
 - **M3 — Timeline**: các mốc Gặp nhau / Yêu nhau / Đính hôn / Ngày cưới.
-- **M4 — Thông tin lễ cưới**: Lễ nhà trai / Lễ nhà gái / Tiệc cưới, kèm bản đồ + chỉ đường.
+- **M3b — Hai gia đình**: tên phụ huynh hai bên (Nhà Gái / Nhà Trai) dạng 2 cột + lời mời trân trọng.
+- **M4 — Thông tin lễ cưới**: Lễ nhà trai / Lễ nhà gái / Tiệc cưới, kèm nút "Xem chỉ đường" mở Google Maps.
 - **M5 — Album ảnh**: album cuộn dạng slideshow ảnh lớn + dải thumbnail điều hướng.
 - **M6 — RSVP**: form xác nhận tham dự, sẵn sàng kết nối Google Sheets.
 - **M7 — Mừng cưới**: QR ngân hàng, số tài khoản, chủ tài khoản, nút sao chép.
@@ -56,6 +57,7 @@ thay đổi nội dung thông thường.
 | `about`                 | Ảnh cưới, lời chào, câu chuyện tình yêu (mảng đoạn văn)                     |
 | `countdown`             | Tiêu đề + nhãn Ngày/Giờ/Phút/Giây + thông điệp khi đã tới ngày cưới          |
 | `timeline`              | Danh sách mốc thời gian (Gặp nhau, Yêu nhau, Đính hôn, Cưới...)              |
+| `families`               | Tên phụ huynh + địa chỉ hai bên (Nhà Gái/Nhà Trai) + lời mời trân trọng      |
 | `events`                | Danh sách địa điểm (Lễ nhà trai/gái, Tiệc cưới) — chỉ cần địa chỉ text thường |
 | `gallery`                | Danh sách ảnh trong Album                                                   |
 | `rsvp`                   | Nội dung form RSVP + endpoint kết nối Google Sheets (tuỳ chọn)               |
