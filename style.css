@@ -772,16 +772,11 @@ body.invitation-locked .back-to-top {
 }
 
 /* ----------------------------------------------------------------------------
-   12b. HAI GIA ĐÌNH (M3b) — phụ huynh hai bên (Nhà Gái trái, Nhà Trai phải)
+   12b. HAI GIA ĐÌNH (M3b) — phụ huynh hai bên (Nhà Trai trái, Nhà Gái phải)
    + lời mời trân trọng
 ---------------------------------------------------------------------------- */
 .families-section {
   padding: var(--space-xl) 0;
-}
-
-.families-section__heading {
-  text-align: center;
-  margin-bottom: var(--space-lg);
 }
 
 .families-grid {

@@ -524,7 +524,7 @@ function buildFamilyColumn(family) {
 
   const heading = document.createElement("p");
   heading.className = "families-grid__heading";
-  heading.textContent = `${family.label}:`;
+  heading.textContent = family.label;
 
   const father = document.createElement("p");
   father.className = "families-grid__name";
@@ -544,11 +544,9 @@ function buildFamilyColumn(family) {
 
 function initFamilies() {
   const { families } = WEDDING_CONFIG;
-  const titleEl = document.getElementById("familiesTitle");
   const gridEl = document.getElementById("familiesGrid");
   const invitationEl = document.getElementById("familiesInvitation");
 
-  if (titleEl && families?.title) titleEl.textContent = families.title;
   if (invitationEl && families?.invitation) invitationEl.textContent = families.invitation;
   if (!gridEl || !families?.bride || !families?.groom) return;
 
