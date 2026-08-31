@@ -113,7 +113,7 @@ const WEDDING_CONFIG = {
   families: {
     title: "Hai gia đình",
     invitation: "Trân trọng kính mời Quý khách đến dự bữa tiệc thân mật cùng gia đình chúng tôi.",
-    // Thứ tự hiển thị: Nhà Gái bên trái, Nhà Trai bên phải.
+    // Thứ tự hiển thị: Nhà Trai bên trái, Nhà Gái bên phải.
     bride: {
       label: "Nhà Gái",
       father: "Ông Nguyễn Hữu Dũng",

@@ -553,7 +553,7 @@ function initFamilies() {
   if (!gridEl || !families?.bride || !families?.groom) return;
 
   gridEl.innerHTML = "";
-  gridEl.append(buildFamilyColumn(families.bride), buildFamilyColumn(families.groom));
+  gridEl.append(buildFamilyColumn(families.groom), buildFamilyColumn(families.bride));
 }
 
 /* ----------------------------------------------------------------------------
