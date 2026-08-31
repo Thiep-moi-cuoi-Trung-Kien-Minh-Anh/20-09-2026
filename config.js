@@ -133,16 +133,16 @@ const WEDDING_CONFIG = {
     title: "Thông tin lễ cưới",
     items: [
       {
-        label: "Tiệc cưới (nhà gái)",
-        venueName: "Hội trường tầng 2 - Trung tâm tiệc cưới Promes Center",
-        time: "17:30, Thứ Sáu, 18.09.2026",
-        address: "122-124 Xuân Thủy, Cầu Giấy, Hà Nội",
-      },
-      {
         label: "Tiệc cưới (nhà trai)",
         venueName: "Hội trường xóm Hưng Long",
         time: "16:00, Chủ Nhật, 20.09.2026",
         address: "Xóm Hưng Long, Võ Nhai, Thái Nguyên",
+      },
+      {
+        label: "Tiệc cưới (nhà gái)",
+        venueName: "Hội trường tầng 2 - Trung tâm tiệc cưới Promes Center",
+        time: "17:30, Thứ Sáu, 18.09.2026",
+        address: "122-124 Xuân Thủy, Cầu Giấy, Hà Nội",
       },
     ],
   },
