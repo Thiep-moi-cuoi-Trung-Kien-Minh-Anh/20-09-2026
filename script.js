@@ -541,7 +541,11 @@ function buildEventCard(event, index) {
 
   const venue = document.createElement("h3");
   venue.className = "event-card__venue";
-  venue.textContent = event.venueName || "";
+  const venueLines = (event.venueName || "").split("\n");
+  venueLines.forEach((line, i) => {
+    if (i > 0) venue.appendChild(document.createElement("br"));
+    venue.appendChild(document.createTextNode(line));
+  });
 
   article.append(label, venue, buildEventMetaRow("clock", event.time), buildEventMetaRow("pin", event.address));
 
