@@ -16,6 +16,7 @@
  *    5c. About Section (M2)
  *    5d. Countdown (M2)
  *    5e. Timeline (M3)
+ *    5eb. Hai gia đình (M3b)
  *    5f. Events / Wedding Info (M4)
  *    5g. Gallery — Album cuộn (M5)
  *    5h. RSVP Form (M6)
@@ -510,6 +511,49 @@ function initTimeline() {
   timeline.milestones.forEach((milestone, index) => {
     listEl.appendChild(buildTimelineItem(milestone, index));
   });
+}
+
+/* ----------------------------------------------------------------------------
+   5eb. HAI GIA ĐÌNH (M3b)
+   Sinh 2 cột phụ huynh (Nhà Gái trái, Nhà Trai phải) từ config.families,
+   cộng dòng lời mời trân trọng ở dưới.
+---------------------------------------------------------------------------- */
+function buildFamilyColumn(family) {
+  const col = document.createElement("div");
+  col.className = "families-grid__col";
+
+  const heading = document.createElement("p");
+  heading.className = "families-grid__heading";
+  heading.textContent = `${family.label}:`;
+
+  const father = document.createElement("p");
+  father.className = "families-grid__name";
+  father.textContent = family.father || "";
+
+  const mother = document.createElement("p");
+  mother.className = "families-grid__name";
+  mother.textContent = family.mother || "";
+
+  const address = document.createElement("p");
+  address.className = "families-grid__address";
+  address.textContent = family.address || "";
+
+  col.append(heading, father, mother, address);
+  return col;
+}
+
+function initFamilies() {
+  const { families } = WEDDING_CONFIG;
+  const titleEl = document.getElementById("familiesTitle");
+  const gridEl = document.getElementById("familiesGrid");
+  const invitationEl = document.getElementById("familiesInvitation");
+
+  if (titleEl && families?.title) titleEl.textContent = families.title;
+  if (invitationEl && families?.invitation) invitationEl.textContent = families.invitation;
+  if (!gridEl || !families?.bride || !families?.groom) return;
+
+  gridEl.innerHTML = "";
+  gridEl.append(buildFamilyColumn(families.bride), buildFamilyColumn(families.groom));
 }
 
 /* ----------------------------------------------------------------------------
@@ -1285,6 +1329,7 @@ function initApp() {
   initAboutSection();
   initCountdown();
   initTimeline();
+  initFamilies();
   initEventsSection();
   initGallery();
   initRsvpForm();

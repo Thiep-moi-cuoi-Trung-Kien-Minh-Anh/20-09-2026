@@ -13,6 +13,7 @@
    10. About Section (M2)
    11. Countdown (M2)
    12. Timeline (M3)
+   12b. Hai Gia Đình (M3b)
    13. Events / Wedding Info (M4)
    14. Gallery — Album cuộn (M5)
    15. RSVP Form (M6)
@@ -768,6 +769,69 @@ body.invitation-locked .back-to-top {
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.75;
+}
+
+/* ----------------------------------------------------------------------------
+   12b. HAI GIA ĐÌNH (M3b) — phụ huynh hai bên (Nhà Gái trái, Nhà Trai phải)
+   + lời mời trân trọng
+---------------------------------------------------------------------------- */
+.families-section {
+  padding: var(--space-xl) 0;
+}
+
+.families-section__heading {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.families-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .families-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+}
+
+.families-grid__col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.families-grid__heading {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  margin-bottom: 0.15em;
+}
+
+.families-grid__name {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.families-grid__address {
+  margin-top: 0.5em;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.families-section__invitation {
+  margin: var(--space-lg) auto 0;
+  max-width: 640px;
+  text-align: center;
+  font-size: 1.35rem;
+  line-height: 1.6;
+  color: var(--accent-secondary);
 }
 
 /* ----------------------------------------------------------------------------

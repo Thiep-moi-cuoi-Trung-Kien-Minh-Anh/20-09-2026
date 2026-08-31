@@ -109,6 +109,25 @@ const WEDDING_CONFIG = {
     ],
   },
 
+  // --- Hai gia đình (phụ huynh hai bên) + lời mời trân trọng ---
+  families: {
+    title: "Hai gia đình",
+    invitation: "Trân trọng kính mời Quý khách đến dự bữa tiệc thân mật cùng gia đình chúng tôi.",
+    // Thứ tự hiển thị: Nhà Gái bên trái, Nhà Trai bên phải.
+    bride: {
+      label: "Nhà Gái",
+      father: "Ông Nguyễn Hữu Dũng",
+      mother: "Bà Nguyễn Minh Hoa",
+      address: "Nghĩa Đô, Hà Nội",
+    },
+    groom: {
+      label: "Nhà Trai",
+      father: "Ông Lê Quý Bình",
+      mother: "Bà Triệu Thị Tươi",
+      address: "Võ Nhai, Thái Nguyên",
+    },
+  },
+
   // --- Giao diện: chế độ mặc định + bảng màu (Elegant Luxury Minimalist) ---
   theme: {
     // "light" hoặc "dark" — người dùng vẫn có thể tự đổi bằng nút toggle,
@@ -126,8 +145,8 @@ const WEDDING_CONFIG = {
   },
 
   // --- Thông tin lễ cưới (Lễ nhà trai / Lễ nhà gái / Tiệc cưới) ---
-  // Chỉ cần điền "address" đầy đủ, chính xác — bản đồ nhúng và nút "Chỉ
-  // đường" sẽ tự động tạo ra từ địa chỉ này (không cần lấy mã nhúng
+  // Chỉ cần điền "address" đầy đủ, chính xác — nút "Xem chỉ đường" sẽ tự
+  // động tạo link Google Maps từ địa chỉ này (không cần lấy mã nhúng
   // Google Maps thủ công, cũng không cần API key).
   events: {
     title: "Thông tin lễ cưới",
