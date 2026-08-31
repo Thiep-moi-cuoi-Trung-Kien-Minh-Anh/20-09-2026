@@ -792,7 +792,8 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 900px) {
   .events-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+    justify-content: center;
   }
 }
 
@@ -812,7 +813,7 @@ body.invitation-locked .back-to-top {
 }
 
 .event-card__label {
-  align-self: flex-start;
+  align-self: center;
   font-size: 0.72rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -825,6 +826,7 @@ body.invitation-locked .back-to-top {
 .event-card__venue {
   font-size: 1.3rem;
   margin: 0.1em 0 0;
+  text-align: center;
 }
 
 .event-card__meta {
