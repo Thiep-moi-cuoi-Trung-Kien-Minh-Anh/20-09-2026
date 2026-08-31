@@ -159,6 +159,7 @@ const WEDDING_CONFIG = {
       { src: "assets/images/gallery-03.jpg", alt: "Ôm nhau dưới tán cây đèn dây" },
       { src: "assets/images/gallery-04.jpg", alt: "Khoảnh khắc ngọt ngào bên nhau" },
       { src: "assets/images/gallery-05.jpg", alt: "Chân dung cô dâu" },
+      { src: "assets/images/gallery-06.jpg", alt: "Cô dâu chú rể bên cổng vòm cổ điển" },
     ],
   },
 
