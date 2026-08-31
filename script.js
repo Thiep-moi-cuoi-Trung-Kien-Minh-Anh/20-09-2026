@@ -557,17 +557,6 @@ function buildEventCard(event, index) {
   article.append(label, venue, buildEventMetaRow("clock", event.time), buildEventMetaRow("pin", event.address));
 
   if (event.address) {
-    const mapWrap = document.createElement("div");
-    mapWrap.className = "event-card__map";
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.google.com/maps?q=${encodeURIComponent(event.address)}&output=embed`;
-    iframe.loading = "lazy";
-    iframe.referrerPolicy = "no-referrer-when-downgrade";
-    iframe.title = `Bản đồ ${event.venueName || event.label || ""}`;
-    iframe.setAttribute("allowfullscreen", "");
-    mapWrap.appendChild(iframe);
-    article.appendChild(mapWrap);
-
     const directionBtn = document.createElement("a");
     directionBtn.className = "event-card__direction-btn";
     directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(event.address)}`;
@@ -575,7 +564,7 @@ function buildEventCard(event, index) {
     directionBtn.rel = "noopener noreferrer";
     directionBtn.insertAdjacentHTML("afterbegin", EVENT_CARD_ICONS.compass);
     const directionLabel = document.createElement("span");
-    directionLabel.textContent = "Chỉ đường";
+    directionLabel.textContent = "Xem chỉ đường";
     directionBtn.appendChild(directionLabel);
     article.appendChild(directionBtn);
   }
