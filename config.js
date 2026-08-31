@@ -140,7 +140,7 @@ const WEDDING_CONFIG = {
       },
       {
         label: "Tiệc cưới (nhà gái)",
-        venueName: "Hội trường tầng 2 - Trung tâm tiệc cưới Promes Center",
+        venueName: "Hội trường tầng 2\nTrung tâm tiệc cưới Promes Center",
         time: "17:30, Thứ Sáu, 18.09.2026",
         address: "122-124 Xuân Thủy, Cầu Giấy, Hà Nội",
       },

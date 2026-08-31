@@ -792,7 +792,7 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 900px) {
   .events-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
     justify-content: center;
   }
 }
@@ -824,6 +824,10 @@ body.invitation-locked .back-to-top {
 }
 
 .event-card__venue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5em;
   font-size: 1.3rem;
   margin: 0.1em 0 0;
   text-align: center;
