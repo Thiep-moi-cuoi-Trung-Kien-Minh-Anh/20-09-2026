@@ -212,7 +212,7 @@ const WEDDING_CONFIG = {
     // bên dưới (script phân biệt RSVP/Lời chúc qua trường "type" trong payload).
     // Để trống "" nếu chưa cấu hình — form vẫn hoạt động, chỉ lưu tạm
     // dữ liệu vào localStorage của trình duyệt (xem hàm submitRsvp trong script.js).
-    submitEndpoint: "",
+    submitEndpoint: "https://script.google.com/macros/s/AKfycbwLitY2VPstBaTRCdyraIvTK_p6NO-27J9jwzlQgA-vQoN9DqDHP_XYhrxZg0pkZRE/exec",
   },
 
   // --- Mừng cưới (QR ngân hàng + số tài khoản + nút sao chép) ---
@@ -267,8 +267,8 @@ const WEDDING_CONFIG = {
     //   bao giờ trả dữ liệu RSVP (riêng tư, chỉ chủ thiệp xem trong Sheet).
     // Để trống "" nếu chưa cấu hình — trang sẽ lưu/đọc lời chúc mới từ
     // localStorage của trình duyệt (chỉ hiển thị trên máy của người gửi).
-    submitEndpoint: "",
-    fetchEndpoint: "",
+    submitEndpoint: "https://script.google.com/macros/s/AKfycbwLitY2VPstBaTRCdyraIvTK_p6NO-27J9jwzlQgA-vQoN9DqDHP_XYhrxZg0pkZRE/exec",
+    fetchEndpoint: "https://script.google.com/macros/s/AKfycbwLitY2VPstBaTRCdyraIvTK_p6NO-27J9jwzlQgA-vQoN9DqDHP_XYhrxZg0pkZRE/exec",
   },
 
   // --- Nhạc nền (nút bật/tắt, tự thử phát ngay sau khi bấm "Mở Thiệp") ---
