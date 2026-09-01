@@ -111,7 +111,7 @@ const WEDDING_CONFIG = {
 
   // --- Hai gia đình (phụ huynh hai bên) + lời mời trân trọng ---
   families: {
-    invitation: "Trân trọng kính mời Quý khách đến dự bữa tiệc thân mật cùng gia đình chúng tôi.",
+    invitation: "Trân trọng kính mời Quý khách đến dự bữa tiệc thân mật cùng gia đình chúng tôi mừng hạnh phúc",
     // Thứ tự hiển thị: Nhà Trai bên trái, Nhà Gái bên phải.
     bride: {
       label: "Nhà Gái",
@@ -148,7 +148,15 @@ const WEDDING_CONFIG = {
   // động tạo link Google Maps từ địa chỉ này (không cần lấy mã nhúng
   // Google Maps thủ công, cũng không cần API key).
   events: {
-    title: "Thông tin lễ cưới",
+    // Khối tiêu đề lớn ngay trên các card sự kiện — thay cho "Lễ cưới /
+    // Thông tin lễ cưới", trình bày theo từng dòng giống thiệp cưới in giấy.
+    heading: {
+      time: "Vào 16 giờ 00",
+      day: "Chủ Nhật | 20.09.2026",
+      lunarDate: "Tức ngày 10 tháng 08 năm Bính Ngọ",
+      venue: "Tại: Hội trường xóm Hưng Long",
+      address: "Xã Võ Nhai - Tỉnh Thái Nguyên",
+    },
     items: [
       {
         label: "Tiệc cưới nhà trai",
@@ -184,7 +192,7 @@ const WEDDING_CONFIG = {
   // --- RSVP (form xác nhận tham dự) ---
   rsvp: {
     title: "Xác nhận tham dự",
-    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi. Vui lòng xác nhận trước ngày 01.09.2026.",
+    subtitle: "Sự hiện diện của bạn là niềm vinh hạnh của chúng tôi.",
     submitLabel: "Gửi xác nhận",
     attendingYesLabel: "Có, tôi sẽ tham dự",
     attendingNoLabel: "Rất tiếc, tôi không thể tham dự",
