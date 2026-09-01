@@ -47,7 +47,6 @@ const WEDDING_CONFIG = {
     // sửa đường dẫn dưới đây. Để trống "" nếu chưa có ảnh — trang sẽ tự
     // dùng nền gradient thay thế, vẫn đẹp và không bị vỡ layout.
     backgroundImage: "assets/images/welcome-bg.jpg",
-    greetingLabel: "Trân trọng kính mời anh chị tham dự lễ thành hôn",
     openButtonLabel: "Mở Thiệp",
   },
 

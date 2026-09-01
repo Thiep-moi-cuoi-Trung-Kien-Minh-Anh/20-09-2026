@@ -131,13 +131,11 @@ function populateWelcomeScreen() {
   const groomEl = document.getElementById("welcomeGroomName");
   const brideEl = document.getElementById("welcomeBrideName");
   const dateEl = document.getElementById("welcomeDate");
-  const eyebrowEl = document.getElementById("welcomeEyebrow");
   const openLabelEl = document.getElementById("welcomeOpenLabel");
 
   if (groomEl && couple?.groomFullName) groomEl.textContent = couple.groomFullName;
   if (brideEl && couple?.brideFullName) brideEl.textContent = couple.brideFullName;
   if (dateEl && wedding?.displayDate) dateEl.textContent = wedding.displayDate;
-  if (eyebrowEl && welcome?.greetingLabel) eyebrowEl.textContent = welcome.greetingLabel;
   if (openLabelEl && welcome?.openButtonLabel) openLabelEl.textContent = welcome.openButtonLabel;
 }
 

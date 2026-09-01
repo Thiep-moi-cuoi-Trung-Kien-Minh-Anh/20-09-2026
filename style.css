@@ -435,13 +435,6 @@ body.invitation-locked .back-to-top {
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
 
-.welcome-screen__eyebrow {
-  font-size: 0.8rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  opacity: 0.9;
-}
-
 .welcome-screen__ornament {
   font-size: 1.75rem;
   color: var(--color-champagne-gold);
