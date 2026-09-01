@@ -16,7 +16,7 @@ const WEDDING_CONFIG = {
     // Điền vào SAU KHI deploy (vd. "https://ten-mien-cua-ban.com/") để có
     // canonical URL + og:url chuẩn. Để trống "" nếu chưa deploy — các thẻ
     // liên quan sẽ tự bị bỏ qua thay vì chèn URL rỗng/sai.
-    url: "",
+    url: "https://thiep-moi-cuoi-trung-kien-minh-anh.github.io/Thiep-moi-online/",
     // Ảnh hiển thị khi chia sẻ link lên Messenger/Zalo/Facebook... Mặc định
     // dùng lại ảnh nền Welcome Screen, có thể đổi sang ảnh khác nếu muốn.
     ogImage: "assets/images/welcome-bg.jpg",
