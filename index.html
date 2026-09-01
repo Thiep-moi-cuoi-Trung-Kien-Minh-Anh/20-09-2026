@@ -216,9 +216,11 @@
 
     <!-- ==========================================================
          M4 — THÔNG TIN LỄ CƯỚI (Lễ nhà trai / Lễ nhà gái / Tiệc cưới)
-         Danh sách card sinh từ config.events.items (script.js). Nút
-         "Xem chỉ đường" tự tạo link Google Maps từ trường "address",
-         không cần lấy mã nhúng Google Maps thủ công.
+         Khối tiêu đề (giờ/ngày/âm lịch/địa điểm) + nút "Xem chỉ đường"
+         lấy từ config.events.heading (script.js), link Google Maps tự
+         tạo từ "heading.mapAddress". Danh sách card chi tiết sinh từ
+         config.events.items — đang ẩn (events.showItems = false), bật
+         lại bằng cách đổi giá trị đó thành true.
     =========================================================== -->
     <section id="events" class="events-section">
       <div class="container">
@@ -228,8 +230,9 @@
           <p class="events-section__lunar" id="eventsLunar"></p>
           <p class="events-section__venue" id="eventsVenue"></p>
           <p class="events-section__address" id="eventsAddress"></p>
+          <a class="event-card__direction-btn events-section__direction-btn" id="eventsDirectionBtn" target="_blank" rel="noopener noreferrer" hidden></a>
         </div>
-        <div class="events-grid" id="eventsGrid"></div>
+        <div class="events-grid" id="eventsGrid" hidden></div>
       </div>
     </section>
 

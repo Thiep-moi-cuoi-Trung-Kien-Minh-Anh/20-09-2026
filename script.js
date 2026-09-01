@@ -627,15 +627,31 @@ function initEventsSection() {
     const lunarEl = document.getElementById("eventsLunar");
     const venueEl = document.getElementById("eventsVenue");
     const addressEl = document.getElementById("eventsAddress");
+    const directionBtn = document.getElementById("eventsDirectionBtn");
     if (timeEl) timeEl.textContent = heading.time || "";
     if (dayEl) dayEl.textContent = heading.day || "";
     if (lunarEl) lunarEl.textContent = heading.lunarDate || "";
     if (venueEl) venueEl.textContent = heading.venue || "";
     if (addressEl) addressEl.textContent = heading.address || "";
+    if (directionBtn && heading.mapAddress) {
+      directionBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(heading.mapAddress)}`;
+      directionBtn.innerHTML = "";
+      directionBtn.insertAdjacentHTML("afterbegin", EVENT_CARD_ICONS.compass);
+      const label = document.createElement("span");
+      label.textContent = "Xem chỉ đường";
+      directionBtn.appendChild(label);
+      directionBtn.hidden = false;
+    }
   }
 
-  if (!gridEl || !Array.isArray(events?.items) || !events.items.length) return;
+  if (!gridEl) return;
+  if (events?.showItems === false) {
+    gridEl.hidden = true;
+    return;
+  }
+  if (!Array.isArray(events?.items) || !events.items.length) return;
 
+  gridEl.hidden = false;
   gridEl.innerHTML = "";
   events.items.forEach((event, index) => gridEl.appendChild(buildEventCard(event, index)));
 }

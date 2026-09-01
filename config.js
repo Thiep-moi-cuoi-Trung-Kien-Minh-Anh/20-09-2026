@@ -155,7 +155,14 @@ const WEDDING_CONFIG = {
       lunarDate: "Tức ngày 10 tháng 08 năm Bính Ngọ",
       venue: "Tại: Hội trường xóm Hưng Long",
       address: "Xã Võ Nhai - Tỉnh Thái Nguyên",
+      // Địa chỉ đầy đủ dùng để tạo link "Xem chỉ đường" (Google Maps),
+      // hiển thị ngay dưới khối tiêu đề trên. Có thể khác với "address"
+      // ở trên (địa chỉ rút gọn để đọc cho đẹp).
+      mapAddress: "Xóm Hưng Long, Võ Nhai, Thái Nguyên",
     },
+    // Đặt false để ẩn danh sách card chi tiết bên dưới khối tiêu đề (chỉ
+    // hiện khối tiêu đề + nút "Xem chỉ đường"). Đặt true để hiện lại.
+    showItems: false,
     items: [
       {
         label: "Tiệc cưới nhà trai",
