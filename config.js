@@ -11,7 +11,7 @@
 const WEDDING_CONFIG = {
   // --- Thông tin chung cho thẻ <title>, mô tả SEO, chia sẻ mạng xã hội ---
   site: {
-    title: "Trung Kiên & Minh Anh | Thiệp cưới",
+    title: "Thiệp mời cưới Trung Kiên & Minh Anh",
     description: "Trân trọng kính mời bạn đến chung vui trong ngày cưới của chúng tôi.",
     // Điền vào SAU KHI deploy (vd. "https://ten-mien-cua-ban.com/") để có
     // canonical URL + og:url chuẩn. Để trống "" nếu chưa deploy — các thẻ
