@@ -110,7 +110,8 @@ const WEDDING_CONFIG = {
 
   // --- Hai gia đình (phụ huynh hai bên) + lời mời trân trọng ---
   families: {
-    invitation: "Trân trọng kính mời Quý khách đến dự bữa tiệc thân mật cùng gia đình chúng tôi mừng hạnh phúc",
+    // "\n" xuống dòng thủ công (không đợi tự ngắt theo chiều rộng màn hình)
+    invitation: "Trân trọng kính mời Quý khách đến dự bữa tiệc thân mật cùng gia đình chúng tôi\nmừng hạnh phúc",
     // Thứ tự hiển thị: Nhà Trai bên trái, Nhà Gái bên phải.
     bride: {
       label: "Nhà Gái",

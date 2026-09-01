@@ -60,8 +60,8 @@
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
-  --space-lg: 4rem;
-  --space-xl: 3.5rem;
+  --space-lg: 3rem;
+  --space-xl: 2.5rem;
   --radius-md: 12px;
   --radius-lg: 24px;
   --shadow-soft: 0 10px 40px rgba(58, 54, 48, 0.08);
@@ -781,8 +781,8 @@ body.invitation-locked .back-to-top {
 
 .families-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-lg);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
   max-width: 640px;
   margin: 0 auto;
   text-align: center;
@@ -790,7 +790,6 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 640px) {
   .families-grid {
-    grid-template-columns: 1fr 1fr;
     gap: var(--space-md);
   }
 }
@@ -830,12 +829,12 @@ body.invitation-locked .back-to-top {
 }
 
 .families-section__names {
-  margin-top: 0.3em;
+  margin-top: 0.5em;
   text-align: center;
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent-secondary);
 }
