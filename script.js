@@ -951,6 +951,7 @@ function initRsvpForm() {
 
     const formData = new FormData(form);
     const payload = {
+      type: "rsvp",
       name: (formData.get("name") || "").toString().trim(),
       phone: (formData.get("phone") || "").toString().trim(),
       attending: formData.get("attending"),
@@ -1198,6 +1199,7 @@ async function initWishesWall() {
 
     const formData = new FormData(form);
     const newWish = {
+      type: "wish",
       name: (formData.get("name") || "").toString().trim(),
       message: (formData.get("message") || "").toString().trim(),
       submittedAt: new Date().toISOString(),

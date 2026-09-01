@@ -206,13 +206,10 @@ const WEDDING_CONFIG = {
     successMessage: "Cảm ơn bạn đã xác nhận! Hẹn gặp bạn trong ngày trọng đại của chúng tôi.",
     errorMessage: "Rất tiếc, đã có lỗi xảy ra khi gửi. Vui lòng thử lại hoặc liên hệ trực tiếp với chúng tôi.",
 
-    // ĐỂ KẾT NỐI RSVP VỚI GOOGLE SHEETS (không cần server riêng):
-    // 1. Tạo 1 Google Sheet mới, vào menu Extensions > Apps Script.
-    // 2. Dán đoạn code mẫu (xem README.md) để nhận JSON và ghi thành 1
-    //    dòng mới vào Sheet.
-    // 3. Deploy > New deployment > chọn "Web app", Execute as: Me,
-    //    Who has access: Anyone, rồi bấm Deploy để lấy URL.
-    // 4. Dán URL đó vào "submitEndpoint" bên dưới.
+    // ĐỂ KẾT NỐI RSVP VỚI GOOGLE SHEETS: xem hướng dẫn đầy đủ trong README.md
+    // ("Kết nối RSVP / Lời chúc với Google Sheets") + code Apps Script có sẵn
+    // ở apps-script/Code.gs. Dùng CÙNG 1 URL Web App với wishes.submitEndpoint
+    // bên dưới (script phân biệt RSVP/Lời chúc qua trường "type" trong payload).
     // Để trống "" nếu chưa cấu hình — form vẫn hoạt động, chỉ lưu tạm
     // dữ liệu vào localStorage của trình duyệt (xem hàm submitRsvp trong script.js).
     submitEndpoint: "",
@@ -263,12 +260,11 @@ const WEDDING_CONFIG = {
       { name: "Bạn bè thân thiết", message: "Chúc mừng hạnh phúc! Chúc hai bạn luôn yêu thương nhau như ngày đầu." },
     ],
 
-    // ĐỂ KẾT NỐI VỚI FIREBASE HOẶC GOOGLE SHEETS:
-    // - submitEndpoint: URL POST nhận JSON {name, message, submittedAt} để
-    //   lưu lời chúc mới (Firebase Realtime Database REST API, hoặc Google
-    //   Apps Script Web App — xem hướng dẫn RSVP ở trên, dùng chung cách làm).
-    // - fetchEndpoint: URL GET trả về mảng JSON [{name, message, submittedAt}, ...]
-    //   để hiển thị lời chúc từ MỌI khách mời (không chỉ trên máy hiện tại).
+    // ĐỂ KẾT NỐI VỚI GOOGLE SHEETS (xem README.md + apps-script/Code.gs):
+    // - submitEndpoint: dùng CÙNG 1 URL Web App với rsvp.submitEndpoint ở trên.
+    // - fetchEndpoint: cũng dùng CÙNG URL đó (GET) — Apps Script chỉ đọc và
+    //   trả về lời chúc (tab LoiChuc) để hiển thị cho MỌI khách mời, không
+    //   bao giờ trả dữ liệu RSVP (riêng tư, chỉ chủ thiệp xem trong Sheet).
     // Để trống "" nếu chưa cấu hình — trang sẽ lưu/đọc lời chúc mới từ
     // localStorage của trình duyệt (chỉ hiển thị trên máy của người gửi).
     submitEndpoint: "",
