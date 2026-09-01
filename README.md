@@ -85,31 +85,20 @@ của trình duyệt — đủ để demo nhưng **không** thu thập được 
 
 ### Cách 1 — Google Sheets (khuyến khích, miễn phí, không cần server riêng)
 
-1. Tạo một Google Sheet mới.
-2. Vào menu **Extensions > Apps Script**, xoá code mẫu và dán đoạn sau (dùng chung
-   được cho cả RSVP và Lời chúc, chỉ khác cột dữ liệu ghi ra):
+Dùng chung 1 Google Sheet với 2 tab (`RSVP` và `LoiChuc`) và 1 URL Apps Script duy nhất —
+code đã viết sẵn ở [`apps-script/Code.gs`](apps-script/Code.gs).
 
-   ```javascript
-   function doPost(e) {
-     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-     const data = JSON.parse(e.postData.contents);
-     // RSVP có các trường: name, phone, attending, guests, message
-     // Lời chúc có các trường: name, message
-     sheet.appendRow([
-       data.submittedAt,
-       data.name,
-       data.phone || "",
-       data.attending || "",
-       data.guests ?? "",
-       data.message || "",
-     ]);
-     return ContentService.createTextOutput("OK");
-   }
-   ```
-
+1. Tạo một Google Sheet mới, đặt tên 2 tab đúng chính xác (phân biệt hoa/thường):
+   - `RSVP` — dòng đầu tiên (header) gợi ý: `Thời gian | Họ tên | SĐT | Tham dự | Số khách`
+   - `LoiChuc` — dòng đầu tiên (header) gợi ý: `Thời gian | Họ tên | Lời chúc`
+2. Vào menu **Extensions > Apps Script**, xoá code mẫu, dán toàn bộ nội dung file
+   [`apps-script/Code.gs`](apps-script/Code.gs) vào.
 3. Bấm **Deploy > New deployment**, chọn loại **Web app**, thiết lập
    "Execute as": **Me**, "Who has access": **Anyone**, rồi bấm **Deploy**.
-4. Sao chép URL Web App được cấp, dán vào `config.js`:
+4. Lần đầu deploy sẽ có cảnh báo "Google chưa xác minh ứng dụng" (bình thường vì đây là
+   script tự viết) — bấm **Advanced > Go to (tên project) (unsafe)** để cấp quyền.
+5. Sao chép URL Web App được cấp (dạng `https://script.google.com/macros/s/XXXXXXXX/exec`),
+   dán **CÙNG 1 URL** vào cả 3 giá trị trong `config.js`:
 
    ```javascript
    rsvp: {
@@ -118,13 +107,14 @@ của trình duyệt — đủ để demo nhưng **không** thu thập được 
    },
    wishes: {
      // ...
-     submitEndpoint: "https://script.google.com/macros/s/XXXXXXXX/exec", // có thể dùng chung 1 URL với sheet khác nhau, hoặc deploy 2 Apps Script riêng
+     submitEndpoint: "https://script.google.com/macros/s/XXXXXXXX/exec",
+     fetchEndpoint: "https://script.google.com/macros/s/XXXXXXXX/exec",
    },
    ```
 
-   Để bức tường Lời chúc hiển thị được lời chúc từ **mọi khách mời** (không chỉ máy của
-   người gửi), triển khai thêm một hàm `doGet(e)` trả về mảng JSON các lời chúc từ Sheet,
-   rồi dán URL đó vào `wishes.fetchEndpoint`.
+   `fetchEndpoint` (GET) chỉ đọc từ tab `LoiChuc` nên lời chúc mới sẽ hiện cho **mọi khách
+   mời** khi họ tải lại trang; dữ liệu RSVP luôn ở tab `RSVP`, không bao giờ hiển thị công
+   khai — chỉ chủ thiệp xem trực tiếp trong Sheet.
 
 ### Cách 2 — Firebase (Realtime Database / Firestore)
 
