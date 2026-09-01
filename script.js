@@ -544,7 +544,8 @@ function initFamilies() {
   const { families, couple } = WEDDING_CONFIG;
   const gridEl = document.getElementById("familiesGrid");
   const invitationEl = document.getElementById("familiesInvitation");
-  const namesEl = document.getElementById("familiesNames");
+  const namesGroomEl = document.getElementById("familiesNamesGroom");
+  const namesBrideEl = document.getElementById("familiesNamesBride");
 
   if (invitationEl && families?.invitation) {
     invitationEl.innerHTML = "";
@@ -553,9 +554,8 @@ function initFamilies() {
       invitationEl.appendChild(document.createTextNode(line));
     });
   }
-  if (namesEl && couple?.groomName && couple?.brideName) {
-    namesEl.textContent = `${couple.groomName} & ${couple.brideName}`;
-  }
+  if (namesGroomEl && couple?.groomName) namesGroomEl.textContent = couple.groomName;
+  if (namesBrideEl && couple?.brideName) namesBrideEl.textContent = couple.brideName;
   if (!gridEl || !families?.bride || !families?.groom) return;
 
   gridEl.innerHTML = "";

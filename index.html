@@ -204,13 +204,15 @@
     <!-- ==========================================================
          M3b — HAI GIA ĐÌNH (phụ huynh hai bên + lời mời trân trọng)
          Dữ liệu từ config.families (script.js). Cột trái: Nhà Trai,
-         cột phải: Nhà Gái — trên di động 2 cột dồn thành 1 cột.
+         cột phải: Nhà Gái — luôn 2 cột song song kể cả trên di động.
     =========================================================== -->
     <section id="families" class="families-section">
       <div class="container">
         <div class="families-grid reveal" id="familiesGrid"></div>
         <p class="families-section__invitation font-script" id="familiesInvitation"></p>
-        <p class="families-section__names" id="familiesNames"></p>
+        <p class="families-section__names" id="familiesNames">
+          <span class="families-section__names-part" id="familiesNamesGroom"></span><span class="families-section__names-part families-section__names-amp">&amp;</span><span class="families-section__names-part" id="familiesNamesBride"></span>
+        </p>
       </div>
     </section>
 

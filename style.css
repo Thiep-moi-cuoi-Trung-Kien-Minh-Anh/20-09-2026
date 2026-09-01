@@ -777,6 +777,10 @@ body.invitation-locked .back-to-top {
 ---------------------------------------------------------------------------- */
 .families-section {
   padding: var(--space-xl) 0;
+  /* Khoảng cách riêng xuống phần Thông tin lễ cưới ngay sau đó (thay vì
+     dùng --space-xl chung) — gộp với .events-section's padding-top thành
+     đúng 1.5rem giữa 2 phần. */
+  padding-bottom: 0.75rem;
 }
 
 .families-grid {
@@ -839,11 +843,34 @@ body.invitation-locked .back-to-top {
   color: var(--accent-secondary);
 }
 
+/* Di động: "Tên chú rể" / "&" / "Tên cô dâu" mỗi phần một dòng riêng.
+   Từ 640px trở lên: gộp lại thành 1 dòng "Tên chú rể & Tên cô dâu". */
+.families-section__names-part {
+  display: block;
+}
+
+.families-section__names-amp {
+  margin: 0.15em 0;
+}
+
+@media (min-width: 640px) {
+  .families-section__names-part {
+    display: inline;
+  }
+
+  .families-section__names-amp {
+    margin: 0 0.35em;
+  }
+}
+
 /* ----------------------------------------------------------------------------
    13. EVENTS / WEDDING INFO (M4) — Lễ nhà trai, Lễ nhà gái, Tiệc cưới
 ---------------------------------------------------------------------------- */
 .events-section {
   padding: var(--space-xl) 0;
+  /* Ghép với .families-section's padding-bottom thành đúng 1.5rem giữa
+     phần Hai gia đình và phần Thông tin lễ cưới. */
+  padding-top: 0.75rem;
 }
 
 .events-section__heading {
