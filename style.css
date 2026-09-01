@@ -435,13 +435,6 @@ body.invitation-locked .back-to-top {
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
 
-.welcome-screen__eyebrow {
-  font-size: 0.8rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  opacity: 0.9;
-}
-
 .welcome-screen__ornament {
   font-size: 1.75rem;
   color: var(--color-champagne-gold);
@@ -829,6 +822,17 @@ body.invitation-locked .back-to-top {
   color: var(--accent-secondary);
 }
 
+.families-section__names {
+  margin-top: 0.3em;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+}
+
 /* ----------------------------------------------------------------------------
    13. EVENTS / WEDDING INFO (M4) — Lễ nhà trai, Lễ nhà gái, Tiệc cưới
 ---------------------------------------------------------------------------- */
@@ -839,6 +843,46 @@ body.invitation-locked .back-to-top {
 .events-section__heading {
   text-align: center;
   margin-bottom: var(--space-lg);
+}
+
+.events-section__time {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  margin-bottom: 0.3em;
+}
+
+.events-section__day {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.4em;
+}
+
+.events-section__lunar {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.events-section__venue {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.events-section__address {
+  font-family: var(--font-script);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-muted);
 }
 
 .events-grid {

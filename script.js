@@ -131,13 +131,11 @@ function populateWelcomeScreen() {
   const groomEl = document.getElementById("welcomeGroomName");
   const brideEl = document.getElementById("welcomeBrideName");
   const dateEl = document.getElementById("welcomeDate");
-  const eyebrowEl = document.getElementById("welcomeEyebrow");
   const openLabelEl = document.getElementById("welcomeOpenLabel");
 
   if (groomEl && couple?.groomFullName) groomEl.textContent = couple.groomFullName;
   if (brideEl && couple?.brideFullName) brideEl.textContent = couple.brideFullName;
   if (dateEl && wedding?.displayDate) dateEl.textContent = wedding.displayDate;
-  if (eyebrowEl && welcome?.greetingLabel) eyebrowEl.textContent = welcome.greetingLabel;
   if (openLabelEl && welcome?.openButtonLabel) openLabelEl.textContent = welcome.openButtonLabel;
 }
 
@@ -543,11 +541,15 @@ function buildFamilyColumn(family) {
 }
 
 function initFamilies() {
-  const { families } = WEDDING_CONFIG;
+  const { families, couple } = WEDDING_CONFIG;
   const gridEl = document.getElementById("familiesGrid");
   const invitationEl = document.getElementById("familiesInvitation");
+  const namesEl = document.getElementById("familiesNames");
 
   if (invitationEl && families?.invitation) invitationEl.textContent = families.invitation;
+  if (namesEl && couple?.groomName && couple?.brideName) {
+    namesEl.textContent = `${couple.groomName} & ${couple.brideName}`;
+  }
   if (!gridEl || !families?.bride || !families?.groom) return;
 
   gridEl.innerHTML = "";
@@ -617,9 +619,21 @@ function buildEventCard(event, index) {
 function initEventsSection() {
   const { events } = WEDDING_CONFIG;
   const gridEl = document.getElementById("eventsGrid");
-  const titleEl = document.getElementById("eventsTitle");
+  const heading = events?.heading;
 
-  if (titleEl && events?.title) titleEl.textContent = events.title;
+  if (heading) {
+    const timeEl = document.getElementById("eventsTime");
+    const dayEl = document.getElementById("eventsDay");
+    const lunarEl = document.getElementById("eventsLunar");
+    const venueEl = document.getElementById("eventsVenue");
+    const addressEl = document.getElementById("eventsAddress");
+    if (timeEl) timeEl.textContent = heading.time || "";
+    if (dayEl) dayEl.textContent = heading.day || "";
+    if (lunarEl) lunarEl.textContent = heading.lunarDate || "";
+    if (venueEl) venueEl.textContent = heading.venue || "";
+    if (addressEl) addressEl.textContent = heading.address || "";
+  }
+
   if (!gridEl || !Array.isArray(events?.items) || !events.items.length) return;
 
   gridEl.innerHTML = "";
