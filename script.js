@@ -546,7 +546,13 @@ function initFamilies() {
   const invitationEl = document.getElementById("familiesInvitation");
   const namesEl = document.getElementById("familiesNames");
 
-  if (invitationEl && families?.invitation) invitationEl.textContent = families.invitation;
+  if (invitationEl && families?.invitation) {
+    invitationEl.innerHTML = "";
+    families.invitation.split("\n").forEach((line, i) => {
+      if (i > 0) invitationEl.appendChild(document.createElement("br"));
+      invitationEl.appendChild(document.createTextNode(line));
+    });
+  }
   if (namesEl && couple?.groomName && couple?.brideName) {
     namesEl.textContent = `${couple.groomName} & ${couple.brideName}`;
   }
