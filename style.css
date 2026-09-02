@@ -389,6 +389,33 @@ body.invitation-locked .back-to-top {
   background: linear-gradient(160deg, var(--accent-tertiary) 0%, var(--bg-primary) 45%, var(--accent-secondary) 100%);
 }
 
+/* Khung chứa ảnh cưới — chiếm toàn bộ .welcome-screen. Tên/ngày cưới
+   (.welcome-screen__content) và nút "Mở Thiệp" (.welcome-screen__cta)
+   đều nằm ĐÈ lên ảnh bên trong khung này, neo lần lượt ở mép trên/dưới
+   với cùng khoảng cách --welcome-edge-gap (xem 2 rule bên dưới) để cân
+   đối. Trên di động: rộng/cao hết cỡ, không bo góc (giữ cảm giác ảnh
+   phủ kín như trước). Từ 768px trở lên: thu về khung thẻ cùng kích
+   thước ảnh Album (.gallery-carousel: max-width 480px, tỉ lệ 3:4). */
+.welcome-screen__frame {
+  --welcome-edge-gap: var(--space-sm);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .welcome-screen__frame {
+    width: min(520px, 60vw);
+    height: auto;
+    aspect-ratio: 3 / 4;
+    max-height: 100%;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+  }
+}
+
 /* Lớp ảnh cưới thật, lấy từ config.welcome.backgroundImage qua CSS var
    --welcome-bg-image (được set bằng script.js sau khi kiểm tra ảnh tải được).
    Nếu chưa có ảnh, lớp này để trong suốt và chỉ còn thấy gradient phía sau. */
@@ -419,25 +446,49 @@ body.invitation-locked .back-to-top {
   }
 }
 
-/* Overlay để chữ luôn đọc được dù nền là ảnh hay gradient */
+/* Overlay dạng "vignette": tối ở mép trên (đứng sau tên/ngày cưới) và mép
+   dưới (đứng sau nút "Mở Thiệp"), mờ dần vào giữa — để chữ/nút luôn đọc
+   được mà không che tối vùng giữa ảnh, nơi thường là khuôn mặt cô dâu
+   chú rể. */
 .welcome-screen__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.25), rgba(20, 16, 12, 0.4) 65%, rgba(20, 16, 12, 0.55));
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 16, 12, 0.6) 0%,
+    rgba(20, 16, 12, 0.15) 26%,
+    rgba(20, 16, 12, 0) 42%,
+    rgba(20, 16, 12, 0) 68%,
+    rgba(20, 16, 12, 0.15) 84%,
+    rgba(20, 16, 12, 0.55) 100%
+  );
 }
 
 .welcome-screen.no-photo .welcome-screen__overlay {
-  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.12), rgba(20, 16, 12, 0.28));
+  background: linear-gradient(
+    to bottom,
+    rgba(20, 16, 12, 0.25) 0%,
+    rgba(20, 16, 12, 0.05) 30%,
+    transparent 50%,
+    rgba(20, 16, 12, 0.05) 70%,
+    rgba(20, 16, 12, 0.2) 100%
+  );
 }
 
+/* Neo ở mép TRÊN khung ảnh (không phải giữa) để không che khuôn mặt cô
+   dâu chú rể — cách mép trên đúng --welcome-edge-gap, bằng khoảng cách
+   từ mép dưới tới nút "Mở Thiệp" (.welcome-screen__cta, xem bên dưới). */
 .welcome-screen__content {
-  position: relative;
+  position: absolute;
+  top: var(--welcome-edge-gap);
+  left: 0;
+  right: 0;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-md);
+  padding-inline: var(--space-sm);
   color: var(--color-text-light);
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
@@ -456,6 +507,16 @@ body.invitation-locked .back-to-top {
   gap: 0.25em;
 }
 
+/* Từ 768px, chữ nằm trong khung ảnh có chiều rộng cố định (không còn
+   scale theo toàn bộ viewport) — dùng cỡ chữ cố định vừa khung thay vì
+   clamp() theo vw để tên dài (vd. "Nguyễn Minh Anh") không bị tự xuống
+   dòng 2 rồi đè lên mặt trong ảnh. */
+@media (min-width: 768px) {
+  .welcome-screen__names {
+    font-size: 2.6rem;
+  }
+}
+
 .welcome-screen__amp {
   font-size: 0.55em;
   color: var(--color-champagne-gold);
@@ -468,13 +529,25 @@ body.invitation-locked .back-to-top {
   margin-bottom: var(--space-sm);
 }
 
-/* Nút "Mở Thiệp" */
+/* Khối nút "Mở Thiệp" — neo ở mép DƯỚI khung ảnh, đè lên ảnh, cách mép
+   dưới đúng --welcome-edge-gap — bằng khoảng cách từ mép trên tới tên
+   cưới (.welcome-screen__content ở trên). Dùng lại tông màu sáng/viền
+   mờ vì vẫn nằm trên nền ảnh (nhờ phần tối ở mép dưới overlay). */
+.welcome-screen__cta {
+  position: absolute;
+  bottom: var(--welcome-edge-gap);
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .open-invitation-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
   padding: 0.9em 1.8em;
-  margin-top: var(--space-sm);
   border: 1px solid rgba(250, 247, 242, 0.6);
   border-radius: 999px;
   background: rgba(250, 247, 242, 0.08);
@@ -483,6 +556,7 @@ body.invitation-locked .back-to-top {
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
   transition: transform var(--transition-fast), background-color var(--transition-fast), opacity 0.5s ease;
 }
 
@@ -507,7 +581,9 @@ body.invitation-locked .back-to-top {
   100% { transform: scale(0.96); opacity: 0; }
 }
 
-/* Gợi ý cuộn xuống — chỉ hiện sau khi đã mở thiệp */
+/* Gợi ý cuộn xuống — chỉ hiện sau khi đã mở thiệp (lúc này nút "Mở Thiệp"
+   đã mờ dần biến mất, xem .open-invitation-btn.is-clicked, nên không bị
+   chồng lên nhau dù cùng ở gần mép dưới). */
 .welcome-screen__scroll-hint {
   position: absolute;
   bottom: var(--space-md);
@@ -531,7 +607,8 @@ body.invitation-locked .back-to-top {
 }
 
 /* Hiệu ứng "mở thiệp": nội dung loé sáng nhẹ rồi ổn định lại khi bấm nút */
-.welcome-screen.is-opening .welcome-screen__content {
+.welcome-screen.is-opening .welcome-screen__content,
+.welcome-screen.is-opening .welcome-screen__cta {
   animation: invitation-content-settle 0.9s var(--transition-smooth);
 }
 
