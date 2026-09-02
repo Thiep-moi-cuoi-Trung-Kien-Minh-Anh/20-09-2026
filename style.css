@@ -407,6 +407,10 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 768px) {
   .welcome-screen__frame {
+    /* Khung ảnh trên desktop thấp hơn hẳn so với di động (tỉ lệ 3:4 cố
+       định thay vì cao gần bằng cả màn hình) nên cần khoảng cách mép
+       trên nhỏ hơn để chữ không lấn xuống vùng mặt trong ảnh. */
+    --welcome-edge-gap: 0.5rem;
     width: min(520px, 60vw);
     height: auto;
     aspect-ratio: 3 / 4;
@@ -514,6 +518,21 @@ body.invitation-locked .back-to-top {
 @media (min-width: 768px) {
   .welcome-screen__names {
     font-size: 2.6rem;
+  }
+
+  /* Khung ảnh desktop thấp hơn di động nên toàn bộ khối chữ cần nén lại
+     (bớt khoảng cách giữa ơn, tên, ngày) để không lấn xuống vùng mặt. */
+  .welcome-screen__content {
+    gap: 0.35rem;
+  }
+
+  .welcome-screen__ornament {
+    margin: 0;
+  }
+
+  .welcome-screen__date {
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 
