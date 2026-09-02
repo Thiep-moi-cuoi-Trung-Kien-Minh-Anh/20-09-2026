@@ -4,19 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- SEO cơ bản. Các thẻ dưới đây là giá trị mặc định (dùng cho crawler
-       chưa chạy JS); script.js sẽ đồng bộ lại toàn bộ theo config.js ngay
-       khi trang tải, nên chỉ cần sửa nội dung ở config.js là đủ. -->
+  <!-- SEO cơ bản. Các thẻ dưới đây PHẢI có sẵn giá trị thật ngay trong HTML
+       tĩnh này — bot xem trước link (Facebook/Messenger/Zalo...) không chạy
+       JavaScript nên sẽ không thấy được nội dung do script.js điền vào lúc
+       runtime. script.js vẫn đồng bộ lại các thẻ này từ config.js cho trình
+       duyệt thật (không ảnh hưởng gì nếu giá trị đã khớp sẵn ở đây); nếu đổi
+       tên miền/đường dẫn deploy (site.url trong config.js), nhớ sửa lại
+       "canonical", "og:image", "og:url" bên dưới cho khớp. -->
   <title>Thiệp mời cưới Trung Kiên &amp; Minh Anh</title>
   <meta name="description" content="Trân trọng kính mời bạn đến chung vui trong ngày cưới của chúng tôi." />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#c9a86a" />
-  <link rel="canonical" href="" />
+  <link rel="canonical" href="https://thiep-moi-cuoi-trung-kien-minh-anh.github.io/20-09-2026/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Thiệp mời cưới Trung Kiên & Minh Anh" />
   <meta property="og:description" content="Trân trọng kính mời bạn đến chung vui trong ngày cưới của chúng tôi." />
-  <meta property="og:image" content="" />
-  <meta property="og:url" content="" />
+  <meta property="og:image" content="https://thiep-moi-cuoi-trung-kien-minh-anh.github.io/20-09-2026/assets/images/welcome-bg.jpg" />
+  <meta property="og:url" content="https://thiep-moi-cuoi-trung-kien-minh-anh.github.io/20-09-2026/" />
   <meta property="og:locale" content="vi_VN" />
   <meta name="twitter:card" content="summary_large_image" />
 
