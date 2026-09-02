@@ -1726,13 +1726,16 @@ body.invitation-locked .back-to-top {
   color: var(--color-sage-green);
 }
 
-/* Danh sách lời chúc: cuộn riêng bên trong khung (không đẩy cả trang dài
-   ra) khi có nhiều lời chúc — max-height ước lượng để vừa khoảng 5-7 lời
-   chúc trong khung nhìn ban đầu, còn lại cuộn để xem thêm. */
+/* Danh sách lời chúc: luôn 1 cột (cả di động lẫn máy tính), cuộn riêng
+   bên trong khung (không đẩy cả trang dài ra) khi có nhiều lời chúc —
+   max-height ước lượng để vừa khoảng 5-7 lời chúc trong khung nhìn ban
+   đầu, còn lại cuộn để xem thêm. */
 .wishes-list {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-sm);
+  max-width: 640px;
+  margin-inline: auto;
   max-height: 640px;
   overflow-y: auto;
   padding-right: var(--space-xs);
@@ -1751,20 +1754,6 @@ body.invitation-locked .back-to-top {
 .wishes-list::-webkit-scrollbar-thumb {
   background-color: var(--accent-secondary);
   border-radius: 999px;
-}
-
-@media (min-width: 700px) {
-  .wishes-list {
-    grid-template-columns: repeat(2, 1fr);
-    max-height: 360px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .wishes-list {
-    grid-template-columns: repeat(3, 1fr);
-    max-height: 280px;
-  }
 }
 
 .wish-card {
