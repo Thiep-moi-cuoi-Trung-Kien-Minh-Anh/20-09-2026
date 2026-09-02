@@ -671,15 +671,12 @@ function initEventsSection() {
 /* ----------------------------------------------------------------------------
    5g. GALLERY — ALBUM CUỘN (M5)
    Sinh ảnh chính (slideshow, crossfade) + dải thumbnail từ config.gallery.images.
-   Ảnh chính tự động chuyển sau mỗi GALLERY_AUTOPLAY_MS (lặp vòng), tạm dừng khi
-   hover/vừa thao tác tay rồi tự chạy lại sau GALLERY_RESUME_AFTER_MS. Dải
-   thumbnail luôn tự cuộn theo ảnh đang active; hỗ trợ click thumbnail, mũi tên
-   ‹›, mũi tên cuộn ▲▼, phím mũi tên trái/phải, và vuốt trái/phải trên di động.
-   Ảnh lỗi/chưa có sẽ tự hiện khung placeholder (giống hành vi Gallery cũ).
+   Luôn bắt đầu từ ảnh đầu tiên, không tự động chuyển ảnh — khách tự điều
+   hướng bằng click thumbnail, mũi tên ‹›, mũi tên cuộn ▲▼, phím mũi tên
+   trái/phải, hoặc vuốt trái/phải trên di động. Dải thumbnail tự cuộn theo
+   ảnh đang active. Ảnh lỗi/chưa có sẽ tự hiện khung placeholder.
 ---------------------------------------------------------------------------- */
 const GALLERY_VISIBLE_THUMBS = 7;
-const GALLERY_AUTOPLAY_MS = 4500;
-const GALLERY_RESUME_AFTER_MS = 6000;
 const GALLERY_SWIPE_THRESHOLD = 40;
 
 let galleryPhotos = [];
@@ -687,8 +684,6 @@ let galleryIndex = 0;
 let galleryImageEls = [];
 let galleryThumbEls = [];
 let galleryTrackEl = null;
-let galleryAutoplayTimer = null;
-let galleryResumeTimer = null;
 
 // Cuộn thumbnail đang active vào giữa dải, chỉ tác động lên chính dải
 // thumbnail (không dùng scrollIntoView vì nó sẽ cuộn luôn cả trang). Chỉ gọi
@@ -758,10 +753,7 @@ function buildGalleryThumb(photo, index) {
 
   btn.append(img, fallback);
   suppressFocusScroll(btn);
-  btn.addEventListener("click", () => {
-    goToGalleryPhoto(index);
-    pauseThenResumeGalleryAutoplay();
-  });
+  btn.addEventListener("click", () => goToGalleryPhoto(index));
   return btn;
 }
 
@@ -781,19 +773,6 @@ function prevGalleryPhoto() {
   goToGalleryPhoto(galleryIndex - 1);
 }
 
-function startGalleryAutoplay() {
-  clearInterval(galleryAutoplayTimer);
-  const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  if (prefersReducedMotion || galleryPhotos.length < 2) return;
-  galleryAutoplayTimer = setInterval(nextGalleryPhoto, GALLERY_AUTOPLAY_MS);
-}
-
-function pauseThenResumeGalleryAutoplay() {
-  clearInterval(galleryAutoplayTimer);
-  clearTimeout(galleryResumeTimer);
-  galleryResumeTimer = setTimeout(startGalleryAutoplay, GALLERY_RESUME_AFTER_MS);
-}
-
 function initGalleryControls(root, trackEl) {
   const btnPrev = root.querySelector(".gallery-carousel__arrow--prev");
   const btnNext = root.querySelector(".gallery-carousel__arrow--next");
@@ -804,20 +783,11 @@ function initGalleryControls(root, trackEl) {
 
   [btnPrev, btnNext, btnUp, btnDown].forEach(suppressFocusScroll);
 
-  btnPrev?.addEventListener("click", () => {
-    prevGalleryPhoto();
-    pauseThenResumeGalleryAutoplay();
-  });
-  btnNext?.addEventListener("click", () => {
-    nextGalleryPhoto();
-    pauseThenResumeGalleryAutoplay();
-  });
+  btnPrev?.addEventListener("click", prevGalleryPhoto);
+  btnNext?.addEventListener("click", nextGalleryPhoto);
 
   btnUp?.addEventListener("click", () => trackEl.scrollBy({ top: -cellStep, left: -cellStep, behavior: "smooth" }));
   btnDown?.addEventListener("click", () => trackEl.scrollBy({ top: cellStep, left: cellStep, behavior: "smooth" }));
-
-  root.addEventListener("mouseenter", () => clearInterval(galleryAutoplayTimer));
-  root.addEventListener("mouseleave", startGalleryAutoplay);
 
   document.addEventListener("keydown", (event) => {
     if (galleryPhotos.length < 2) return;
@@ -826,7 +796,6 @@ function initGalleryControls(root, trackEl) {
     const inView = rect.top < window.innerHeight && rect.bottom > 0;
     if (!inView) return;
     event.key === "ArrowLeft" ? prevGalleryPhoto() : nextGalleryPhoto();
-    pauseThenResumeGalleryAutoplay();
   });
 
   let touchStartX = null;
@@ -838,7 +807,6 @@ function initGalleryControls(root, trackEl) {
       const deltaX = event.changedTouches[0].clientX - touchStartX;
       if (Math.abs(deltaX) > GALLERY_SWIPE_THRESHOLD) {
         deltaX > 0 ? prevGalleryPhoto() : nextGalleryPhoto();
-        pauseThenResumeGalleryAutoplay();
       }
       touchStartX = null;
     },
@@ -870,7 +838,6 @@ function initGallery() {
 
   goToGalleryPhoto(0);
   initGalleryControls(root, trackEl);
-  startGalleryAutoplay();
 }
 
 /* ----------------------------------------------------------------------------
