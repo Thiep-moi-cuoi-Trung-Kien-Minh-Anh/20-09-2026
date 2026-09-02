@@ -381,12 +381,21 @@ body.invitation-locked .back-to-top {
   height: 100dvh;
 }
 
-/* Lớp nền gradient mặc định — luôn hiển thị, đóng vai trò "phông" khi
-   chưa có ảnh cưới thật, hoặc lấp ló phía sau ảnh khi có ảnh */
+/* Lớp nền gradient mặc định — trên di động luôn hiển thị, đóng vai trò
+   "phông" khi chưa có ảnh cưới thật, hoặc lấp ló phía sau ảnh khi có ảnh
+   (ảnh phủ kín nên gradient gần như không thấy được). Trên desktop, ảnh
+   thu về khung thẻ nhỏ nên phần nền lộ ra nhiều xung quanh — đổi sang
+   nền trơn (không đổ màu) thay vì gradient sặc sỡ. */
 .welcome-screen__bg {
   position: absolute;
   inset: 0;
   background: linear-gradient(160deg, var(--accent-tertiary) 0%, var(--bg-primary) 45%, var(--accent-secondary) 100%);
+}
+
+@media (min-width: 768px) {
+  .welcome-screen__bg {
+    background: var(--bg-primary);
+  }
 }
 
 /* Khung chứa ảnh cưới — chiếm toàn bộ .welcome-screen. Tên/ngày cưới
@@ -407,6 +416,10 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 768px) {
   .welcome-screen__frame {
+    /* Khung ảnh trên desktop thấp hơn hẳn so với di động (tỉ lệ 3:4 cố
+       định thay vì cao gần bằng cả màn hình) nên cần khoảng cách mép
+       trên nhỏ hơn để chữ không lấn xuống vùng mặt trong ảnh. */
+    --welcome-edge-gap: 0.5rem;
     width: min(520px, 60vw);
     height: auto;
     aspect-ratio: 3 / 4;
@@ -514,6 +527,21 @@ body.invitation-locked .back-to-top {
 @media (min-width: 768px) {
   .welcome-screen__names {
     font-size: 2.6rem;
+  }
+
+  /* Khung ảnh desktop thấp hơn di động nên toàn bộ khối chữ cần nén lại
+     (bớt khoảng cách giữa ơn, tên, ngày) để không lấn xuống vùng mặt. */
+  .welcome-screen__content {
+    gap: 0.35rem;
+  }
+
+  .welcome-screen__ornament {
+    margin: 0;
+  }
+
+  .welcome-screen__date {
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 
