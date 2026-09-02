@@ -365,8 +365,11 @@ body.invitation-locked .back-to-top {
   height: 100vh;
   height: 100dvh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: var(--space-sm);
+  padding-block: var(--space-sm);
   overflow: hidden;
   text-align: center;
   transition: transform 0.9s var(--transition-smooth), opacity 0.9s var(--transition-smooth);
@@ -387,6 +390,31 @@ body.invitation-locked .back-to-top {
   position: absolute;
   inset: 0;
   background: linear-gradient(160deg, var(--accent-tertiary) 0%, var(--bg-primary) 45%, var(--accent-secondary) 100%);
+}
+
+/* Khung chứa ảnh cưới — chiếm phần không gian còn lại (flex:1) phía trên
+   nút "Mở Thiệp" (.welcome-screen__cta, nằm ngoài khung này, xem bên dưới).
+   Trên di động: rộng hết cỡ, không bo góc (giữ cảm giác ảnh phủ kín như
+   trước). Từ 768px trở lên: thu về khung thẻ cùng kích thước ảnh Album
+   (.gallery-carousel: max-width 480px, tỉ lệ 3:4). */
+.welcome-screen__frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .welcome-screen__frame {
+    flex: 0 0 auto;
+    width: min(520px, 60vw);
+    aspect-ratio: 3 / 4;
+    max-height: 100%;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+  }
 }
 
 /* Lớp ảnh cưới thật, lấy từ config.welcome.backgroundImage qua CSS var
@@ -419,43 +447,33 @@ body.invitation-locked .back-to-top {
   }
 }
 
-/* Overlay để chữ luôn đọc được dù nền là ảnh hay gradient */
+/* Overlay chỉ làm tối phần TRÊN ảnh (đứng sau tên/ngày cưới, xem
+   .welcome-screen__content) rồi mờ dần — để không che tối vùng giữa/dưới
+   ảnh, nơi thường là khuôn mặt cô dâu chú rể. */
 .welcome-screen__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.25), rgba(20, 16, 12, 0.4) 65%, rgba(20, 16, 12, 0.55));
+  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.6) 0%, rgba(20, 16, 12, 0.18) 32%, rgba(20, 16, 12, 0) 55%);
 }
 
 .welcome-screen.no-photo .welcome-screen__overlay {
-  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.12), rgba(20, 16, 12, 0.28));
+  background: linear-gradient(to bottom, rgba(20, 16, 12, 0.25), rgba(20, 16, 12, 0.05) 45%, transparent 70%);
 }
 
-/* Desktop/laptop: ảnh bìa thu về dạng khung thẻ, cùng kích thước với ảnh
-   trong Album (.gallery-carousel: max-width 480px, tỉ lệ 3:4, bo góc,
-   đổ bóng) thay vì phủ kín toàn màn hình như trên di động. Dùng
-   inset:0 + width/height + margin:auto để tự căn giữa mà không xung
-   đột với transform của hiệu ứng Ken Burns. */
-@media (min-width: 768px) {
-  .welcome-screen__photo,
-  .welcome-screen__overlay {
-    inset: 0;
-    width: min(520px, 60vw);
-    aspect-ratio: 3 / 4;
-    height: auto;
-    margin: auto;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
-  }
-}
-
+/* Đặt ở phần TRÊN khung ảnh (không phải giữa) để không che khuôn mặt cô
+   dâu chú rể — xem gradient của .welcome-screen__overlay ở trên, chỉ tối
+   phần trên ảnh để chữ luôn đọc được. */
 .welcome-screen__content {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-md);
+  padding: var(--space-md) var(--space-sm) var(--space-sm);
   color: var(--color-text-light);
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
 }
@@ -474,6 +492,16 @@ body.invitation-locked .back-to-top {
   gap: 0.25em;
 }
 
+/* Từ 768px, chữ nằm trong khung ảnh có chiều rộng cố định (không còn
+   scale theo toàn bộ viewport) — dùng cỡ chữ cố định vừa khung thay vì
+   clamp() theo vw để tên dài (vd. "Nguyễn Minh Anh") không bị tự xuống
+   dòng 2 rồi đè lên mặt trong ảnh. */
+@media (min-width: 768px) {
+  .welcome-screen__names {
+    font-size: 2.6rem;
+  }
+}
+
 .welcome-screen__amp {
   font-size: 0.55em;
   color: var(--color-champagne-gold);
@@ -486,22 +514,33 @@ body.invitation-locked .back-to-top {
   margin-bottom: var(--space-sm);
 }
 
-/* Nút "Mở Thiệp" */
+/* Khối nút "Mở Thiệp" — nằm HẲN BÊN DƯỚI khung ảnh (.welcome-screen__frame),
+   trên nền gradient sáng của .welcome-screen__bg, nên dùng màu chữ/nút tối
+   thay vì màu sáng như khi còn nằm đè lên ảnh. */
+.welcome-screen__cta {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
 .open-invitation-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
   padding: 0.9em 1.8em;
-  margin-top: var(--space-sm);
-  border: 1px solid rgba(250, 247, 242, 0.6);
+  border: 1px solid var(--accent-secondary);
   border-radius: 999px;
-  background: rgba(250, 247, 242, 0.08);
-  backdrop-filter: blur(4px);
-  color: var(--color-text-light);
+  background: var(--bg-surface);
+  color: var(--accent-secondary);
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: transform var(--transition-fast), background-color var(--transition-fast), opacity 0.5s ease;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), opacity 0.5s ease;
 }
 
 .open-invitation-btn__icon {
@@ -510,7 +549,8 @@ body.invitation-locked .back-to-top {
 }
 
 .open-invitation-btn:hover {
-  background-color: rgba(250, 247, 242, 0.18);
+  background-color: var(--accent-secondary);
+  color: var(--color-text-light);
   transform: translateY(-2px);
 }
 
@@ -525,15 +565,11 @@ body.invitation-locked .back-to-top {
   100% { transform: scale(0.96); opacity: 0; }
 }
 
-/* Gợi ý cuộn xuống — chỉ hiện sau khi đã mở thiệp */
+/* Gợi ý cuộn xuống — chỉ hiện sau khi đã mở thiệp. Nằm trong luồng bình
+   thường bên dưới nút (không absolute) để không bao giờ chồng lên nút. */
 .welcome-screen__scroll-hint {
-  position: absolute;
-  bottom: var(--space-md);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
   font-size: 1.5rem;
-  color: var(--color-text-light);
+  color: var(--accent-secondary);
   opacity: 0;
   transition: opacity 0.6s ease 0.3s;
 }
@@ -544,12 +580,13 @@ body.invitation-locked .back-to-top {
 }
 
 @keyframes scroll-hint-bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
 
 /* Hiệu ứng "mở thiệp": nội dung loé sáng nhẹ rồi ổn định lại khi bấm nút */
-.welcome-screen.is-opening .welcome-screen__content {
+.welcome-screen.is-opening .welcome-screen__content,
+.welcome-screen.is-opening .welcome-screen__cta {
   animation: invitation-content-settle 0.9s var(--transition-smooth);
 }
 

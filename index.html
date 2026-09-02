@@ -110,23 +110,30 @@
          Khoá cuộn trang (body.invitation-locked) cho tới khi bấm
          "Mở Thiệp". Ảnh nền được cấu hình ở config.js (welcome.backgroundImage);
          nếu chưa có ảnh, nền sẽ tự dùng gradient thay thế (xem script.js).
+         Bố cục: tên/ngày cưới đặt ở phần trên khung ảnh (không che mặt cô
+         dâu chú rể), nút "Mở Thiệp" nằm hẳn bên dưới khung ảnh.
     =========================================================== -->
     <section id="welcome" class="welcome-screen" aria-label="Trang bìa thiệp cưới">
       <div class="welcome-screen__bg" aria-hidden="true"></div>
-      <div class="welcome-screen__photo" aria-hidden="true"></div>
-      <div class="welcome-screen__overlay" aria-hidden="true"></div>
 
-      <div class="welcome-screen__content">
-        <div class="welcome-screen__ornament" aria-hidden="true">❧</div>
+      <div class="welcome-screen__frame">
+        <div class="welcome-screen__photo" aria-hidden="true"></div>
+        <div class="welcome-screen__overlay" aria-hidden="true"></div>
 
-        <h1 class="welcome-screen__names">
-          <span id="welcomeGroomName">Chú Rể</span>
-          <span class="welcome-screen__amp font-script">&amp;</span>
-          <span id="welcomeBrideName">Cô Dâu</span>
-        </h1>
+        <div class="welcome-screen__content">
+          <div class="welcome-screen__ornament" aria-hidden="true">❧</div>
 
-        <p class="welcome-screen__date font-script" id="welcomeDate">12 . 12 . 2026</p>
+          <h1 class="welcome-screen__names">
+            <span id="welcomeGroomName">Chú Rể</span>
+            <span class="welcome-screen__amp font-script">&amp;</span>
+            <span id="welcomeBrideName">Cô Dâu</span>
+          </h1>
 
+          <p class="welcome-screen__date font-script" id="welcomeDate">12 . 12 . 2026</p>
+        </div>
+      </div>
+
+      <div class="welcome-screen__cta">
         <button id="openInvitationBtn" class="open-invitation-btn" type="button">
           <svg class="open-invitation-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <rect x="2.5" y="5" width="19" height="14" rx="1.5" />
@@ -134,9 +141,9 @@
           </svg>
           <span id="welcomeOpenLabel">Mở Thiệp</span>
         </button>
-      </div>
 
-      <div class="welcome-screen__scroll-hint" aria-hidden="true">&#8964;</div>
+        <div class="welcome-screen__scroll-hint" aria-hidden="true">&#8964;</div>
+      </div>
     </section>
 
     <!-- ==========================================================
