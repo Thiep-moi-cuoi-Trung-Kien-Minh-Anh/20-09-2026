@@ -188,11 +188,13 @@ const WEDDING_CONFIG = {
     title: "Album ảnh",
     images: [
       { src: "assets/images/gallery-01.jpg", alt: "Cô dâu chú rể dưới vòm cây xanh" },
-      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc trao thư tay" },
+      { src: "assets/images/LAL07544.jpg", alt: "Cô dâu chú rể nắm tay dạo bước giữa hàng cây xanh" },
       { src: "assets/images/gallery-03.jpg", alt: "Ôm nhau dưới tán cây đèn dây" },
+      { src: "assets/images/gallery-02.jpg", alt: "Khoảnh khắc trao thư tay" },
+      { src: "assets/images/LAL07634.jpg", alt: "Khoảnh khắc cô dâu chú rể cười đùa bên nhau" },
+      { src: "assets/images/gallery-06.jpg", alt: "Cô dâu chú rể bên cổng vòm cổ điển" },
       { src: "assets/images/gallery-04.jpg", alt: "Khoảnh khắc ngọt ngào bên nhau" },
       { src: "assets/images/gallery-05.jpg", alt: "Chân dung cô dâu" },
-      { src: "assets/images/gallery-06.jpg", alt: "Cô dâu chú rể bên cổng vòm cổ điển" },
     ],
   },
 
