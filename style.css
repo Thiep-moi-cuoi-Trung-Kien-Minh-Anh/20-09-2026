@@ -430,6 +430,24 @@ body.invitation-locked .back-to-top {
   background: linear-gradient(to bottom, rgba(20, 16, 12, 0.12), rgba(20, 16, 12, 0.28));
 }
 
+/* Desktop/laptop: ảnh bìa thu về dạng khung thẻ, cùng kích thước với ảnh
+   trong Album (.gallery-carousel: max-width 480px, tỉ lệ 3:4, bo góc,
+   đổ bóng) thay vì phủ kín toàn màn hình như trên di động. Dùng
+   inset:0 + width/height + margin:auto để tự căn giữa mà không xung
+   đột với transform của hiệu ứng Ken Burns. */
+@media (min-width: 768px) {
+  .welcome-screen__photo,
+  .welcome-screen__overlay {
+    inset: 0;
+    width: min(520px, 60vw);
+    aspect-ratio: 3 / 4;
+    height: auto;
+    margin: auto;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+  }
+}
+
 .welcome-screen__content {
   position: relative;
   z-index: 1;
