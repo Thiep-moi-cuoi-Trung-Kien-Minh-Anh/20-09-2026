@@ -182,6 +182,12 @@ function openInvitation(welcomeScreen, openButton) {
     // Cho các module khác (vd. M9 Nhạc nền) biết thiệp đã mở, để có thể
     // thử tự phát nhạc ngay trong cùng cử chỉ click của người dùng.
     document.dispatchEvent(new CustomEvent("invitation:opened"));
+
+    // Tự động trượt xuống phần Đếm ngược ngay sau khi mở thiệp, thay vì
+    // để khách phải tự cuộn từ bìa thiệp.
+    document.getElementById("countdown-section")?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
   };
 
   if (prefersReducedMotion) {
