@@ -404,7 +404,8 @@ body.invitation-locked .back-to-top {
    với cùng khoảng cách --welcome-edge-gap (xem 2 rule bên dưới) để cân
    đối. Trên di động: rộng/cao hết cỡ, không bo góc (giữ cảm giác ảnh
    phủ kín như trước). Từ 768px trở lên: thu về khung thẻ cùng kích
-   thước ảnh Album (.gallery-carousel: max-width 480px, tỉ lệ 3:4). */
+   thước ảnh Album (.gallery-carousel: max-width 480px, tỉ lệ 2:3 —
+   khớp đúng tỉ lệ ảnh gốc, xem thêm ghi chú ở .gallery-carousel__stage). */
 .welcome-screen__frame {
   --welcome-edge-gap: var(--space-sm);
   position: relative;
@@ -416,13 +417,13 @@ body.invitation-locked .back-to-top {
 
 @media (min-width: 768px) {
   .welcome-screen__frame {
-    /* Khung ảnh trên desktop thấp hơn hẳn so với di động (tỉ lệ 3:4 cố
+    /* Khung ảnh trên desktop thấp hơn hẳn so với di động (tỉ lệ 2:3 cố
        định thay vì cao gần bằng cả màn hình) nên cần khoảng cách mép
        trên nhỏ hơn để chữ không lấn xuống vùng mặt trong ảnh. */
     --welcome-edge-gap: 0.5rem;
     width: min(520px, 60vw);
     height: auto;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 2 / 3;
     max-height: 100%;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-soft);
@@ -1155,7 +1156,11 @@ body.invitation-locked .back-to-top {
 .gallery-carousel__stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  /* Khớp đúng tỉ lệ ảnh gốc trong Album (1333x2000 = 2:3) để object-fit:
+     cover không phải crop bớt ảnh — trước đây dùng 3:4 (hẹp hơn tỉ lệ
+     ảnh gốc) khiến ảnh bị crop mất một phần trên/dưới, dễ thấy nhất là
+     mất chân/gấu váy ở các ảnh chụp toàn thân. */
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   border-radius: var(--radius-md);
   background: linear-gradient(160deg, var(--accent-tertiary), var(--bg-surface));
