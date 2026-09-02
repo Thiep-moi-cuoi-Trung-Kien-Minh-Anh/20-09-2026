@@ -1126,8 +1126,9 @@ body.invitation-locked .back-to-top {
 
 /* ----------------------------------------------------------------------------
    14. GALLERY — ALBUM CUỘN (M5)
-   Slideshow ảnh lớn (autoplay, loop) + dải thumbnail điều hướng đồng bộ theo
-   ảnh đang active. Desktop: 2 cột (ảnh chính trái, thumbnail dọc phải).
+   Slideshow ảnh lớn (điều hướng thủ công, luôn bắt đầu từ ảnh đầu tiên) +
+   dải thumbnail điều hướng đồng bộ theo ảnh đang active. Desktop: 2 cột
+   (ảnh chính trái, thumbnail dọc phải).
    Mobile (< 640px): thumbnail chuyển xuống hàng ngang, cuộn bằng tay.
 ---------------------------------------------------------------------------- */
 .gallery-section {
